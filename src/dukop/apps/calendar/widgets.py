@@ -5,9 +5,14 @@ from django.conf import settings
 from django.forms.utils import to_current_timezone
 from django.forms.widgets import MultiWidget
 from django.forms.widgets import Select
-from django.forms.widgets import SelectDateWidget
+from django.forms.widgets import TextInput
 from django.forms.widgets import Widget
 from django.utils.formats import get_format
+
+
+class DateWidget(TextInput):
+    input_type = 'date'
+    template_name = 'django/forms/widgets/text.html'
 
 
 class SelectTimeWidget(Widget):
@@ -152,7 +157,7 @@ class SplitDateTimeWidget(MultiWidget):
 
     def __init__(self, attrs=None, time_format=None, date_attrs=None, time_attrs=None):
         widgets = (
-            SelectDateWidget(),
+            DateWidget(),
             SelectTimeWidget(),
         )
         super().__init__(widgets)

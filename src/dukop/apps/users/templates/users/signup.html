@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+<div class="card">
+  <div class="card__layout">
+
+    {% if form.errors %}
+    {% endif %}
+
+    <form method="post" action="{% url 'users:signup' %}">
+    {% csrf_token %}
+    </form>
+
+    <p><a href="{% url 'users:login' %}">{% trans "Already have an account? Log in..." %}</a></p>
+
+  </div>
+</div>
+
+{% endblock %}

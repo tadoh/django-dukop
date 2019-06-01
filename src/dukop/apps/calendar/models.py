@@ -11,6 +11,7 @@ class Event(models.Model):
     description = models.TextField(
         blank=True,
         verbose_name=_("description"),
+        help_text=_("Enter details, which will be displayed on the event's own page. You can use Markdown."),
     )
 
     slug = models.SlugField(
