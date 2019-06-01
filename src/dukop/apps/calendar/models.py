@@ -130,6 +130,8 @@ class EventTime(models.Model):
     )
     end = models.DateTimeField(
         verbose_name=_("end"),
+        blank=True,
+        null=True,
     )
     comment = models.CharField(
         max_length=255,
