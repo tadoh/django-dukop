@@ -7,6 +7,9 @@ from .widgets import SplitDateTimeWidget
 
 class EventForm(forms.ModelForm):
 
+    start = forms.DateTimeField(widget=SplitDateTimeWidget())
+    end = forms.DateTimeField(widget=SplitDateTimeWidget(), required=False)
+
     class Meta:
         model = models.Event
         fields = ('name', 'description', 'host', 'venue_name', 'street', 'zip_code', 'city')
