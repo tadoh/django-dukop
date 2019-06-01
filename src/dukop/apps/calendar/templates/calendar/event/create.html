@@ -17,6 +17,7 @@
           </th>
           <td>
             {{ field }}
+            {% if field.help_text %}{{ field.help_text }}{% endif %}
           </td>
         </tr>
 
