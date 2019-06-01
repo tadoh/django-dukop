@@ -37,7 +37,10 @@ class User(PermissionsMixin, AbstractBaseUser):
             'Your email address will be used for password resets and notification about your event/submissions.'
         ),
     )
+
     is_active = models.BooleanField(default=True)
+
+    # For the Django admin...
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 

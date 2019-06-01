@@ -2,6 +2,7 @@ from django import forms
 from django.forms.formsets import formset_factory
 
 from . import models
+from .widgets import SplitDateTimeWidget
 
 
 class EventForm(forms.ModelForm):
@@ -12,6 +13,9 @@ class EventForm(forms.ModelForm):
 
 
 class EventTimeForm(forms.ModelForm):
+
+    start = forms.DateTimeField(widget=SplitDateTimeWidget())
+    end = forms.DateTimeField(widget=SplitDateTimeWidget())
 
     class Meta:
         model = models.EventTime

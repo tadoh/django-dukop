@@ -75,6 +75,8 @@ class Event(models.Model):
         'Interval',
         on_delete=models.PROTECT,
         help_text=_("Repeats the event automatically at some interval"),
+        null=True,
+        blank=True,
     )
 
     created = models.DateTimeField(auto_now_add=True)
