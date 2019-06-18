@@ -44,6 +44,7 @@
 
                 {% else %}
 
+                  <a class="header__link" href="{% url "users:signup" %}">{% trans "Sign up" %}</a>
                   <a class="header__link" href="{% url "users:login" %}">{% trans "Log in" %}</a>
 
                 {% endif %}

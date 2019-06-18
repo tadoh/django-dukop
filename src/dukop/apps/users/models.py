@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
@@ -43,6 +45,9 @@ class User(PermissionsMixin, AbstractBaseUser):
     # For the Django admin...
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+
+    # Used for confirmations and password reminders to NOT disclose email in URL
+    token_uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
     def __str__(self) -> str:
         """Use a useful string representation."""
