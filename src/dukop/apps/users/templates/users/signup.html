@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load dukop_utils %}
 
 {% block content %}
 
 <h1>{% trans "Sign up" %}</h1>
 
     {% if form.errors %}
+    {% include "includes/message.html" with message=_("The form contained errors, please review below...") %}
     {% endif %}
 
     <form method="post" action="{% url 'users:signup' %}">
     {% csrf_token %}
-    {{ form.as_p }}
+    {% dukop_form form %}
 
     <p><button type="submit">{% trans "Confirm email..." %}</button></p>
 

@@ -14,6 +14,12 @@ class SignupForm(UserCreationForm):
 
     username = forms.EmailField(label=_("Email"))
 
+    def clean_username(self):
+        username = self.cleaned_data.get("username", None)
+        if username and models.User.objects.filter(email__iexact=username).exists():
+            raise forms.ValidationError("Choose another email.")
+        return username
+
     class Meta:
         model = models.User
         fields = ("username",)

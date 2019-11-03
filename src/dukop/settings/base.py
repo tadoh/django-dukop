@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "compressor",
     "dukop.apps.calendar",
     "dukop.apps.users",
+    "dukop.apps.utils",
 ]
 
 MIDDLEWARE = [
