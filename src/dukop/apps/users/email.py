@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class BaseEmail(EmailMessage):
 
-    template = "contacts/mail/base.txt"
+    template = "users/mail/base.txt"
     default_subject = "SET SUBJECT HERE"
 
     def __init__(self, request, *args, **kwargs):
@@ -16,11 +16,11 @@ class BaseEmail(EmailMessage):
         if self.user:
             kwargs['to'] = [self.user.email]
             self.context['user'] = self.user
-            self.context['recipient_name'] = self.user.get_full_name()
+            self.context['recipient_name'] = self.user.get_display_name()
 
         kwargs.setdefault('subject', self.default_subject)
 
-        super(BaseEmail, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.request = request
         self.body = self.get_body()
 
@@ -54,14 +54,23 @@ class BaseEmail(EmailMessage):
 
 class UserConfirm(BaseEmail):
 
-    template = "contacts/mail/new_account_with_password.txt"
-    default_subject = _("Your new account for FAIR")
+    template = "users/mail/new_account_with_password.txt"
+    default_subject = _("Your new account for dukop")
 
     def __init__(self, *args, **kwargs):
-        self.password = kwargs.pop('password', None)
-        super(UserConfirm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
+
+
+class UserToken(BaseEmail):
+
+    template = "users/mail/token_login.txt"
+    default_subject = _("")
+
+    def __init__(self, *args, **kwargs):
+        self.next = kwargs.pop("next", None)
+        super().__init__(*args, **kwargs)
 
     def get_context_data(self):
-        c = super(UserConfirm, self).get_context_data()
-        c['password'] = self.password
+        c = super().get_context_data()
+        c['next'] = self.next
         return c

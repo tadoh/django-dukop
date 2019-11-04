@@ -1,13 +1,21 @@
+from django.conf import settings
+from django.contrib.auth import login
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import SuccessURLAllowedHostsMixin
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect
+from django.shortcuts import resolve_url
 from django.urls.base import reverse_lazy
+from django.utils.http import is_safe_url
 from django.utils.translation import gettext as _
 from django.views.generic.base import RedirectView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
+from ratelimit.decorators import ratelimit
 
 from . import email
 from . import forms
+from . import models
 
 
 class PasswordResetView(auth_views.PasswordResetView):
@@ -23,20 +31,93 @@ class PasswordChangeView(auth_views.PasswordChangeView):
     success_url = reverse_lazy('users:password_change_done')
 
 
+class LoginView(FormView, SuccessURLAllowedHostsMixin):
+
+    template_name = "users/login.html"
+    form_class = forms.EmailLogin
+    redirect_field_name = 'next'
+
+    @ratelimit(key='ip', rate='5/h', method='POST')
+    def post(self, request, *args, **kwargs):
+        return FormView.post(self, request, *args, **kwargs)
+
+    def form_valid(self, form):
+        try:
+            user = models.User.objects.get(email=form.cleaned_data["email"])
+            user.set_token()
+            mail = email.UserToken(self.request, user=user, next=self.request.GET.get(self.redirect_field_name, ''))
+            mail.send_with_feedback(success_msg=_("Check your inbox"))
+        except models.User.DoesNotExist:
+            pass
+        return redirect("users:login_token_sent")
+
+
+class LoginTokenSentView(TemplateView):
+
+    template_name = "users/login_token_sent.html"
+
+
+class LoginTokenView(FormView, SuccessURLAllowedHostsMixin):
+
+    template_name = "users/login_token.html"
+    form_class = forms.TokenLogin
+    redirect_field_name = 'next'
+
+    @ratelimit(key='ip', rate='5/h', method='POST')
+    def post(self, request, *args, **kwargs):
+        return FormView.post(self, request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = FormView.get_form_kwargs(self)
+        kwargs["token_uuid"] = self.kwargs["token"]
+        return kwargs
+
+    def form_valid(self, form):
+        login(self.request, form.user, backend=None)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        url = self.get_redirect_url()
+        return url or resolve_url(settings.LOGIN_REDIRECT_URL)
+
+    def get_redirect_url(self):
+        """Return the user-originating redirect URL if it's safe."""
+        redirect_to = self.request.POST.get(
+            self.redirect_field_name,
+            self.request.GET.get(self.redirect_field_name, '')
+        )
+        url_is_safe = is_safe_url(
+            url=redirect_to,
+            allowed_hosts=self.get_success_url_allowed_hosts(),
+            require_https=self.request.is_secure(),
+        )
+        return redirect_to if url_is_safe else ''
+
+
 class SignupView(FormView):
 
     template_name = "users/signup.html"
     form_class = forms.SignupForm
 
+    @ratelimit(key='ip', rate='5/h', method='POST')
+    def post(self, request, *args, **kwargs):
+        return FormView.post(self, request, *args, **kwargs)
+
     def form_valid(self, form):
 
-        user = form.save(commit=False)
-        user.is_active = False
-        user.set_password(form.cleaned_data['password1'])
-        user.save()
-
-        mail = email.UserConfirm(user=user)
-        mail.send_with_feedback(success_msg=_("An email was sent with a confirmation link"))
+        try:
+            user = models.User.objects.get(email=form.cleaned_data["username"])
+            user.set_token()
+            mail = email.UserToken(self.request, user=user)
+            mail.send_with_feedback(success_msg=_("Check your inbox"))
+        except models.User.DoesNotExist:
+            user = form.save(commit=False)
+            user.is_active = False
+            user.set_unusable_password()
+            user.save()
+            user.set_token()
+            mail = email.UserConfirm(self.request, user=user)
+            mail.send_with_feedback(success_msg=_("Check your inbox"))
 
         self.request.session["user_confirm_pending_id"] = user.id
 

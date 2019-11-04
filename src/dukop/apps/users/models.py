@@ -1,14 +1,22 @@
+import random
 import uuid
+from datetime import timedelta
 
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
 class UserManager(BaseUserManager):
     """The user manager class."""
+
+    def token_eligible(self):
+        return self.filter(
+            token_expiry__gte=timezone.now()
+        ).exclude(token_uuid=None).exclude(token_passphrase=None).exclude(token_passphrase="")
 
     def create_user(self, password: str = None, **kwargs):
         user = self.model(**kwargs)
@@ -48,6 +56,12 @@ class User(PermissionsMixin, AbstractBaseUser):
 
     # Used for confirmations and password reminders to NOT disclose email in URL
     token_uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    token_expiry = models.DateTimeField(null=True)
+    token_passphrase = models.CharField(
+        null=True,
+        help_text=_("One time passphrase"),
+        max_length=128,
+    )
 
     def __str__(self) -> str:
         """Use a useful string representation."""
@@ -55,6 +69,12 @@ class User(PermissionsMixin, AbstractBaseUser):
 
     def get_display_name(self) -> str:
         return self.nick if self.nick else str(_('Unnamed user'))
+
+    def set_token(self):
+        self.token_uuid = uuid.uuid4()
+        self.token_expiry = timezone.now() + timedelta(minutes=60)
+        self.token_passphrase = str(random.randint(0, 100000000)).zfill(8)
+        self.save()
 
     class Meta:
         verbose_name = _("User")

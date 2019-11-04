@@ -9,7 +9,9 @@ urlpatterns = [
     path('signup/', views.SignupView.as_view(), name='signup'),
     path('signup/confirm/', views.SignupConfirmView.as_view(), name='signup_confirm'),
 
-    path('login/', auth_views.LoginView.as_view(template_name="users/login.html"), name='login'),
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('login/sent/', views.LoginTokenSentView.as_view(), name='login_token_sent'),
+    path('login/<str:token>/', views.LoginTokenView.as_view(), name='login_token'),
     path('logout/', auth_views.LogoutView.as_view(template_name="users/logged_out.html"), name='logout'),
 
     path('password_change/', views.PasswordChangeView.as_view(template_name="users/password_change_form.html"), name='password_change'),

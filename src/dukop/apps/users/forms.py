@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.translation import gettext_lazy as _
 
@@ -10,15 +9,36 @@ def get_confirm_code(email):
     return default_token_generator(email)[:7]
 
 
-class SignupForm(UserCreationForm):
+class EmailLogin(forms.Form):
 
-    username = forms.EmailField(label=_("Email"))
+    email = forms.EmailField(label=_("Email"), required=True)
 
-    def clean_username(self):
-        username = self.cleaned_data.get("username", None)
-        if username and models.User.objects.filter(email__iexact=username).exists():
-            raise forms.ValidationError("Choose another email.")
-        return username
+
+class TokenLogin(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        self.token_uuid = kwargs.pop("token_uuid")
+        super().__init__(*args, **kwargs)
+
+    token_passphrase = forms.CharField(label=_("Token"), required=True)
+
+    def clean_token_passphrase(self):
+        token_passphrase = self.cleaned_data.get('token_passphrase')
+        try:
+            self.user = models.User.objects.token_eligible().get(token_uuid=self.token_uuid, token_passphrase=token_passphrase)
+            return token_passphrase
+        except models.User.DoesNotExist:
+            raise forms.ValidationError("Not correct - did your token expire or did you enter it wrongly?")
+
+
+class SignupForm(forms.ModelForm):
+    """
+    This is the form for signing up.. it doesn't contain anything but will
+    just create a new empty user object and send an email. If the email already
+    exists, it will send a login token.
+    """
+
+    username = forms.EmailField(label=_("Email"), required=True)
 
     class Meta:
         model = models.User

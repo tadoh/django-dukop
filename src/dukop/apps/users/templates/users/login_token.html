@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load dukop_utils %}
+
+{% block content %}
+
+<h1>{% trans "Login" %}</h1>
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post">
+{% csrf_token %}
+
+{% dukop_form form %}
+
+<input type="submit" value="{% trans "Validate token and login" %}">
+<input type="hidden" name="next" value="{{ next }}">
+</form>
+
+<p><a href="{% url 'users:login' %}">{% trans "Get a new token" %}</a></p>
+
+{% endblock %}

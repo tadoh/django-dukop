@@ -1,0 +1,9 @@
+{% load i18n %}{% block greeting %}{% blocktrans %}Dear {{ recipient_name }},{% endblocktrans %}{% endblock %}
+
+{% block content %}{% endblock %}
+
+
+Regards,
+{{ site_name }}
+
+{{ protocol }}://{{ domain }}
