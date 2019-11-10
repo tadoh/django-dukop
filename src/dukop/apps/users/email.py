@@ -54,8 +54,8 @@ class BaseEmail(EmailMessage):
 
 class UserConfirm(BaseEmail):
 
-    template = "users/mail/new_account_with_password.txt"
-    default_subject = _("Your new account for dukop")
+    template = "users/mail/new_account_token_login.txt"
+    default_subject = _("Your new account for Dukop")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -106,14 +106,13 @@ class SignupView(FormView):
     def form_valid(self, form):
 
         try:
-            user = models.User.objects.get(email=form.cleaned_data["username"])
+            user = models.User.objects.get(email=form.cleaned_data["email"])
             user.set_token()
             mail = email.UserToken(self.request, user=user)
             mail.send_with_feedback(success_msg=_("Check your inbox"))
         except models.User.DoesNotExist:
-            user = form.save(commit=False)
+            user = models.User.objects.create_user(email=form.cleaned_data["email"])
             user.is_active = False
-            user.set_unusable_password()
             user.save()
             user.set_token()
             mail = email.UserConfirm(self.request, user=user)

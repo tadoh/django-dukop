@@ -20,7 +20,10 @@ class UserManager(BaseUserManager):
 
     def create_user(self, password: str = None, **kwargs):
         user = self.model(**kwargs)
-        user.set_password(password)
+        if password:
+            user.set_password(password)
+        else:
+            user.set_unusable_password()
         user.save()
         return user
 
@@ -78,6 +81,7 @@ class User(PermissionsMixin, AbstractBaseUser):
 
     class Meta:
         verbose_name = _("User")
+        verbose_name_plural = _("Users")
 
 
 class Group(models.Model):

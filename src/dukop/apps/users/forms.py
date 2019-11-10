@@ -31,15 +31,11 @@ class TokenLogin(forms.Form):
             raise forms.ValidationError("Not correct - did your token expire or did you enter it wrongly?")
 
 
-class SignupForm(forms.ModelForm):
+class SignupForm(forms.Form):
     """
     This is the form for signing up.. it doesn't contain anything but will
     just create a new empty user object and send an email. If the email already
     exists, it will send a login token.
     """
 
-    username = forms.EmailField(label=_("Email"), required=True)
-
-    class Meta:
-        model = models.User
-        fields = ("username",)
+    email = forms.EmailField(label=_("Email"), required=True)
