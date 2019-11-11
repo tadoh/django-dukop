@@ -6,6 +6,6 @@
 
 <h1>{% trans "Check your inbox" %}</h1>
 
-<p>{% trans "Click the link sent to you and enter the token." %}</p>
+<p>{% blocktrans %}Click the link sent to {{ email_token }} and enter the token on the link that is found in the email.{% endblocktrans %}</p>
 
 {% endblock %}

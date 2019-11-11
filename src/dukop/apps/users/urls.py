@@ -10,6 +10,7 @@ urlpatterns = [
     path('signup/confirm/', views.SignupConfirmView.as_view(), name='signup_confirm'),
 
     path('login/', views.LoginView.as_view(), name='login'),
+    path('login/password/', views.LoginPasswordView.as_view(), name='login_password'),
     path('login/sent/', views.LoginTokenSentView.as_view(), name='login_token_sent'),
     path('login/<str:token>/', views.LoginTokenView.as_view(), name='login_token'),
     path('logout/', auth_views.LogoutView.as_view(template_name="users/logged_out.html"), name='logout'),
