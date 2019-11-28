@@ -71,7 +71,7 @@ class SignupForm(forms.Form):
 
     def clean_no_bots(self):
         correct_answer = self.cleaned_data.get('bot_q')
-        if not correct_answer:
+        if correct_answer is None:
             raise forms.ValidationError("Nah, you seem like a bot")
         if self.cleaned_data['no_bots'].lower() == bot_questions_answers[correct_answer][1].lower():
             return self.cleaned_data['no_bots'].lower()

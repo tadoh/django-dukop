@@ -117,6 +117,7 @@ class LoginTokenView(FormView, SuccessURLAllowedHostsMixin):
 
     def form_valid(self, form):
         # Find a suitable backend.
+        form.user.use_token()
         login(self.request, form.user, backend=settings.AUTHENTICATION_BACKENDS[0])
         return HttpResponseRedirect(self.get_success_url())
 

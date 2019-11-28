@@ -58,7 +58,7 @@ class User(PermissionsMixin, AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
 
     # Used for confirmations and password reminders to NOT disclose email in URL
-    token_uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    token_uuid = models.UUIDField(default=uuid.uuid4, editable=False, null=True)
     token_expiry = models.DateTimeField(null=True)
     token_passphrase = models.CharField(
         null=True,
@@ -81,6 +81,14 @@ class User(PermissionsMixin, AbstractBaseUser):
         self.token_uuid = uuid.uuid4()
         self.token_expiry = timezone.now() + timedelta(minutes=60)
         self.token_passphrase = str(random.randint(0, 100000000)).zfill(8)
+        self.save()
+
+    def use_token(self):
+        """
+        When logging in, mark a token as used
+        """
+        self.token_uuid = None
+        self.token_passphrase = None
         self.save()
 
     class Meta:
