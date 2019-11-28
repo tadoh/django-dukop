@@ -74,6 +74,10 @@ class User(PermissionsMixin, AbstractBaseUser):
         return self.nick if self.nick else str(_('Unnamed user'))
 
     def set_token(self):
+        """
+        A caution: A user can be inactive or banned, do not expect that calling
+        this function should change state/permissions of a user.
+        """
         self.token_uuid = uuid.uuid4()
         self.token_expiry = timezone.now() + timedelta(minutes=60)
         self.token_passphrase = str(random.randint(0, 100000000)).zfill(8)

@@ -116,7 +116,8 @@ class LoginTokenView(FormView, SuccessURLAllowedHostsMixin):
         return kwargs
 
     def form_valid(self, form):
-        login(self.request, form.user, backend=None)
+        # Find a suitable backend.
+        login(self.request, form.user, backend=settings.AUTHENTICATION_BACKENDS[0])
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
@@ -155,7 +156,7 @@ class SignupView(FormView):
             mail.send_with_feedback(success_msg=_("Check your inbox"))
         except models.User.DoesNotExist:
             user = models.User.objects.create_user(email=form.cleaned_data["email"])
-            user.is_active = False
+            user.is_active = True  # The user is active by default
             user.save()
             user.set_token()
             mail = email.UserConfirm(self.request, user=user)
