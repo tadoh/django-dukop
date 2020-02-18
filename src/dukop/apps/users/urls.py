@@ -18,8 +18,11 @@ urlpatterns = [
     path('password_change/', views.PasswordChangeView.as_view(template_name="users/password_change_form.html"), name='password_change'),
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name="users/password_change_done.html"), name='password_change_done'),
 
-    path('password_reset/', views.PasswordResetView.as_view(template_name="users/password_reset_form.html"), name='password_reset'),
-    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name="users/password_reset_done.html"), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(template_name="users/password_reset_confirm.html"), name='password_reset_confirm'),
-    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name="users/password_reset_complete.html"), name='password_reset_complete'),
+    # Password reset is disabled for now, as the current 1-time login
+    # procedure replaces normal password reset
+    # If re-enabled, these views should have ratelimit
+    # path('password_reset/', views.PasswordResetView.as_view(template_name="users/password_reset_form.html"), name='password_reset'),
+    # path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name="users/password_reset_done.html"), name='password_reset_done'),
+    # path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(template_name="users/password_reset_confirm.html"), name='password_reset_confirm'),
+    # path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name="users/password_reset_complete.html"), name='password_reset_complete'),
 ]
