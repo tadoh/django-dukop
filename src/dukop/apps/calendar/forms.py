@@ -18,8 +18,8 @@ class EventForm(forms.ModelForm):
 
 class EventTimeForm(forms.ModelForm):
 
-    start = forms.DateTimeField(widget=SplitDateTimeWidget())
-    end = forms.DateTimeField(widget=SplitDateTimeWidget())
+    start = forms.SplitDateTimeField(widget=SplitDateTimeWidget())
+    end = forms.SplitDateTimeField(widget=SplitDateTimeWidget(), required=False)
 
     class Meta:
         model = models.EventTime
