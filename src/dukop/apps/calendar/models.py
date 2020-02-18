@@ -33,12 +33,6 @@ class Event(models.Model):
     featured = models.BooleanField(default=False)
     published = models.BooleanField(default=False)
 
-    link1 = models.URLField(blank=True, null=True)
-    link2 = models.URLField(blank=True, null=True)
-    link3 = models.URLField(blank=True, null=True)
-    link4 = models.URLField(blank=True, null=True)
-    link5 = models.URLField(blank=True, null=True)
-
     is_cancelled = models.BooleanField(default=False)
     show_nb = models.BooleanField(default=False)
 
@@ -179,6 +173,22 @@ class EventImage(models.Model):
 
     class Meta:
         ordering = ('priority',)
+
+
+class EventLink(models.Model):
+    """
+    Links have automatically generated labels, in this way we can
+    potentially translate them or make them consistent. For instance,
+    we can make Facebook links display with a warning.
+    """
+    event = models.ForeignKey(Event, related_name='links', on_delete=models.CASCADE)
+    link = models.URLField(blank=True, null=True)
+    priority = models.PositiveSmallIntegerField(
+        default=0,
+        help_text=_("0=first, 1=second etc.")
+    )
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
 
 class Interval(models.Model):

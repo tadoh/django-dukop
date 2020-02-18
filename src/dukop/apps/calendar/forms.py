@@ -45,5 +45,13 @@ class EventImageForm(forms.ModelForm):
         fields = ('image',)
 
 
+class EventLinkForm(forms.ModelForm):
+
+    class Meta:
+        model = models.EventLink
+        fields = ('link',)
+
+
 EventTimeFormSet = formset_factory(EventTimeForm, extra=5, max_num=5)
 EventImageFormSet = formset_factory(EventImageForm, extra=5, max_num=5)
+EventLinkFormSet = formset_factory(EventLinkForm, extra=5, max_num=5)

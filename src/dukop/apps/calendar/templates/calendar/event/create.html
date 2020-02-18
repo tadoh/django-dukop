@@ -18,7 +18,7 @@
   <ol>
     <li>{% trans "Basic details" %}</li>
     <li>{% trans "Dates and times" %}</li>
-    <li>{% trans "Illustrations" %}</li>
+    <li>{% trans "Images" %}</li>
     <li>{% trans "Links" %}</li>
   </ol>
 
@@ -45,13 +45,13 @@
 
       </table>
       <h2>{% trans "Date and times" %}</h2>
+      {% trans "Most events just had a single start and finish time. But if your event spans several days, you can add additional start and finish times." %}
       <table>
-        <tr>
-          <th><label>{% trans "Time slots:" %}</label></th>
+        {% for time in times %}
+        <tr class="formset--element {% if not forloop.first %}hide{% endif %}">
+          <th>{% trans "Time slot" %} {{ forloop.counter }}:</th>
           <td>
-            {% trans "Most events just had a single start and finish time. But if your event spans several days, you can add additional start and finish times." %}
-            {% for time in times %}
-            <div id="timeslot{{ forloop.counter0 }}" class="timeslot {% if not forloop.first %}hide{% endif %}">
+            <div>
                 <div>
                     {{ time.start.label_tag }} *Required<br>
                     {{ time.start }}
@@ -61,34 +61,91 @@
                     {{ time.end }}
                 </div>
                 {% if not forloop.last %}
-                <button type="button" class="timeslot-add-link" data-toggle="#timeslot{{ forloop.counter }}">
+                <button type="button" class="formset-add-link">
                     {% trans "Add timeslot" %}
                 </button>
                 {% endif %}
                 {% if not forloop.first %}
-                <button type="button" class="timeslot-remove-link" data-toggle="#timeslot{{ forloop.counter0 }}">
+                <button type="button" class="formset-remove-link">
                     {% trans "Remove timeslot" %}
                 </button>
                 {% endif %}
             </div>
-            {% endfor %}
           </td>
         </tr>
+        {% endfor %}
 
       </table>
+
+      <h2>{% trans "Images" %}</h2>
+      {% trans "We really recommend that you add an illustration. Don't let your Facebook event look better than your Duk Op event!" %}
+      <table>
+        {% for image in images %}
+        <tr class="formset--element {% if not forloop.first %}hide{% endif %}">
+          <th>{% trans "Image" %} {{ forloop.counter }}:</th>
+          <td>
+            <div>
+                <div>
+                    {{ image.image.label_tag }}<br>
+                    {{ image.image }}
+                </div>
+                <div>
+                    {{ image.is_cover.label_tag }}
+                    {{ image.is_cover }}
+                </div>
+                {% if not forloop.last %}
+                <button type="button" class="formset-add-link">
+                    {% trans "Add image" %}
+                </button>
+                {% endif %}
+                {% if not forloop.first %}
+                <button type="button" class="formset-remove-link">
+                    {% trans "Remove image" %}
+                </button>
+                {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+
+      </table>
+
       <h2>{% trans "Links" %}</h2>
+      {% trans "We really recommend that you add an illustration. Don't let your Facebook event look better than your Duk Op event!" %}
       <table>
+        {% for link in links %}
+        <tr class="formset--element {% if not forloop.first %}hide{% endif %}">
+          <th>{% trans "Link" %} {{ forloop.counter }}:</th>
+          <td>
+            <div>
+                <div>{{ link.link }}</div>
+                {% if not forloop.last %}
+                <button type="button" class="formset-add-link">
+                    {% trans "Add link" %}
+                </button>
+                {% endif %}
+                {% if not forloop.first %}
+                <button type="button" class="formset-remove-link">
+                    {% trans "Remove link" %}
+                </button>
+                {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
 
       </table>
-      <h2>{% trans "Illustrations" %}</h2>
-      <table>
-
-      </table>
-
 
       <hr>
+      <table>
+        <tr>
+          <th><br></th>
+          <td>
+              <button type="submit" class="button-big">{% trans "Create" %}</button>
+          </td>
+        </tr>
+      </table>
 
-      <button type="submit" class="button-big">{% trans "Create" %}</button>
 
     </form>
   </div>
