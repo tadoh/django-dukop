@@ -6,6 +6,10 @@
 <div class="create-event">
   <h1 class="card__title">{% trans "Create event" %}</h1>
 
+  <p>
+      {% trans "First step: Basic details. Second step: Event photo." %}
+  <p>
+
   <div class="card__text">
     <form action="" method="post" class="event__form">
       {% csrf_token %}
@@ -25,24 +29,26 @@
         <tr>
           <th><label>{% trans "Time slots:" %}</label></th>
           <td>
-            {% trans "Most events just had a single start and finish time. But if your event spans several days, you can add several start and finish times. This is used for displaying the event in a calendar." %}
+            {% trans "Most events just had a single start and finish time. But if your event spans several days, you can add additional start and finish times." %}
             {% for time in times %}
             <div id="timeslot{{ forloop.counter0 }}" class="timeslot {% if not forloop.first %}hide{% endif %}">
-                <div>{{ time.start }}</div>
-                <div>{{ time.end }}</div>
-                {% if not forloop.last %}
-                <div class="timeslot_button_add">
-                    <a href="#timeslot{{ forloop.counter }}" class="timeslot-add-link" data-toggle="#timeslot{{ forloop.counter }}">
-                        {% trans "Add timeslot" %}
-                    </a>
+                <div>
+                    {{ time.start.label_tag }} *Required<br>
+                    {{ time.start }}
                 </div>
+                <div>
+                    {{ time.end.label_tag }}<br>
+                    {{ time.end }}
+                </div>
+                {% if not forloop.last %}
+                <button type="button" class="timeslot-add-link" data-toggle="#timeslot{{ forloop.counter }}">
+                    {% trans "Add timeslot" %}
+                </button>
                 {% endif %}
                 {% if not forloop.first %}
-                <div class="timeslot_button_remove">
-                    <a href="#timeslot{{ forloop.counter0 }}" class="timeslot-remove-link" data-toggle="#timeslot{{ forloop.counter0 }}">
-                        {% trans "Remove timeslot" %}
-                    </a>
-                </div>
+                <button type="button" class="timeslot-remove-link" data-toggle="#timeslot{{ forloop.counter0 }}">
+                    {% trans "Remove timeslot" %}
+                </button>
                 {% endif %}
             </div>
             {% endfor %}
