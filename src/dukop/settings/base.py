@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "dukop.apps.calendar",
     "dukop.apps.users",
     "dukop.apps.utils",
+    "sekizai",
 ]
 
 MIDDLEWARE = [
@@ -56,6 +57,7 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
+                "sekizai.context_processors.sekizai",
             ]
         },
     }

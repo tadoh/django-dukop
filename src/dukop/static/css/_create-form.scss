@@ -31,11 +31,12 @@
   td {
     padding: 5px 0;
   }
-  input {
+  input, select {
     display: block;
     width: 100%;
     padding: 10px;
     font-size: 1.5em;
+    max-width: 300px;
   }
   textarea {
     display: block;
@@ -43,4 +44,26 @@
     padding: 10px;
     font-size: 1.5em;
   }
+  input#id_name {
+    max-width: none;
+  }
+    .start, .end, .timeslot
+    {
+        input {
+            width: auto;
+            display: inline-block;
+        }
+        select {
+            width: auto;
+            max-width: none;
+            display: inline-block;
+        }
+
+    }
+    .timeslot
+    {
+        margin-bottom: 10px;
+        border-bottom: 2px solid #CCC;
+        padding-bottom: 10px;
+    }
 }

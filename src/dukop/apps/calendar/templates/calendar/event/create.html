@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n sekizai_tags static %}
 
 {% block content %}
 
@@ -7,7 +7,7 @@
   <h1 class="card__title">{% trans "Create event" %}</h1>
 
   <div class="card__text">
-    <form action="" method="post">
+    <form action="" method="post" class="event__form">
       {% csrf_token %}
       <table>
         {% for field in form %}
@@ -23,10 +23,28 @@
 
         {% endfor %}
         <tr>
-          <th><label>Tidspunkt</label></th>
+          <th><label>{% trans "Time slots:" %}</label></th>
           <td>
+            {% trans "Most events just had a single start and finish time. But if your event spans several days, you can add several start and finish times. This is used for displaying the event in a calendar." %}
             {% for time in times %}
-            {{ time.as_p }}
+            <div id="timeslot{{ forloop.counter0 }}" class="timeslot {% if not forloop.first %}hide{% endif %}">
+                <div>{{ time.start }}</div>
+                <div>{{ time.end }}</div>
+                {% if not forloop.last %}
+                <div class="timeslot_button_add">
+                    <a href="#timeslot{{ forloop.counter }}" class="timeslot-add-link" data-toggle="#timeslot{{ forloop.counter }}">
+                        {% trans "Add timeslot" %}
+                    </a>
+                </div>
+                {% endif %}
+                {% if not forloop.first %}
+                <div class="timeslot_button_remove">
+                    <a href="#timeslot{{ forloop.counter0 }}" class="timeslot-remove-link" data-toggle="#timeslot{{ forloop.counter0 }}">
+                        {% trans "Remove timeslot" %}
+                    </a>
+                </div>
+                {% endif %}
+            </div>
             {% endfor %}
           </td>
         </tr>
@@ -36,5 +54,10 @@
     </form>
   </div>
 </div>
+
+
+{% addtoblock "js" %}
+    <script type="text/javascript" src="{% static 'js/event.js' %}"></script>
+{% endaddtoblock %}
 
 {% endblock %}

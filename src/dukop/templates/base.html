@@ -1,11 +1,11 @@
-{% load i18n static compress %}<!DOCTYPE html>
+{% load i18n static compress sekizai_tags %}<!DOCTYPE html>
 <html>
 <head>
-<title>Duk Op</title>
-<meta name="viewport" content="width=device-width, minimum-scale=1.0,initial-scale=1.0" />
-<!-- Shortcut icons (favicon) -->
-<link rel="shortcut icon" href="{% static 'img/favicon.png' %}">
-<link rel="apple-touch-icon" href="{% static 'img/favicon.png' %}">
+    <title>Duk Op</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0,initial-scale=1.0" />
+    <!-- Shortcut icons (favicon) -->
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'img/favicon.png' %}">
 
     <meta property="og:url" content="https://www.dukop.dk/">
     <meta property="og:title" content="Duk dig ikke - Duk Op!">
@@ -17,8 +17,7 @@
     {% compress css %}
         <link rel="stylesheet" type="text/x-scss" href="{% static 'css/application.scss' %}">
     {% endcompress %}
-<meta name="csrf-param" content="authenticity_token" />
-<meta name="csrf-token" content="u/r1XnjQgRo5bxwz7fZNl98KN+p2Bjc0SRu2LcXwVwdlnhwE9tG9ps1/fqKCDkpqrml+c8zI6MIzrXN7blbBGw==" />
+
 </head>
 <body>
 <div class="lock-body" id="js-lock-body">
@@ -85,6 +84,8 @@
             </div>
         </div>
     </footer>
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+    {% render_block "js" %}
 </body>
 </html>

@@ -1,5 +1,6 @@
 from django import forms
 from django.forms.formsets import formset_factory
+from django.utils.translation import gettext_lazy as _
 
 from . import models
 from .widgets import SplitDateTimeWidget
@@ -13,6 +14,9 @@ class EventForm(forms.ModelForm):
     class Meta:
         model = models.Event
         fields = ('name', 'description', 'host', 'venue_name', 'street', 'zip_code', 'city')
+        help_texts = {
+            'host': _("A group may host an event and be displayed as the author of the event text. You can only choose a host if you have been allowed membership of a group.")
+        }
 
 
 class EventTimeForm(forms.ModelForm):
