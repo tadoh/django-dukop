@@ -159,7 +159,7 @@ class EventUpdate(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = _("Event time")
+        verbose_name = _("Event update")
         ordering = ('created',)
 
 

@@ -4,16 +4,33 @@
 {% block content %}
 
 <div class="create-event">
+  <div class="card__text">
   <h1 class="card__title">{% trans "Create event" %}</h1>
 
   <p>
-      {% trans "First step: Basic details. Second step: Event photo." %}
+    <strong>{% trans "Creating your first event?" %}</strong>
+    {% trans "Please read our" %} <a href="">{% trans "Guidelines" %}</a>.
+  </p>
   <p>
+      {% trans "Getting all the details right for you event can take some time. Spend time to ensure that it looks nice. This form contains the following sections:" %}
+  </p>
 
-  <div class="card__text">
+  <ol>
+    <li>{% trans "Basic details" %}</li>
+    <li>{% trans "Dates and times" %}</li>
+    <li>{% trans "Illustrations" %}</li>
+    <li>{% trans "Links" %}</li>
+  </ol>
+
+  <p>
+      {% trans "After creating the event, it's possible to edit it. You can also create an event and publish it later." %}
+  </p>
+
     <form action="" method="post" class="event__form">
       {% csrf_token %}
+      <h2>{% trans "Basic details" %}</h2>
       <table>
+
         {% for field in form %}
         <tr class="{{ field.name }}">
           <th>
@@ -24,8 +41,11 @@
             {% if field.help_text %}{{ field.help_text }}{% endif %}
           </td>
         </tr>
-
         {% endfor %}
+
+      </table>
+      <h2>{% trans "Date and times" %}</h2>
+      <table>
         <tr>
           <th><label>{% trans "Time slots:" %}</label></th>
           <td>
@@ -56,7 +76,20 @@
         </tr>
 
       </table>
-      <button type="submit">{% trans "Create" %}</button>
+      <h2>{% trans "Links" %}</h2>
+      <table>
+
+      </table>
+      <h2>{% trans "Illustrations" %}</h2>
+      <table>
+
+      </table>
+
+
+      <hr>
+
+      <button type="submit" class="button-big">{% trans "Create" %}</button>
+
     </form>
   </div>
 </div>
