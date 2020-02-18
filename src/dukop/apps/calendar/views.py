@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic.edit import CreateView
+from ratelimit.decorators import ratelimit
 
 from . import forms
 from . import models
@@ -22,6 +23,7 @@ class EventCreate(CreateView):
         self.times_form = forms.EventTimeFormSet(prefix='times')
         return self.render_to_response(self.get_context_data())
 
+    @ratelimit(key='ip', rate='5/h', method='POST')
     def post(self, request, *args, **kwargs):
         """
         Handle POST requests: instantiate a form instance with the passed
