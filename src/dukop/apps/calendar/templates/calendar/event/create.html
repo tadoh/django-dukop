@@ -51,6 +51,11 @@
       <h2>{% trans "Date and times" %}</h2>
       {% trans "Most events just had a single start and finish time. But if your event spans several days, you can add additional start and finish times." %}
       {{ times.management_form }}
+      {% if times.non_form_errors %}
+      <div class="message message__error">
+        {{ times.non_form_errors }}
+      </div>
+      {% endif %}
       <table>
         {% for time in times %}
         <tr class="formset--element {% if not time.errors and not forloop.first %}hide{% endif %}">

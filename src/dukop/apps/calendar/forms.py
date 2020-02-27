@@ -52,6 +52,11 @@ class EventLinkForm(forms.ModelForm):
         fields = ('link',)
 
 
-EventTimeFormSet = formset_factory(EventTimeForm, extra=5, max_num=5)
+EventTimeFormSet = formset_factory(
+    EventTimeForm,
+    extra=5,
+    max_num=5,
+    validate_min=1,
+)
 EventImageFormSet = formset_factory(EventImageForm, extra=5, max_num=5)
 EventLinkFormSet = formset_factory(EventLinkForm, extra=5, max_num=5)
