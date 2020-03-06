@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load dukop_utils %}
+
+{% block content %}
+
+<h1>{% trans "Check your inbox" %}</h1>
+
+<p>{% blocktrans %}Click the link sent to {{ email_token }} and enter the token on the link that is found in the email.{% endblocktrans %}</p>
+
+{% endblock %}

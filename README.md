@@ -6,10 +6,12 @@ Collaborate calendar for Copenhagen area
 
 ## Requirements
 
-* Python 3.6+
+* Python 3.6+ (is already on your system)
 * SQLite3 (development)
   * `sudo apt install libsqlite3-dev`
 * Postgres (deployment)
+
+Other requirements are specified as Python packages in the *Quickstart* below and will be installed in a *virtual environment*.
 
 ## Quickstart
 
@@ -22,6 +24,11 @@ python3 -m pip install --upgrade pip setuptools wheel
 python3 -m pip install --editable ".[dev]"
 ./manage.py migrate
 ./manage.py createsuperuser
+```
+
+The development environment is now ready with an empty database and a single admin user. To run the server and access it from your browser, use the `runserver` command:
+
+```console
 ./manage.py runserver
 ```
 

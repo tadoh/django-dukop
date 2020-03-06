@@ -11,10 +11,14 @@ class EventImageInlineAdmin(admin.TabularInline):
     model = models.EventImage
 
 
+class EventLinkInlineAdmin(admin.TabularInline):
+    model = models.EventLink
+
+
 @admin.register(models.Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = ("name",)
-    inlines = [EventTimeInline, EventImageInlineAdmin]
+    inlines = [EventTimeInline, EventImageInlineAdmin, EventLinkInlineAdmin]
 
 
 class EventInlineAdmin(admin.TabularInline):

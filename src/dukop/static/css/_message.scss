@@ -1,0 +1,14 @@
+// Styling for message boxes for alerts, errors etc.
+
+.message
+{
+    padding: 10px;
+    border: 1px solid #CCC;
+    background: #FFF;
+    font-weight: bold;
+}
+
+.message-error
+{
+    background: #FCC;
+}

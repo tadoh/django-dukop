@@ -1,0 +1,19 @@
+{% csrf_token %}
+
+{% include "includes/forms/formerrors.html" %}
+
+{% comment%}
+{% addtoblock "js" %}
+{{ form.media.js }}
+{% endaddtoblock %}
+
+{% addtoblock "css" %}
+{{ form.media.css }}
+{% endaddtoblock %}
+{% endcomment%}
+
+{% for field in form %}
+
+  {% include "includes/forms/formfield.html" %}
+
+{% endfor %}

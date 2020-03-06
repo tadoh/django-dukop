@@ -1,16 +1,29 @@
+import random
+import uuid
+from datetime import timedelta
+
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
 class UserManager(BaseUserManager):
     """The user manager class."""
 
+    def token_eligible(self):
+        return self.filter(
+            token_expiry__gte=timezone.now()
+        ).exclude(token_uuid=None).exclude(token_passphrase=None).exclude(token_passphrase="")
+
     def create_user(self, password: str = None, **kwargs):
         user = self.model(**kwargs)
-        user.set_password(password)
+        if password:
+            user.set_password(password)
+        else:
+            user.set_unusable_password()
         user.save()
         return user
 
@@ -44,6 +57,15 @@ class User(PermissionsMixin, AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
+    # Used for confirmations and password reminders to NOT disclose email in URL
+    token_uuid = models.UUIDField(default=uuid.uuid4, editable=False, null=True)
+    token_expiry = models.DateTimeField(null=True)
+    token_passphrase = models.CharField(
+        null=True,
+        help_text=_("One time passphrase"),
+        max_length=128,
+    )
+
     def __str__(self) -> str:
         """Use a useful string representation."""
         return self.get_display_name()
@@ -51,8 +73,27 @@ class User(PermissionsMixin, AbstractBaseUser):
     def get_display_name(self) -> str:
         return self.nick if self.nick else str(_('Unnamed user'))
 
+    def set_token(self):
+        """
+        A caution: A user can be inactive or banned, do not expect that calling
+        this function should change state/permissions of a user.
+        """
+        self.token_uuid = uuid.uuid4()
+        self.token_expiry = timezone.now() + timedelta(minutes=60)
+        self.token_passphrase = str(random.randint(0, 100000000)).zfill(8)
+        self.save()
+
+    def use_token(self):
+        """
+        When logging in, mark a token as used
+        """
+        self.token_uuid = None
+        self.token_passphrase = None
+        self.save()
+
     class Meta:
         verbose_name = _("User")
+        verbose_name_plural = _("Users")
 
 
 class Group(models.Model):

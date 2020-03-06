@@ -1,5 +1,6 @@
 from django import forms
 from django.forms.formsets import formset_factory
+from django.utils.translation import gettext_lazy as _
 
 from . import models
 from .widgets import SplitDateTimeWidget
@@ -7,18 +8,18 @@ from .widgets import SplitDateTimeWidget
 
 class EventForm(forms.ModelForm):
 
-    start = forms.DateTimeField(widget=SplitDateTimeWidget())
-    end = forms.DateTimeField(widget=SplitDateTimeWidget(), required=False)
-
     class Meta:
         model = models.Event
         fields = ('name', 'description', 'host', 'venue_name', 'street', 'zip_code', 'city')
+        help_texts = {
+            'host': _("A group may host an event and be displayed as the author of the event text. You can only choose a host if you have been allowed membership of a group.")
+        }
 
 
 class EventTimeForm(forms.ModelForm):
 
-    start = forms.DateTimeField(widget=SplitDateTimeWidget())
-    end = forms.DateTimeField(widget=SplitDateTimeWidget())
+    start = forms.SplitDateTimeField(widget=SplitDateTimeWidget())
+    end = forms.SplitDateTimeField(widget=SplitDateTimeWidget(), required=False)
 
     class Meta:
         model = models.EventTime
@@ -44,5 +45,18 @@ class EventImageForm(forms.ModelForm):
         fields = ('image',)
 
 
-EventTimeFormSet = formset_factory(EventTimeForm, extra=5, max_num=5)
+class EventLinkForm(forms.ModelForm):
+
+    class Meta:
+        model = models.EventLink
+        fields = ('link',)
+
+
+EventTimeFormSet = formset_factory(
+    EventTimeForm,
+    extra=5,
+    max_num=5,
+    validate_min=1,
+)
 EventImageFormSet = formset_factory(EventImageForm, extra=5, max_num=5)
+EventLinkFormSet = formset_factory(EventLinkForm, extra=5, max_num=5)

@@ -37,13 +37,13 @@ class SelectTimeWidget(Widget):
         if hours:
             self.hours = hours
         else:
-            self.hours = {str(x): x for x in range(0, 25)}
+            self.hours = range(0, 25)
 
-        # Optional dict of months to use in the "month" select box.
+        # Optional dict of minutes to use in the "month" select box.
         if minutes:
             self.minutes = minutes
         else:
-            self.minutes = {str(x): x for x in range(0, 60)}
+            self.minutes = range(0, 60)
 
         # Optional string, list, or tuple to use as empty_label.
         if isinstance(empty_label, (list, tuple)):
@@ -62,7 +62,7 @@ class SelectTimeWidget(Widget):
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)
         time_context = {}
-        hour_choices = [(i, str(i)) for i in self.hours]
+        hour_choices = [(i, "{:02d}".format(i)) for i in self.hours]
         if not self.is_required:
             hour_choices.insert(0, self.hour_none_value)
         hour_name = self.hour_field % name
@@ -71,11 +71,11 @@ class SelectTimeWidget(Widget):
             value=context['widget']['value']['hour'],
             attrs={**context['widget']['attrs'], 'id': 'id_%s' % hour_name},
         )
-        minute_choices = list(self.minutes.items())
+        minute_choices = [(i, "{:02d}".format(i)) for i in self.minutes]
         if not self.is_required:
             minute_choices.insert(0, self.minute_none_value)
         minute_name = self.minute_field % name
-        time_context['minute'] = self.select_widget(attrs, choices=hour_choices).get_context(
+        time_context['minute'] = self.select_widget(attrs, choices=minute_choices).get_context(
             name=minute_name,
             value=context['widget']['value']['minute'],
             attrs={**context['widget']['attrs'], 'id': 'id_%s' % minute_name},

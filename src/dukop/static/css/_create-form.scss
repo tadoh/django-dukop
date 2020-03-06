@@ -22,20 +22,26 @@
     width: 100%;
     border: 1px solid #ddd;
   }
+  table
+  {
+      width: 100%;
+  }
   th {
     vertical-align: top;
     text-align: right;
     padding: 18px 10px;
     opacity: .5;
+    width: 20%;
   }
   td {
     padding: 5px 0;
   }
-  input {
+  input, select {
     display: block;
     width: 100%;
     padding: 10px;
     font-size: 1.5em;
+    max-width: 300px;
   }
   textarea {
     display: block;
@@ -43,4 +49,21 @@
     padding: 10px;
     font-size: 1.5em;
   }
+  input#id_name {
+    max-width: none;
+  }
+    .formset--element
+    {
+        input {
+            width: auto;
+            max-width: none;
+            display: inline-block;
+        }
+        select {
+            width: auto;
+            max-width: none;
+            display: inline-block;
+        }
+
+    }
 }
