@@ -25,7 +25,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         try:
-            with transaction.atomic() as trans:
+            with transaction.atomic():
                 self.stdout.write("Starting command execution")
 
                 events = models.Events.objects.all()
@@ -36,9 +36,9 @@ class Command(BaseCommand):
                 self.stdout.write("Command execution completed\n".format())
 
                 if options.get("dry"):
-                    trans.rollback()
+                    transaction.rollback()
                 else:
-                    trans.commit()
+                    transaction.commit()
 
         except Exception as e:  # noqa
             exc_type, exc_value, exc_traceback = sys.exc_info()

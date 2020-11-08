@@ -26,7 +26,6 @@ INSTALLED_APPS = [
     "dukop.apps.calendar",
     "dukop.apps.users",
     "dukop.apps.utils",
-    "dukop.apps.sync_old",
     "sekizai",
 ]
 
