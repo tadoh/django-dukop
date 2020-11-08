@@ -23,6 +23,11 @@ def df(value):
     )
 
 
+def create_interval(old_event):
+    if not old_event.event_series:
+        return None
+
+
 def create_group(old_event):
     if not old_event.locations or not old_event.locations.name:
         return None
@@ -37,12 +42,14 @@ def create_group(old_event):
     )
 
 
-def create_event(old_event):
+def create_event(old_event, group, interval):
 
     return Event.objects.create(
         name=old_event.title,
         short_description=old_event.short_description or "",
         description=old_event.long_description or "",
+        host=group,
+        interval=interval,
     )
 
 
@@ -73,10 +80,13 @@ class Command(BaseCommand):
             for event in events:
 
                 # 1. Create a Group from the old Location
+                group = create_group(event)
 
-                # 2. Create EventSeries if it does not exist
+                # 2. Sync EventSeries if it does not exist
+                interval = create_interval(event)
 
                 # 3. Create Event
+                new_event = create_event(event, group, interval)
 
                 # 4. EventTime
 
@@ -94,7 +104,6 @@ class Command(BaseCommand):
                 print(event.cancelled)
                 print(event.link)
 
-                new_event = create_event(event)
                 print(new_event)
 
             self.stdout.write("Command execution completed\n".format())
