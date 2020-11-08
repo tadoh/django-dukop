@@ -9,6 +9,7 @@ from django.db import transaction
 from django.utils import timezone
 from dukop.apps.calendar.models import Event
 from dukop.apps.sync_old import models
+from dukop.apps.users.models import Group
 
 
 def df(value):
@@ -22,12 +23,26 @@ def df(value):
     )
 
 
-def create_event(old):
+def create_group(old_event):
+    if not old_event.locations or not old_event.locations.name:
+        return None
+    return Group.objects.create(
+        name=old_event.locations.name,
+        street=old_event.street_address,
+        zip_code=old_event.postcode,
+        city=old_event.town,
+        description=old_event.description,
+        link1=old_event.link,
+        is_restricted=True,
+    )
+
+
+def create_event(old_event):
 
     return Event.objects.create(
-        name=old.title,
-        short_description=old.short_description or "",
-        description=old.long_description or "",
+        name=old_event.title,
+        short_description=old_event.short_description or "",
+        description=old_event.long_description or "",
     )
 
 
@@ -56,6 +71,19 @@ class Command(BaseCommand):
             events = models.Events.objects.all()[:10]
 
             for event in events:
+
+                # 1. Create a Group from the old Location
+
+                # 2. Create EventSeries if it does not exist
+
+                # 3. Create Event
+
+                # 4. EventTime
+
+                # 5. EventImage
+
+                # 6. EventLink
+
                 print(event.title)
                 print(event.short_description)
                 print(event.long_description)

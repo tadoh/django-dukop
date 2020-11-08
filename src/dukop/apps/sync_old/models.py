@@ -117,7 +117,9 @@ class Events(models.Model):
     picture_content_type = models.CharField(max_length=255, blank=True, null=True)
     picture_file_size = models.IntegerField(blank=True, null=True)
     picture_updated_at = models.DateTimeField(blank=True, null=True)
-    event_series_id = models.IntegerField(blank=True, null=True)
+    event_series = models.ForeignKey(
+        EventSeries, on_delete=models.SET_NULL, blank=True, null=True
+    )
     featured = models.BooleanField(blank=True, null=True)
     published = models.BooleanField(blank=True, null=True)
 
