@@ -14,9 +14,12 @@ class UserManager(BaseUserManager):
     """The user manager class."""
 
     def token_eligible(self):
-        return self.filter(
-            token_expiry__gte=timezone.now()
-        ).exclude(token_uuid=None).exclude(token_passphrase=None).exclude(token_passphrase="")
+        return (
+            self.filter(token_expiry__gte=timezone.now())
+            .exclude(token_uuid=None)
+            .exclude(token_passphrase=None)
+            .exclude(token_passphrase="")
+        )
 
     def create_user(self, password: str = None, **kwargs):
         user = self.model(**kwargs)
@@ -31,23 +34,23 @@ class UserManager(BaseUserManager):
         user = self.create_user(password=password, **kwargs)
         user.is_staff = True
         user.is_superuser = True
-        user.save(update_fields=['is_staff', 'is_superuser'])
+        user.save(update_fields=["is_staff", "is_superuser"])
         return user
 
 
 class User(PermissionsMixin, AbstractBaseUser):
 
-    EMAIL_FIELD = 'email'
-    USERNAME_FIELD = 'email'
+    EMAIL_FIELD = "email"
+    USERNAME_FIELD = "email"
 
     objects = UserManager()
 
     nick = models.CharField(max_length=60, null=True, blank=True)
     email = models.EmailField(
         unique=True,
-        verbose_name=_('E-Mail'),
+        verbose_name=_("E-Mail"),
         help_text=_(
-            'Your email address will be used for password resets and notification about your event/submissions.'
+            "Your email address will be used for password resets and notification about your event/submissions."
         ),
     )
 
@@ -71,7 +74,7 @@ class User(PermissionsMixin, AbstractBaseUser):
         return self.get_display_name()
 
     def get_display_name(self) -> str:
-        return self.nick if self.nick else str(_('Unnamed user'))
+        return self.nick if self.nick else str(_("Unnamed user"))
 
     def set_token(self):
         """
@@ -102,11 +105,19 @@ class Group(models.Model):
         max_length=255,
         verbose_name=_("name"),
     )
-    members = models.ManyToManyField(User, related_name='dukop_groups')
+    members = models.ManyToManyField(User, related_name="dukop_groups")
 
     is_restricted = models.BooleanField(
         default=False,
         help_text=_("Do not allow others to add events to this group"),
+    )
+
+    description = models.TextField(
+        blank=True,
+        verbose_name=_("description"),
+        help_text=_(
+            "Enter details, which will be displayed on the group's own page. You can use Markdown."
+        ),
     )
 
     owner_email = models.EmailField(blank=True, null=True)
