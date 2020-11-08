@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 
@@ -122,6 +123,15 @@ class Event(models.Model):
 
     class Meta:
         verbose_name = _("Event")
+
+    def save(self, *args, **kwargs):
+        """
+        Auto-populates the slug field if it isn't filled in.
+        """
+        if not self.pk:
+            if not self.slug:
+                self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
 
 
 class EventTime(models.Model):

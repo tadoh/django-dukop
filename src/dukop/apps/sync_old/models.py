@@ -17,6 +17,56 @@ class Sync(models.Model):
 # Feel free to rename the models, but don't rename db_table values or field names.
 
 
+class Locations(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    street_address = models.CharField(max_length=255, blank=True, null=True)
+    postcode = models.CharField(max_length=255, blank=True, null=True)
+    town = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    latitude = models.DecimalField(
+        max_digits=65535, decimal_places=65535, blank=True, null=True
+    )
+    longitude = models.DecimalField(
+        max_digits=65535, decimal_places=65535, blank=True, null=True
+    )
+    link = models.CharField(max_length=1024, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = "locations"
+
+
+class Users(models.Model):
+    email = models.CharField(unique=True, max_length=255)
+    encrypted_password = models.CharField(max_length=255)
+    reset_password_token = models.CharField(
+        unique=True, max_length=255, blank=True, null=True
+    )
+    reset_password_sent_at = models.DateTimeField(blank=True, null=True)
+    remember_created_at = models.DateTimeField(blank=True, null=True)
+    sign_in_count = models.IntegerField()
+    current_sign_in_at = models.DateTimeField(blank=True, null=True)
+    last_sign_in_at = models.DateTimeField(blank=True, null=True)
+    current_sign_in_ip = models.CharField(max_length=255, blank=True, null=True)
+    last_sign_in_ip = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(blank=True, null=True)
+    updated_at = models.DateTimeField(blank=True, null=True)
+    username = models.CharField(unique=True, max_length=255, blank=True, null=True)
+    confirmation_token = models.CharField(
+        unique=True, max_length=255, blank=True, null=True
+    )
+    confirmed_at = models.DateTimeField(blank=True, null=True)
+    confirmation_sent_at = models.DateTimeField(blank=True, null=True)
+    unconfirmed_email = models.CharField(max_length=255, blank=True, null=True)
+    is_admin = models.BooleanField(blank=True, null=True)
+    is_anonymous = models.BooleanField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = "users"
+
+
 class EventSeries(models.Model):
     title = models.CharField(max_length=1024, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
@@ -57,8 +107,10 @@ class Events(models.Model):
     price = models.CharField(max_length=255, blank=True, null=True)
     cancelled = models.BooleanField(blank=True, null=True)
     long_description = models.TextField(blank=True, null=True)
-    user_id = models.IntegerField(blank=True, null=True)
-    location_id = models.IntegerField(blank=True, null=True)
+    user = models.ForeignKey(Users, on_delete=models.SET_NULL, blank=True, null=True)
+    location = models.ForeignKey(
+        Locations, on_delete=models.SET_NULL, blank=True, null=True
+    )
     comments_enabled = models.BooleanField(blank=True, null=True)
     link = models.CharField(max_length=255, blank=True, null=True)
     picture_file_name = models.CharField(max_length=255, blank=True, null=True)
@@ -120,56 +172,6 @@ class EventSeriesCategories(models.Model):
     class Meta:
         managed = False
         db_table = "event_series_categories"
-
-
-class Locations(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
-    street_address = models.CharField(max_length=255, blank=True, null=True)
-    postcode = models.CharField(max_length=255, blank=True, null=True)
-    town = models.CharField(max_length=255, blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-    latitude = models.DecimalField(
-        max_digits=65535, decimal_places=65535, blank=True, null=True
-    )
-    longitude = models.DecimalField(
-        max_digits=65535, decimal_places=65535, blank=True, null=True
-    )
-    link = models.CharField(max_length=1024, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = "locations"
-
-
-class Users(models.Model):
-    email = models.CharField(unique=True, max_length=255)
-    encrypted_password = models.CharField(max_length=255)
-    reset_password_token = models.CharField(
-        unique=True, max_length=255, blank=True, null=True
-    )
-    reset_password_sent_at = models.DateTimeField(blank=True, null=True)
-    remember_created_at = models.DateTimeField(blank=True, null=True)
-    sign_in_count = models.IntegerField()
-    current_sign_in_at = models.DateTimeField(blank=True, null=True)
-    last_sign_in_at = models.DateTimeField(blank=True, null=True)
-    current_sign_in_ip = models.CharField(max_length=255, blank=True, null=True)
-    last_sign_in_ip = models.CharField(max_length=255, blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
-    username = models.CharField(unique=True, max_length=255, blank=True, null=True)
-    confirmation_token = models.CharField(
-        unique=True, max_length=255, blank=True, null=True
-    )
-    confirmed_at = models.DateTimeField(blank=True, null=True)
-    confirmation_sent_at = models.DateTimeField(blank=True, null=True)
-    unconfirmed_email = models.CharField(max_length=255, blank=True, null=True)
-    is_admin = models.BooleanField(blank=True, null=True)
-    is_anonymous = models.BooleanField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = "users"
 
 
 class Visits(models.Model):
