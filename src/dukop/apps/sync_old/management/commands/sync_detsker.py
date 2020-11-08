@@ -43,15 +43,16 @@ class Command(BaseCommand):
             "--dry",
             action="store_true",
             default=False,
-            help="Delete store instead of cleaning it up",
+            help="Dry-run: About the whole database transaction at the end",
         )
 
     @transaction.atomic
     def handle(self, *args, **options):
 
         try:
-            self.stdout.write("Starting command execution")
+            self.stdout.write("Starting to import")
 
+            # Debugging: Just process 10 objects.
             events = models.Events.objects.all()[:10]
 
             for event in events:
