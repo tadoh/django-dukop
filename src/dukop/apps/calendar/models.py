@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 
@@ -8,10 +9,19 @@ class Event(models.Model):
         max_length=255,
         verbose_name=_("name"),
     )
+    short_description = models.TextField(
+        blank=True,
+        verbose_name=_("short description"),
+        help_text=_(
+            "A special short version of the event description, leave blank to auto-generate. Text-only, no Markdown."
+        ),
+    )
     description = models.TextField(
         blank=True,
         verbose_name=_("description"),
-        help_text=_("Enter details, which will be displayed on the event's own page. You can use Markdown."),
+        help_text=_(
+            "Enter details, which will be displayed on the event's own page. You can use Markdown."
+        ),
     )
 
     slug = models.SlugField(
@@ -22,12 +32,14 @@ class Event(models.Model):
     )
 
     host = models.ForeignKey(
-        'users.Group',
+        "users.Group",
         null=True,
         blank=True,
         on_delete=models.PROTECT,
-        related_name='events',
-        help_text=_("A group may host an event and be displayed as the author of the event text.")
+        related_name="events",
+        help_text=_(
+            "A group may host an event and be displayed as the author of the event text."
+        ),
     )
 
     featured = models.BooleanField(default=False)
@@ -66,7 +78,7 @@ class Event(models.Model):
     )
 
     interval = models.ForeignKey(
-        'Interval',
+        "Interval",
         on_delete=models.PROTECT,
         help_text=_("Repeats the event automatically at some interval"),
         null=True,
@@ -77,20 +89,20 @@ class Event(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     owner_user = models.ForeignKey(
-        'users.User',
+        "users.User",
         verbose_name=_("owner (user)"),
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='owned_events',
+        related_name="owned_events",
     )
     owner_group = models.ForeignKey(
-        'users.Group',
+        "users.Group",
         verbose_name=_("owner (group)"),
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='owned_events',
+        related_name="owned_events",
     )
 
     edit_secret = models.CharField(
@@ -112,13 +124,22 @@ class Event(models.Model):
     class Meta:
         verbose_name = _("Event")
 
+    def save(self, *args, **kwargs):
+        """
+        Auto-populates the slug field if it isn't filled in.
+        """
+        if not self.pk:
+            if not self.slug:
+                self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
+
 
 class EventTime(models.Model):
     """
     Allows an event to take place at many different times
     """
 
-    event = models.ForeignKey(Event, related_name='times', on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, related_name="times", on_delete=models.CASCADE)
     start = models.DateTimeField(
         verbose_name=_("start"),
     )
@@ -139,7 +160,7 @@ class EventTime(models.Model):
 
     class Meta:
         verbose_name = _("Event time")
-        ordering = ('start', 'end')
+        ordering = ("start", "end")
 
 
 class EventUpdate(models.Model):
@@ -154,25 +175,26 @@ class EventUpdate(models.Model):
 
     class Meta:
         verbose_name = _("Event update")
-        ordering = ('created',)
+        ordering = ("created",)
 
 
 class EventImage(models.Model):
 
-    event = models.ForeignKey(Event, related_name='images', on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, related_name="images", on_delete=models.CASCADE)
     image = models.ImageField(
         verbose_name=_("image"),
-        help_text=_("Allowed formats: JPEG, PNG, GIF. Please upload high resolution (>1000 pixels wide).")
+        help_text=_(
+            "Allowed formats: JPEG, PNG, GIF. Please upload high resolution (>1000 pixels wide)."
+        ),
     )
     priority = models.PositiveSmallIntegerField(
-        default=0,
-        help_text=_("0=first, 1=second etc.")
+        default=0, help_text=_("0=first, 1=second etc.")
     )
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ('priority',)
+        ordering = ("priority",)
 
 
 class EventLink(models.Model):
@@ -181,11 +203,11 @@ class EventLink(models.Model):
     potentially translate them or make them consistent. For instance,
     we can make Facebook links display with a warning.
     """
-    event = models.ForeignKey(Event, related_name='links', on_delete=models.CASCADE)
+
+    event = models.ForeignKey(Event, related_name="links", on_delete=models.CASCADE)
     link = models.URLField(blank=True, null=True)
     priority = models.PositiveSmallIntegerField(
-        default=0,
-        help_text=_("0=first, 1=second etc.")
+        default=0, help_text=_("0=first, 1=second etc.")
     )
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -193,7 +215,7 @@ class EventLink(models.Model):
 
 class Interval(models.Model):
 
-    weekday = models.ForeignKey('Weekday', on_delete=models.CASCADE)
+    weekday = models.ForeignKey("Weekday", on_delete=models.CASCADE)
 
     every_week = models.BooleanField(default=False)
     first_week_of_month = models.BooleanField(default=False)
