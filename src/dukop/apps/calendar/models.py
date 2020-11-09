@@ -46,6 +46,8 @@ class Event(models.Model):
     published = models.BooleanField(default=False)
 
     is_cancelled = models.BooleanField(default=False)
+
+    # What is this?
     show_nb = models.BooleanField(default=False)
 
     venue_name = models.CharField(
@@ -130,7 +132,7 @@ class Event(models.Model):
         """
         if not self.pk:
             if not self.slug:
-                self.slug = slugify(self.title)
+                self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 
 

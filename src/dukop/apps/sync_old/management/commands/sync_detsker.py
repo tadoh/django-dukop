@@ -12,6 +12,9 @@ from dukop.apps.sync_old import models
 from dukop.apps.users.models import Group
 
 
+bad_fks = 0
+
+
 def df(value):
     """
     Converts a UTC non-timezone aware field to current timezone.
@@ -28,29 +31,49 @@ def create_interval(old_event):
         return None
 
 
+def ensure_location_exists(old_event):
+    global bad_fks
+    try:
+        if old_event.location and old_event.location.name:
+            pass
+    except models.Locations.DoesNotExist:
+        print("A location had a bad FK")
+        bad_fks += 1
+        old_event.location = None
+
+
 def create_group(old_event):
-    if not old_event.locations or not old_event.locations.name:
+    if not old_event.location or not old_event.location.name:
         return None
     return Group.objects.create(
-        name=old_event.locations.name,
-        street=old_event.street_address,
-        zip_code=old_event.postcode,
-        city=old_event.town,
-        description=old_event.description,
-        link1=old_event.link,
+        name=old_event.location.name,
+        street=old_event.location.street_address,
+        zip_code=old_event.location.postcode,
+        city=old_event.location.town,
+        description=old_event.location.description,
+        link1=old_event.location.link,
         is_restricted=True,
     )
 
 
 def create_event(old_event, group, interval):
 
-    return Event.objects.create(
+    event = Event(
         name=old_event.title,
         short_description=old_event.short_description or "",
         description=old_event.long_description or "",
+        is_cancelled=bool(old_event.cancelled),
+        created=old_event.created_at,
         host=group,
         interval=interval,
     )
+    if old_event.location:
+        event.venue_name = old_event.location.name
+        event.street = old_event.location.street_address
+        event.zip_code = old_event.location.postcode
+        event.city = old_event.location.town
+    event.save()
+    return event
 
 
 class Command(BaseCommand):
@@ -79,6 +102,8 @@ class Command(BaseCommand):
 
             for event in events:
 
+                ensure_location_exists(event)
+
                 # 1. Create a Group from the old Location
                 group = create_group(event)
 
@@ -95,15 +120,12 @@ class Command(BaseCommand):
                 # 6. EventLink
 
                 print(event.title)
-                print(event.short_description)
-                print(event.long_description)
-                print(df(event.start_time))
-                print(df(event.end_time))
-                print(event.created_at)
-                print(event.price)
-                print(event.cancelled)
-                print(event.link)
-
+                # print(event.picture_file_name)
+                # print(event.short_description)
+                # print(event.long_description)
+                # print(df(event.start_time))
+                # print(df(event.end_time))
+                # print(event.link)
                 print(new_event)
 
             self.stdout.write("Command execution completed\n".format())
