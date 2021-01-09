@@ -1,9 +1,31 @@
+import os
+import uuid
+
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 
+def image_upload_to(instance, filename):
+    ext = filename.split(".")[-1]
+    filename = "%s.%s" % (uuid.uuid4(), ext)
+    return os.path.join("uploads/events", filename)
+
+
 class Event(models.Model):
+    """
+    Recurrence:
+
+    TODO: For events that have an interval set for future repetition, we need a
+    way to capture all exceptions.
+
+    Calendars have "Edit this occurrence" or "Edit all occurrences"
+
+    Likewise, we also need a way for events that have occurred to remain
+    untouched, while future events can be edited.
+
+    https://github.com/bmoeskau/Extensible/blob/master/recurrence-overview.md
+    """
 
     name = models.CharField(
         max_length=255,
@@ -82,9 +104,18 @@ class Event(models.Model):
     interval = models.ForeignKey(
         "Interval",
         on_delete=models.PROTECT,
-        help_text=_("Repeats the event automatically at some interval"),
+        help_text=_("Repeats the event at some interval"),
         null=True,
         blank=True,
+        related_name="events",
+    )
+
+    interval_exception = models.BooleanField(
+        default=False,
+        verbose_name=_("exception"),
+        help_text=_(
+            "If true, changes to other events in the interval should not effect this event, as it is marked as an exception"
+        ),
     )
 
     created = models.DateTimeField(auto_now_add=True)
@@ -166,6 +197,12 @@ class EventTime(models.Model):
 
 
 class EventUpdate(models.Model):
+    """
+    An update can be posted by event owners and will be visible on the event
+    page for users to see.
+    """
+
+    event = models.ForeignKey(Event, related_name="updates", on_delete=models.CASCADE)
 
     description = models.TextField(
         blank=True,
@@ -188,6 +225,7 @@ class EventImage(models.Model):
         help_text=_(
             "Allowed formats: JPEG, PNG, GIF. Please upload high resolution (>1000 pixels wide)."
         ),
+        upload_to=image_upload_to,
     )
     priority = models.PositiveSmallIntegerField(
         default=0, help_text=_("0=first, 1=second etc.")
@@ -216,14 +254,24 @@ class EventLink(models.Model):
 
 
 class Interval(models.Model):
+    """
+    A great resource here is RRULE for iCal format:
+
+    https://www.kanzaki.com/docs/ical/rrule.html
+    """
 
     weekday = models.ForeignKey("Weekday", on_delete=models.CASCADE)
 
     every_week = models.BooleanField(default=False)
+    biweekly_even = models.BooleanField(default=False)
+    biweekly_odd = models.BooleanField(default=False)
     first_week_of_month = models.BooleanField(default=False)
     second_week_of_month = models.BooleanField(default=False)
     third_week_of_month = models.BooleanField(default=False)
     last_week_of_month = models.BooleanField(default=False)
+
+    starts = models.DateTimeField(null=True, blank=True)
+    ends = models.DateTimeField(null=True, blank=True)
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
