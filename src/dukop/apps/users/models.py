@@ -48,7 +48,7 @@ class User(PermissionsMixin, AbstractBaseUser):
     nick = models.CharField(max_length=60, null=True, blank=True)
     email = models.EmailField(
         unique=True,
-        verbose_name=_("E-Mail"),
+        verbose_name=_("email"),
         help_text=_(
             "Your email address will be used for password resets and notification about your event/submissions."
         ),
@@ -150,3 +150,7 @@ class Group(models.Model):
 
     class Meta:
         verbose_name = _("Group")
+
+    def __str__(self) -> str:
+        """Use a useful string representation."""
+        return self.name
