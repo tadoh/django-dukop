@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "dukop.apps.users",
     "dukop.apps.utils",
     "sekizai",
+    "sorl.thumbnail",
 ]
 
 MIDDLEWARE = [
@@ -99,7 +100,7 @@ LANGUAGE_CODE = "da"
 
 LOCALE_PATHS = [str(BASE_DIR / "locale")]
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Copenhagen"
 
 USE_I18N = True
 
@@ -194,3 +195,7 @@ COMPRESS_CSS_FILTERS = (
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = reverse_lazy("users:login")
 LOGOUT_URL = reverse_lazy("users:logout")
+
+# Necessary because of unsupported RGBA
+# See: https://github.com/jazzband/sorl-thumbnail/issues/564
+THUMBNAIL_PRESERVE_FORMAT = True

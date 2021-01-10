@@ -12,8 +12,9 @@ from django.db import transaction
 from django.utils import timezone
 from dukop.apps.calendar.models import Event
 from dukop.apps.calendar.models import EventImage
+from dukop.apps.calendar.models import EventInterval
+from dukop.apps.calendar.models import EventLink
 from dukop.apps.calendar.models import EventTime
-from dukop.apps.calendar.models import Interval
 from dukop.apps.calendar.models import Weekday
 from dukop.apps.sync_old import models
 from dukop.apps.users.models import Group
@@ -35,7 +36,7 @@ weekday_numbers = {
 
 
 # Map between old EventSeries and new Interval
-event_series_interval_map = {}
+event_series_map = {}
 
 
 def df(value):
@@ -53,7 +54,7 @@ def df(value):
     )
 
 
-def create_interval(event_series):
+def create_interval(event_series, new_event):
     """
     Creates an Interval from old EventSeries object
     """
@@ -61,7 +62,8 @@ def create_interval(event_series):
         days = event_series.days.split(",")
         if len(days) > 1:
             print("WARNING: Several weekdays in an EventSeries")
-        return Interval.objects.create(
+        return EventInterval.objects.create(
+            event=new_event,
             weekday=Weekday.objects.get(number=weekday_numbers[days[0]]),
             every_week=bool(event_series.rule == "weekly"),
             biweekly_even=bool(event_series.rule == "biweekly_even"),
@@ -70,8 +72,10 @@ def create_interval(event_series):
             second_week_of_month=bool(event_series.rule == "second"),
             third_week_of_month=bool(event_series.rule == "third"),
             last_week_of_month=bool(event_series.rule == "last"),
-            starts=datetime.combine(event_series.start_date, event_series.start_time),
-            ends=datetime.combine(event_series.expiry, event_series.end_time),
+            starts=df(
+                datetime.combine(event_series.start_date, event_series.start_time)
+            ),
+            ends=df(datetime.combine(event_series.expiry, event_series.end_time)),
         )
 
 
@@ -89,7 +93,7 @@ def ensure_location_exists(old_event):
 def create_group(old_event):
     if not old_event.location or not old_event.location.name:
         return None
-    return Group.objects.create(
+    return Group.objects.get_or_create(
         name=old_event.location.name,
         street=old_event.location.street_address,
         zip_code=old_event.location.postcode,
@@ -97,10 +101,17 @@ def create_group(old_event):
         description=old_event.location.description,
         link1=old_event.location.link,
         is_restricted=True,
+    )[0]
+
+
+def create_event_link(old_event, attach_to_event):
+    return EventLink.objects.create(
+        event=attach_to_event,
+        link=old_event.link,
     )
 
 
-def create_event(old_event, group, interval):
+def create_event(old_event, group):
 
     event = Event(
         name=old_event.title,
@@ -109,7 +120,6 @@ def create_event(old_event, group, interval):
         is_cancelled=bool(old_event.cancelled),
         created=old_event.created_at,
         host=group,
-        interval=interval,
     )
     if old_event.location:
         event.venue_name = old_event.location.name
@@ -120,20 +130,21 @@ def create_event(old_event, group, interval):
     return event
 
 
-def create_event_time(old_event, new_event):
+def create_event_time(old_event, attach_to_event):
     return EventTime.objects.create(
-        event=new_event,
+        event=attach_to_event,
         start=df(old_event.start_time),
         end=df(old_event.end_time),
-        created=old_event.created_at,
-        modified=old_event.updated_at,
+        created=df(old_event.created_at),
+        modified=df(old_event.updated_at),
+        is_cancelled=bool(old_event.cancelled),
     )
 
 
 not_found_images = 0
 
 
-def import_image(old_event, new_event, old_folder):
+def import_image(old_event, new_event, old_folder, from_event_series=False):
     """
     Rails has saved images in weird subfolders.
     https://stackoverflow.com/questions/15494906/understanding-id-partition-in-paperclip
@@ -146,6 +157,8 @@ def import_image(old_event, new_event, old_folder):
     subfolders = str(old_event.id).zfill(9)
     subfolders = (
         old_folder,
+        "event_series" if from_event_series else "events",
+        "pictures",
         subfolders[0:3],
         subfolders[3:6],
         subfolders[6:9],
@@ -155,19 +168,76 @@ def import_image(old_event, new_event, old_folder):
         *subfolders,
         old_event.picture_file_name,
     )
-    try:
-        image_data = ImageFile(open(image_path, "rb").read())
+    if os.path.exists(image_path):
+        image_data = ImageFile(open(image_path, "rb"))
         event_image = EventImage(event=new_event)
-        event_image.image = image_data
+        event_image.image.save("", image_data)
         event_image.save()
         print("Found image {}".format(old_event.picture_file_name))
-    except FileNotFoundError:
+        return event_image
+    else:
         not_found_images += 1
         print(
             "Did not find {}\ntotal images not found: {}".format(
                 image_path, not_found_images
             )
         )
+
+
+def import_event_series(series, import_base_dir):
+    global event_series_map
+    event = import_event(series, import_base_dir, from_event_series=True)
+    create_interval(series, event)
+    event_series_map[series.id] = event
+
+
+def import_event(event, import_base_dir, from_event_series=False):
+    """
+    Imports an Event or EventSeries
+    """
+    global event_series_map
+    ensure_location_exists(event)
+
+    # Create a Group from the old Location
+    group = create_group(event)
+
+    # Create Event
+    if (
+        from_event_series
+        or not event.event_series_id
+        or event.event_series_id not in event_series_map
+    ):
+        new_event = create_event(event, group)
+        attach_to_event = new_event
+        if event.picture_file_name:
+            image = import_image(
+                event,
+                attach_to_event,
+                import_base_dir,
+                from_event_series=from_event_series,
+            )
+            if image:
+                print(image.image.url)
+        if event.link:
+            create_event_link(event, attach_to_event)
+    else:
+        attach_to_event = event_series_map[event.event_series_id]
+
+        if not attach_to_event.images.exists() and event.picture_file_name:
+            image = import_image(event, attach_to_event, import_base_dir)
+
+        new_event = None
+
+    # EventTime
+    if not from_event_series and event.start_time:
+        create_event_time(event, attach_to_event)
+
+    if new_event:
+        print("Imported event: {}".format(new_event))
+    else:
+        print("Attached time to event: {}".format(attach_to_event))
+
+    return new_event
 
 
 class Command(BaseCommand):
@@ -192,64 +262,24 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
-        global event_series_interval_map
+        global event_series_map
 
         import_base_dir = options.get("import_img_dir")
 
         try:
             self.stdout.write("Starting to import")
 
+            # Sync EventSeries
             event_series = models.EventSeries.objects.all()
-
             for series in event_series:
+                self.stdout.write("-----------------------------")
+                import_event_series(series, import_base_dir)
 
-                # 2. Sync EventSeries if it does not exist
-                interval = create_interval(series)
-                event_series_interval_map[series.id] = interval
-
-            # Debugging: Just process 10 objects.
+            # Sync Events
             events = models.Events.objects.all()
-
             for event in events:
                 self.stdout.write("-----------------------------")
-                ensure_location_exists(event)
-
-                # 1. Create a Group from the old Location
-                group = create_group(event)
-
-                # 2. Create Event
-                new_event = create_event(event, group, interval)
-
-                # 3. Interval
-                if event.event_series_id in event_series_interval_map:
-                    new_event.interval = event_series_interval_map[
-                        event.event_series_id
-                    ]
-
-                # 4. EventTime
-                if event.start_time:
-                    create_event_time(event, new_event)
-                else:
-                    self.stderr.write(
-                        "Old event has no start time? title: {}, id: {}".format(
-                            event.short_description, event.id
-                        )
-                    )
-
-                # 5. EventImage
-                if event.picture_file_name:
-                    import_image(event, new_event, import_base_dir)
-
-                # 6. EventLink
-
-                print(event.title)
-                # print(event.picture_file_name)
-                # print(event.short_description)
-                # print(event.long_description)
-                # print(df(event.start_time))
-                # print(df(event.end_time))
-                # print(event.link)
-                print(new_event)
+                import_event(event, import_base_dir)
 
             self.stdout.write("Command execution completed\n".format())
 

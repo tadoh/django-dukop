@@ -4,6 +4,9 @@ import uuid
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
+from dukop.apps.calendar.utils import display_datetime
+from dukop.apps.calendar.utils import display_time
+from sorl.thumbnail import get_thumbnail
 
 
 def image_upload_to(instance, filename):
@@ -12,12 +15,23 @@ def image_upload_to(instance, filename):
     return os.path.join("uploads/events", filename)
 
 
+class EventManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super().get_queryset().prefetch_related("times").prefetch_related("images")
+        )
+
+
 class Event(models.Model):
     """
     Recurrence:
 
-    TODO: For events that have an interval set for future repetition, we need a
-    way to capture all exceptions.
+    An event can be ascribed as many EventTime instances as necessary to express
+    recurrence.
+
+    Once in a while, we need to maintain this information, though. But we do not
+    auto-create EventTime objects way into the future - there is no need for
+    that.
 
     Calendars have "Edit this occurrence" or "Edit all occurrences"
 
@@ -57,7 +71,7 @@ class Event(models.Model):
         "users.Group",
         null=True,
         blank=True,
-        on_delete=models.PROTECT,
+        on_delete=models.SET_NULL,
         related_name="events",
         help_text=_(
             "A group may host an event and be displayed as the author of the event text."
@@ -101,23 +115,6 @@ class Event(models.Model):
         help_text=_("If left blank, will be copied from host group"),
     )
 
-    interval = models.ForeignKey(
-        "Interval",
-        on_delete=models.PROTECT,
-        help_text=_("Repeats the event at some interval"),
-        null=True,
-        blank=True,
-        related_name="events",
-    )
-
-    interval_exception = models.BooleanField(
-        default=False,
-        verbose_name=_("exception"),
-        help_text=_(
-            "If true, changes to other events in the interval should not effect this event, as it is marked as an exception"
-        ),
-    )
-
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
@@ -154,6 +151,8 @@ class Event(models.Model):
         editable=False,
     )
 
+    objects = EventManager()
+
     class Meta:
         verbose_name = _("Event")
 
@@ -165,6 +164,9 @@ class Event(models.Model):
             if not self.slug:
                 self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
 
 
 class EventTime(models.Model):
@@ -190,10 +192,30 @@ class EventTime(models.Model):
     )
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+    is_cancelled = models.BooleanField(default=False)
+
+    interval_auto = models.BooleanField(
+        default=False,
+        verbose_name=_("automatic recurrence"),
+        help_text=_(
+            "If true, this interval is currently maintained automatically and "
+            "has not been rescheduled. If the interval is edited, it may be "
+            "changed automatically"
+        ),
+    )
 
     class Meta:
         verbose_name = _("Event time")
         ordering = ("start", "end")
+
+    def __str__(self):
+        representation = display_datetime(self.start)
+        if self.end:
+            if self.end.date() == self.start.date():
+                representation += " - {}".format(display_time(self.end.time()))
+            else:
+                representation += " - {}".format(display_datetime(self.end))
+        return representation
 
 
 class EventUpdate(models.Model):
@@ -236,6 +258,25 @@ class EventImage(models.Model):
     class Meta:
         ordering = ("priority",)
 
+    def thumb(self, width=100, height=75):
+        try:
+            return get_thumbnail(
+                self.image.file,
+                "{}x{}".format(width, height),
+                crop="center",
+                quality=90,
+            )
+        except OSError as e:
+            if "RGBA" in str(e):
+                return get_thumbnail(
+                    self.image.file,
+                    "{}x{}".format(width, height),
+                    crop="center",
+                    format="PNG",
+                )
+            else:
+                raise
+
 
 class EventLink(models.Model):
     """
@@ -253,12 +294,14 @@ class EventLink(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
 
-class Interval(models.Model):
+class EventInterval(models.Model):
     """
-    A great resource here is RRULE for iCal format:
+    Inspired by RRULE for iCal format:
 
     https://www.kanzaki.com/docs/ical/rrule.html
     """
+
+    event = models.ForeignKey(Event, related_name="intervals", on_delete=models.CASCADE)
 
     weekday = models.ForeignKey("Weekday", on_delete=models.CASCADE)
 
