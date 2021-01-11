@@ -124,7 +124,7 @@ def create_event(old_event, group):
     if old_event.location:
         event.venue_name = old_event.location.name
         event.street = old_event.location.street_address
-        event.zip_code = old_event.location.postcode
+        event.zip_code = old_event.location.postcode[:16]
         event.city = old_event.location.town
     event.save()
     return event
