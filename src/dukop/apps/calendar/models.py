@@ -1,4 +1,6 @@
 import os
+import random
+import string
 import uuid
 
 from django.db import models
@@ -160,9 +162,15 @@ class Event(models.Model):
         """
         Auto-populates the slug field if it isn't filled in.
         """
-        if not self.pk:
-            if not self.slug:
-                self.slug = slugify(self.name)
+        if not self.pk and not self.slug:
+            proposal = slugify(self.name)[:50]
+            while Event.objects.filter(slug=proposal).exists():
+                to_append = "".join(
+                    random.choice(string.ascii_uppercase + string.digits)
+                    for _ in range(10)
+                )
+                proposal = proposal[:40] + to_append
+            self.slug = proposal
         return super().save(*args, **kwargs)
 
     def __str__(self):
