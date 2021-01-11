@@ -122,9 +122,9 @@ class Group(models.Model):
 
     owner_email = models.EmailField(blank=True, null=True)
 
-    link1 = models.URLField(blank=True, null=True)
-    link2 = models.URLField(blank=True, null=True)
-    link3 = models.URLField(blank=True, null=True)
+    link1 = models.URLField(blank=True, null=True, max_length=2048)
+    link2 = models.URLField(blank=True, null=True, max_length=2048)
+    link3 = models.URLField(blank=True, null=True, max_length=2048)
 
     street = models.CharField(
         max_length=255,
