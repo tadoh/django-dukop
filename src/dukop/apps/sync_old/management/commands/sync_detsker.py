@@ -96,7 +96,7 @@ def create_group(old_event):
     return Group.objects.get_or_create(
         name=old_event.location.name,
         street=old_event.location.street_address,
-        zip_code=old_event.location.postcode,
+        zip_code=old_event.location.postcode[:16],
         city=old_event.location.town,
         description=old_event.location.description,
         link1=old_event.location.link,
