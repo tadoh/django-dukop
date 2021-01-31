@@ -2,8 +2,11 @@ import os
 import random
 import string
 import uuid
+from builtins import staticmethod
+from functools import lru_cache
 
 from django.db import models
+from django.utils.functional import cached_property
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from dukop.apps.calendar.utils import display_datetime
@@ -17,11 +20,98 @@ def image_upload_to(instance, filename):
     return os.path.join("uploads/events", filename)
 
 
+def sluggify_instance(instance, ModelClass, name_field, slug_field):
+    """
+    Auto-populates a slug field if it isn't filled in.
+    """
+    if not instance.pk and not getattr(instance, slug_field, None):
+        proposal = slugify(getattr(instance, name_field))[:50]
+        lookup = {slug_field: proposal}
+        while ModelClass.objects.filter(**lookup).exists():
+            to_append = "".join(
+                random.choice(string.ascii_uppercase + string.digits) for _ in range(10)
+            )
+            proposal = proposal[:40] + to_append
+        setattr(instance, slug_field, proposal)
+
+
 class EventManager(models.Manager):
     def get_queryset(self):
         return (
             super().get_queryset().prefetch_related("times").prefetch_related("images")
         )
+
+
+class Sphere(models.Model):
+    """
+    Spheres are local versions of a site containing sets of events. Over time,
+    they may change and define their own themes, priorities etc. We don't know.
+    """
+
+    name = models.CharField(max_length=255)
+
+    slug = models.SlugField(
+        null=True,
+        blank=True,
+        verbose_name=_("slug"),
+        help_text=_("The part of a URL that is displayed in dukop.dk/sphere/<slug>/"),
+    )
+
+    default = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ("-default", "name")
+        verbose_name = _("Sphere")
+        verbose_name_plural = _("Spheres")
+
+    def save(self, *args, **kwargs):
+        sluggify_instance(self, Sphere, "name", "slug")
+        return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+    @staticmethod
+    def get_default():
+        """
+        This can be cached in-memory insofar that we don't do any more funky
+        stuff with the Spheres, like related querysets etc.
+        """
+        try:
+            return Sphere.objects.get(default=True)
+        except Sphere.DoesNotExist:
+            return Sphere.objects.create(
+                name="Auto-created sphere", slug="auto", default=True
+            )
+
+    @staticmethod
+    @cached_property
+    def get_default_cached():
+        """
+        This can be cached in-memory insofar that we don't do any more funky
+        stuff with the Spheres, like related querysets etc.
+        """
+        return Sphere.get_default()
+
+    @staticmethod
+    def get_by_id_or_default(sphere_id=None):
+        """
+        Fetches a sphere by its ID or returns the default sphere
+        """
+        if not sphere_id:
+            return Sphere.get_default()
+        try:
+            return Sphere.get_by_id_or_default(sphere_id=sphere_id)
+        except Sphere.DoesNotExist:
+            return Sphere.get_default()
+
+    @staticmethod
+    @lru_cache(maxsize=128)
+    def get_by_id_or_default_cached(sphere_id=None):
+        """
+        Fetches a sphere by its ID or returns the default sphere
+        """
+        return Sphere.get_by_id_or_default(sphere_id=sphere_id)
 
 
 class Event(models.Model):
@@ -42,6 +132,11 @@ class Event(models.Model):
 
     https://github.com/bmoeskau/Extensible/blob/master/recurrence-overview.md
     """
+
+    spheres = models.ManyToManyField(
+        Sphere,
+        blank=True,
+    )
 
     name = models.CharField(
         max_length=255,
@@ -162,15 +257,7 @@ class Event(models.Model):
         """
         Auto-populates the slug field if it isn't filled in.
         """
-        if not self.pk and not self.slug:
-            proposal = slugify(self.name)[:50]
-            while Event.objects.filter(slug=proposal).exists():
-                to_append = "".join(
-                    random.choice(string.ascii_uppercase + string.digits)
-                    for _ in range(10)
-                )
-                proposal = proposal[:40] + to_append
-            self.slug = proposal
+        sluggify_instance(self, Event, "name", "slug")
         return super().save(*args, **kwargs)
 
     def __str__(self):

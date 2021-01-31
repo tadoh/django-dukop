@@ -39,6 +39,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",  # Protects against clickjacking
     "django.middleware.locale.LocaleMiddleware",
     "csp.middleware.CSPMiddleware",  # Modifies/sets CSP headers
+    "dukop.apps.calendar.middleware.sphere_middleware",
 ]
 
 ROOT_URLCONF = "dukop.urls"
