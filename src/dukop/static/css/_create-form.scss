@@ -36,7 +36,7 @@
   td {
     padding: 5px 0;
   }
-  input, select {
+  input:not([type=checkbox]):not([type=radio]), select {
     display: block;
     width: 100%;
     padding: 10px;
@@ -66,4 +66,8 @@
         }
 
     }
+}
+
+.spheres {
+    ul {list-style: none; padding: 0}
 }

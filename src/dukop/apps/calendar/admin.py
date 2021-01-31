@@ -6,6 +6,11 @@ from django.utils.translation import gettext_lazy as _
 from . import models
 
 
+@admin.register(models.Sphere)
+class SphereAdmin(admin.ModelAdmin):
+    pass
+
+
 class EventTimeInline(admin.TabularInline):
     model = models.EventTime
 

@@ -29,17 +29,22 @@ From a commandline, run:
 ```console
 # Create the virtual environment
 python3 -m venv .venv
+
 # Activate the virtual environment
 source .venv/bin/activate
+
 # Upgrade to the latest Python dist tools (pip etc)
 python3 -m pip install --upgrade pip setuptools wheel
+
 # Install the package in development mode, meaning that you can keep editing
 # the sources and not have to re-install.
 python3 -m pip install --editable ".[dev]"
+
 # Run the migration script to create the database
-./manage.py migrate
+python3 manage.py migrate
+
 # Create a superuser account so you can also log in for the first time.
-./manage.py createsuperuser
+python3 manage.py createsuperuser
 ```
 
 The development environment is now ready with an empty database and a single
@@ -49,6 +54,10 @@ admin user. To run the server and access it from your browser, use the
 ```console
 ./manage.py runserver
 ```
+
+After running the server for the first time, consider logging in on
+http://127.0.0.1:8080/admin/ to create some data for development.
+
 
 ## Updating from git
 
