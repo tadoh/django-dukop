@@ -2,18 +2,19 @@
 
 [![Build Status](https://travis-ci.com/dukop/django-dukop.svg?branch=master)](https://travis-ci.com/dukop/django-dukop)
 
-Collaborate calendar for local needs, such as "DukOp Copenhagen" or "DukOp Århus".
+Collaborate calendar for local *spheres*, such as "DukOp Copenhagen" or "DukOp Århus".
 
 ## System requirements
 
-What you are now looking at is a Python package, based on [Django](https://www.djangoproject.com/).
-The various Python packages that it depends on will be installed while you
-install the project it self.
+What you are now looking at is a Python package, structured as a
+[Django](https://www.djangoproject.com/) project. The various other Python
+packages that it depends on will be installed while you install the package
+itself.
 
-These are the system requirements:
+These are the system requirements necessary for running the below Quickstart:
 
 * Python 3.6+ (is already on your system)
-* Postgres (only for deployment, not needed for development)
+* Postgres (**only** for deployment, not needed for development)
 
 Other requirements are specified as Python packages in the *Quickstart* below
 and will be installed in a *virtual environment*.
