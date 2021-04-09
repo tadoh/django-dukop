@@ -26,12 +26,17 @@ def sluggify_instance(instance, ModelClass, name_field, slug_field):
     """
     if not instance.pk and not getattr(instance, slug_field, None):
         proposal = slugify(getattr(instance, name_field))[:50]
-        lookup = {slug_field: proposal}
-        while ModelClass.objects.filter(**lookup).exists():
+
+        def _proposal_exists():
+            return ModelClass.objects.filter(**{slug_field: proposal}).exists()
+
+        proposal_exists = _proposal_exists()
+        while proposal_exists:
             to_append = "".join(
                 random.choice(string.ascii_uppercase + string.digits) for _ in range(10)
             )
             proposal = proposal[:40] + to_append
+            proposal_exists = _proposal_exists()
         setattr(instance, slug_field, proposal)
 
 
