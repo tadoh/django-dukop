@@ -73,12 +73,7 @@ def event_timeline_properties(event_time, now=None):
     x_start_pct = 100.0 * float(x_start - hours_x_min) / hours_x
     x_end_pct = 100.0 * float(x_end - hours_x_min) / hours_x
 
-    print(x_start_pct)
-    print(x_end_pct)
-
     width_pct = x_end_pct - x_start_pct
-
-    print(width_pct)
 
     return {
         "x_start_pct": x_start_pct,
