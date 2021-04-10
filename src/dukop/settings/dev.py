@@ -14,7 +14,7 @@ INSTALLED_APPS += ("debug_toolbar",)  # noqa
 
 COMPRESS_ENABLED = False
 
-MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"] + MIDDLEWARE   # noqa
+MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"] + MIDDLEWARE  # noqa
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 

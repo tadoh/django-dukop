@@ -2,4 +2,5 @@ from django.apps import AppConfig
 
 
 class NameConfig(AppConfig):
-    name = "detsker"
+    name = "dukop.apps.sync_old"
+    label = "sync_old"
