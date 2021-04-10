@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
 
-class NameConfig(AppConfig):
-    name = 'users'
+class UserConfig(AppConfig):
+    name = "dukop.apps.users"
+    label = "users"

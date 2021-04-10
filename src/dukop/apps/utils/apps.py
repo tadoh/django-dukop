@@ -2,4 +2,5 @@ from django.apps import AppConfig
 
 
 class NameConfig(AppConfig):
-    name = 'utils'
+    name = "dukop.apps.utils"
+    label = "utils"
