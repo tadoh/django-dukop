@@ -143,6 +143,11 @@ def create_event(old_event, group, from_event_series=False):
     event.description = old_event.long_description or ""
     event.is_cancelled = bool(old_event.cancelled)
     event.created = old_event.created_at
+    event.published = bool(old_event.published)
+
+    if not from_event_series:
+        event.featured = bool(old_event.featured)
+
     event.host = group
 
     if old_event.location:
@@ -243,7 +248,9 @@ def import_event(event, import_base_dir, from_event_series=False):
         or not event.event_series_id
         or event.event_series_id not in event_series_map
     ):
-        created, new_event = create_event(event, group, from_event_series=False)
+        created, new_event = create_event(
+            event, group, from_event_series=from_event_series
+        )
         attach_to_event = new_event
         if created and event.picture_file_name:
             image = import_image(

@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% load calendar_tags sorl_thumbnail %}
+{% load i18n %}
+{% load l10n %}
 
 {% block content_wrapper %}
 
-{% get_event_times max_count=20 as event_times %}
+{% get_event_times max_count=20 has_image=True as event_times %}
 
 {% for event_time in event_times %}
 <div class="card">
@@ -45,9 +47,25 @@
 
 {% endfor %}
 
+{% get_event_times days=1 max_count=30 as todays_events %}
+
 <div class="page-container">
-  <h1 class="title title--space">Det sker <span class="title__bold">også i dag </span></h1>
+  <h1 class="title title--space">{% trans "Also happening" %} <span class="title__bold">{% trans "today" %}</span></h1>
   <div class="timeline">
+
+  {% for event_time in todays_events %}
+    {% event_timeline_properties event_time as timeline %}
+    <div class="timeline__event timeline__event--color{% cycle "1" "2" "3" %} timeline__event--right" data-text="{{ event_time.event.name }}"
+      style="width: {{ timeline.width_pct|unlocalize }}%; margin-left: {{ timeline.x_start_pct|unlocalize }}%">
+    </div>
+  {% empty %}
+    <div class="timeline__event timeline__event--right" data-text="{% trans "Nothing planned today, this is your chance to do something! Gather your people!" %}"
+      style="width: 17.812499999999996%; margin-left: 13.437500000000002%">
+    </div>
+  {% endfor %}
+
+  {% comment %}
+
     <div class="timeline__event timeline__event--color3 timeline__event--right" data-text="Yoga med Natalie"
       style="width: 17.812499999999996%; margin-left: 13.437500000000002%">
     </div>
@@ -126,6 +144,9 @@
     <div class="timeline__event timeline__event--color3 timeline__event--right" data-text="Tai Chi og Qi Gong med Bo"
       style="width: 10.624999999999996%; margin-left: 1.8750000000000044%">
     </div>
+
+    {% endcomment %}
+
     <div class="timeline__scale">
       <div class="timeline__min">
         08:00
@@ -135,6 +156,7 @@
       </div>
       <div class="timeline__now" id="timeline__now"></div>
     </div>
+
   </div>
 
 </div>
