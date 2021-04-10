@@ -1,11 +1,12 @@
 import os
 import sys
+
 from django.core.management.utils import get_random_secret_key
 
 # Use everything from settings.local, write a minimal template if it does not
 # exist and alert user.
 try:
-    from .local import *
+    from .local import *  # noqa
 except ImportError:
     sys.stderr.write(
         "Could not find src/dukop/settings/local.py, creating a "
@@ -23,11 +24,7 @@ except ImportError:
         """        "NAME": str(BASE_DIR.parent.parent / "db.sqlite3"),\n"""
         """    }}\n"""
         """}}\n"""
-    ).format(
-        secret_key=get_random_secret_key()
-    )
+    ).format(secret_key=get_random_secret_key())
     f = open(os.path.join(os.path.dirname(__file__), "local.py"), "w")
-    f.write(
-        default
-    )
+    f.write(default)
     sys.exit(1)

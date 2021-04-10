@@ -1,8 +1,6 @@
 from .base import *  # noqa
 
-MANAGERS = ADMINS = [
-    ("Main admin team", "lol@dukop.dk")
-]
+MANAGERS = ADMINS = [("Main admin team", "lol@dukop.dk")]
 
 DEFAULT_FROM_EMAIL = "dukop@riseup.net"
 
