@@ -181,12 +181,9 @@ class Event(models.Model):
     )
 
     featured = models.BooleanField(default=False)
-    published = models.BooleanField(default=False)
+    published = models.BooleanField(default=True)
 
     is_cancelled = models.BooleanField(default=False)
-
-    # What is this?
-    show_nb = models.BooleanField(default=False)
 
     venue_name = models.CharField(
         max_length=255,
