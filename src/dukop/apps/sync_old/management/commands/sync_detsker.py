@@ -1,3 +1,13 @@
+"""
+Event importing script
+
+Currently unsupported:
+
+- Updating images from old location. They only get created once
+- Updating event times
+- Updating event links
+
+"""
 import os
 import sys
 import traceback
@@ -15,6 +25,7 @@ from dukop.apps.calendar.models import EventImage
 from dukop.apps.calendar.models import EventInterval
 from dukop.apps.calendar.models import EventLink
 from dukop.apps.calendar.models import EventTime
+from dukop.apps.calendar.models import OldEventSync
 from dukop.apps.calendar.models import Weekday
 from dukop.apps.sync_old import models
 from dukop.apps.users.models import Group
@@ -62,21 +73,24 @@ def create_interval(event_series, new_event):
         days = event_series.days.split(",")
         if len(days) > 1:
             print("WARNING: Several weekdays in an EventSeries")
-        return EventInterval.objects.create(
-            event=new_event,
-            weekday=Weekday.objects.get(number=weekday_numbers[days[0]]),
-            every_week=bool(event_series.rule == "weekly"),
-            biweekly_even=bool(event_series.rule == "biweekly_even"),
-            biweekly_odd=bool(event_series.rule == "biweekly_odd"),
-            first_week_of_month=bool(event_series.rule == "first"),
-            second_week_of_month=bool(event_series.rule == "second"),
-            third_week_of_month=bool(event_series.rule == "third"),
-            last_week_of_month=bool(event_series.rule == "last"),
-            starts=df(
-                datetime.combine(event_series.start_date, event_series.start_time)
-            ),
-            ends=df(datetime.combine(event_series.expiry, event_series.end_time)),
+
+        interval = new_event.intervals.all().first() or EventInterval(event=new_event)
+
+        interval.weekday = Weekday.objects.get(number=weekday_numbers[days[0]])
+        interval.every_week = bool(event_series.rule == "weekly")
+        interval.biweekly_even = bool(event_series.rule == "biweekly_even")
+        interval.biweekly_odd = bool(event_series.rule == "biweekly_odd")
+        interval.first_week_of_month = bool(event_series.rule == "first")
+        interval.second_week_of_month = bool(event_series.rule == "second")
+        interval.third_week_of_month = bool(event_series.rule == "third")
+        interval.last_week_of_month = bool(event_series.rule == "last")
+        interval.starts = df(
+            datetime.combine(event_series.start_date, event_series.start_time)
         )
+        interval.ends = df(datetime.combine(event_series.expiry, event_series.end_time))
+
+        interval.save()
+        return interval
 
 
 def ensure_location_exists(old_event):
@@ -111,30 +125,48 @@ def create_event_link(old_event, attach_to_event):
     )
 
 
-def create_event(old_event, group):
+def create_event(old_event, group, from_event_series=False):
 
-    event = Event(
-        name=old_event.title,
-        short_description=old_event.short_description or "",
-        description=old_event.long_description or "",
-        is_cancelled=bool(old_event.cancelled),
-        created=old_event.created_at,
-        host=group,
-    )
+    created = False
+
+    try:
+        event = OldEventSync.objects.get(
+            is_series=from_event_series, old_fk=old_event.id
+        ).event
+        print("Event found: {}".format(event.id))
+    except OldEventSync.DoesNotExist:
+        created = True
+        event = Event()
+
+    event.name = old_event.title
+    event.short_description = old_event.short_description or ""
+    event.description = old_event.long_description or ""
+    event.is_cancelled = bool(old_event.cancelled)
+    event.created = old_event.created_at
+    event.host = group
+
     if old_event.location:
         event.venue_name = old_event.location.name
         event.street = old_event.location.street_address
         event.zip_code = old_event.location.postcode[:16]
         event.city = old_event.location.town
     event.save()
-    return event
+    return created, event
 
 
 def create_event_time(old_event, attach_to_event):
+    """
+    TODO: Check if it's already created?
+    """
+    if not old_event.start_time and not old_event.end_time:
+        return
+    # Don't allow this type of event
+    if (old_event.end_time - old_event.start_time).days > 100:
+        old_event.end_time = old_event.start_time
     return EventTime.objects.create(
         event=attach_to_event,
-        start=df(old_event.start_time),
-        end=df(old_event.end_time),
+        start=df(old_event.start_time) or df(old_event.end_time),
+        end=df(old_event.end_time) or df(old_event.start_time),
         created=df(old_event.created_at),
         modified=df(old_event.updated_at),
         is_cancelled=bool(old_event.cancelled),
@@ -146,6 +178,8 @@ not_found_images = 0
 
 def import_image(old_event, new_event, old_folder, from_event_series=False):
     """
+    TODO: Just skip images that already existed
+
     Rails has saved images in weird subfolders.
     https://stackoverflow.com/questions/15494906/understanding-id-partition-in-paperclip
     paperclip id_partition method prepend '0' to ID of ActiveRecord instance to make it of length 9 characters.
@@ -201,15 +235,17 @@ def import_event(event, import_base_dir, from_event_series=False):
     # Create a Group from the old Location
     group = create_group(event)
 
+    created = False
+
     # Create Event
     if (
         from_event_series
         or not event.event_series_id
         or event.event_series_id not in event_series_map
     ):
-        new_event = create_event(event, group)
+        created, new_event = create_event(event, group, from_event_series=False)
         attach_to_event = new_event
-        if event.picture_file_name:
+        if created and event.picture_file_name:
             image = import_image(
                 event,
                 attach_to_event,
@@ -218,13 +254,15 @@ def import_event(event, import_base_dir, from_event_series=False):
             )
             if image:
                 print(image.image.url)
-        if event.link:
+        if created and event.link:
             create_event_link(event, attach_to_event)
     else:
         attach_to_event = event_series_map[event.event_series_id]
 
         if not attach_to_event.images.exists() and event.picture_file_name:
-            image = import_image(event, attach_to_event, import_base_dir)
+            # Only create image if none exist or it's a new event
+            if created or not attach_to_event.images.exists():
+                image = import_image(event, attach_to_event, import_base_dir)
 
         new_event = None
 
