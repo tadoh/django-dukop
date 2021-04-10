@@ -427,3 +427,13 @@ class Weekday(models.Model):
         verbose_name=_("name"),
     )
     number = models.PositiveSmallIntegerField(default=0, unique=True)
+
+
+class OldEventSync(models.Model):
+
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    old_fk = models.PositiveIntegerField()
+    is_series = models.BooleanField()
+
+    class Meta:
+        unique_together = ("old_fk", "is_series")

@@ -3,7 +3,7 @@
 
 {% block content_wrapper %}
 
-{% get_event_times as event_times %}
+{% get_event_times max_count=20 as event_times %}
 
 {% for event_time in event_times %}
 <div class="card">
