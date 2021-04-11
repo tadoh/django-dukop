@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 
 
-class CalendarConfig(AppConfig):
-    name = "dukop.apps.calendar"
-    label = "calendar"
+class NewsConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
+    name = "dukop.apps.news"
+    label = "news"

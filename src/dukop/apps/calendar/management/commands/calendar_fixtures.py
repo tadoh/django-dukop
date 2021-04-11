@@ -14,9 +14,12 @@ from django.core.management.base import CommandError
 from django.db import transaction
 from django.utils import timezone
 from dukop.apps.calendar import models
+from dukop.apps.news.models import NewsStory
 
 
 LOREM_IPSUM = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+LOREM_IPSUM_MARKDOWN = "## Lorem ipsum dolor sit amet\n\nconsectetur adipiscing elit\n\n### Sed do eiusmod tempor incididunt\n\n [A silly link](https://dr.dk) ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 
 
 def random_event_name():
@@ -182,6 +185,24 @@ class Command(BaseCommand):
                         event_image = models.EventImage(event=event)
                         event_image.image.save("jpeg", ContentFile(image_data))
                         event_image.save()
+
+            if NewsStory.objects.all().count() == 0:
+                self.stdout.write(
+                    "No News stories found, so creating 2 of those, too...\n".format()
+                )
+                NewsStory.objects.create(
+                    headline="Developers be having fun",
+                    short_story="A developer is working hard right now!",
+                    text=LOREM_IPSUM_MARKDOWN,
+                    published=True,
+                )
+                NewsStory.objects.create(
+                    headline="We think Django is great",
+                    short_story="We used a web framework called Django this time. It's going great. Click to read more.",
+                    text=LOREM_IPSUM_MARKDOWN,
+                    published=True,
+                    url="https://www.djangoproject.com/",
+                )
 
             self.stdout.write("Command execution completed\n".format())
 
