@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from ratelimit.decorators import ratelimit
 
@@ -8,6 +9,13 @@ from . import models
 
 def index(request):
     return render(request, "calendar/index.html")
+
+
+class EventDetailView(DetailView):
+
+    template_name = "calendar/event/detail.html"
+    model = models.Event
+    context_object_name = "event"
 
 
 class EventCreate(CreateView):

@@ -5,7 +5,9 @@ import uuid
 from builtins import staticmethod
 from functools import lru_cache
 
+from django.contrib.sites.models import Site
 from django.db import models
+from django.urls.base import reverse
 from django.utils.functional import cached_property
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
@@ -264,6 +266,13 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
+    def share_link(self):
+        current_site = Site.objects.get_current()
+        domain = current_site.domain
+        return "https://{}{}".format(
+            domain, reverse("calendar:event_detail", kwargs={"pk": self.pk})
+        )
 
 
 class EventTime(models.Model):

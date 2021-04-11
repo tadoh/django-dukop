@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load i18n sekizai_tags static %}
+{% load calendar_tags sorl_thumbnail %}
+{% load l10n %}
+
+{% block content %}
+
+<div class="create-event">
+  <div class="card__layout">
+    <div class="card__media">
+        {% with event.images.first as feature_image %}
+            {% if feature_image.image %}
+                {% thumbnail feature_image.image "400x250" crop="center" as event_thumbnail %}
+                    <img src="{{ event_thumbnail.url }}" alt="{{ event.name }}">
+                {% endthumbnail %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+
+    <div class="card__text">
+        <div class="card__header">
+          <div class="card__date">
+            {{ event.times.first.start }}
+          </div>
+          <div class="card__place card__link">
+            <a href="">{{ event.venue_name }}</a>
+          </div>
+          <div class="card__util card__link card__more">
+            <a href="">Download til kalender (ICS)</a>
+          </div>
+        </div>
+
+        <h1 class="card__title">{{ event.name }}</h1>
+
+        {% if event.description %}
+        {{ event.description|linebreaks }}
+        {% else %}
+        {{ event.short_description|linebreaks }}
+        {% endif %}
+        <p>
+            <a href="{{ event.share_link }}">
+                {% trans "Share link" %}
+            </a> <input type="text" value="{{ event.share_link }}">
+        </p>
+
+    </div>
+
+  </div>
+</div>
+
+
+{% addtoblock "js" %}
+    <script type="text/javascript" src="{% static 'js/event.js' %}"></script>
+{% endaddtoblock %}
+
+{% endblock %}

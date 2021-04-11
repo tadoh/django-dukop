@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "django.contrib.sites",
     "django.contrib.staticfiles",
     "compressor",
     "dukop.apps.calendar",
@@ -134,6 +135,7 @@ MEDIA_URL = "/media/"
 
 MEDIA_ROOT = str(BASE_DIR.parent.parent / "media")
 
+SITE_ID = 1
 
 LOGGING = {
     "version": 1,
@@ -204,3 +206,4 @@ LOGOUT_URL = reverse_lazy("users:logout")
 THUMBNAIL_PRESERVE_FORMAT = True
 
 CSP_STYLE_SRC = ["'self'", "'unsafe-inline'"]
+CSP_IMG_SRC = ["'self'", "data:"]

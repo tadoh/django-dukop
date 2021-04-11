@@ -5,10 +5,15 @@
 
 {% block content_wrapper %}
 
+
+{% addtoblock "js" %}
+<script type="text/javascript" src="{% static 'calendar/js/calendar.js' %}"></script>
+{% endaddtoblock %}
+
 {% get_event_times max_count=20 has_image=True as event_times %}
 
 {% for event_time in event_times %}
-<div class="card">
+<div class="card" data-hash="event-{{ event_time.event.pk }}" id="event-{{ event_time.event.pk }}">
   <div class="card__layout">
     <div class="card__media">
         {% with event_time.event.images.first as feature_image %}
@@ -25,10 +30,10 @@
           {{ event_time.start }}
         </div>
         <div class="card__place card__link">
-          <a href="/locations/109?locale=da">{{ event_time.event.venue_name }}</a>
+          <a href="{% url "calendar:event_detail" pk=event_time.event.pk slug=event_time.event.slug %}">{{ event_time.event.venue_name }}</a>
         </div>
         <div class="card__util card__link card__more">
-          <a href="/events/5276.ics?locale=da">Download til kalender (ICS)</a>
+          <a href="{% url "calendar:event_detail" pk=event_time.event.pk slug=event_time.event.slug %}">Download til kalender (ICS)</a>
         </div>
       </div>
       <div class="card__main">
@@ -42,11 +47,16 @@
             {% else %}
             {{ event_time.event.short_description|linebreaks }}
             {% endif %}
+            <p>
+            <a href="{% url "calendar:event_detail" pk=event_time.event.pk slug=event_time.event.slug %}">
+                {% trans "Share link and details page" %}
+            </a>
+            </p>
         </div>
       </div>
     </div>
   </div>
-  <a class="card__toggle js-toggle-card" href="/events/5276?locale=da"></a>
+  <a class="card__toggle js-toggle-card" href="{% url "calendar:event_detail" pk=event_time.event.pk slug=event_time.event.slug %}"></a>
 </div>
 
 {% endfor %}
@@ -179,7 +189,7 @@
       </div>
       {% endifchanged %}
 
-      <a href="/events/5276?locale=da" class="table__event">
+      <a href="{% url "calendar:event_detail" pk=event_time.event.pk slug=event_time.event.slug %}" class="table__event">
         <div class="table__time">
           {{ event_time.start.time|time }}
         </div>

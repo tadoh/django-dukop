@@ -22,11 +22,22 @@ function ready(event) {
     element.classList.toggle('js-active');
   }
 
+
+  window.onhashchange = function () {
+    console.log("window hash changed to", window.location.hash);
+  };
+
   function toggleCard(event) {
     event.preventDefault();
-    this.parentNode.classList.toggle('js-active')
+    this.parentNode.classList.toggle('js-active');
     document.getElementById('js-overlay').classList.toggle('js-active');
     document.getElementById('js-lock-body').classList.toggle('js-active');
+
+    // Change active URL
+    if (this.parentNode.classList.contains('js-active')) {
+       //prevents browser from storing history with each change:
+       window.location.hash = this.parentNode.dataset.hash;
+    }
   }
 
   function toggleBurger() {
@@ -40,10 +51,10 @@ function ready(event) {
   var listJsToggleCard = document.getElementsByClassName('js-toggle-card');
   addEventListenerList(listJsToggleCard, 'click', toggleCard);
 
-  var now = new Date;
+  var now = new Date();
   var nowElement = document.getElementById('timeline__now');
-  var timeAsNumber = now.getHours() + (now.getMinutes() / 60)
-  nowElement.style.marginLeft = (timeAsNumber - 8) * 6.25 + '%'
+  var timeAsNumber = now.getHours() + (now.getMinutes() / 60);
+  nowElement.style.marginLeft = (timeAsNumber - 8) * 6.25 + '%';
   // clean up event binding
   window.removeEventListener('DOMContentLoaded', ready);
 }
@@ -59,6 +70,6 @@ document.onkeydown = function (evt) {
     isEscape = (evt.keyCode == 27);
   }
   if (isEscape) {
-    closeAll()
+    closeAll();
   }
 };
