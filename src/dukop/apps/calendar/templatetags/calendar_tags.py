@@ -60,19 +60,20 @@ def event_timeline_properties(event_time, now=None):
     hours_x_max = 24
     hours_x = hours_x_max - hours_x_min
 
-    if event_time.start < now or event_time.start.hour < hours_x_min:
+    if event_time.start.date() < now.date() or event_time.start.hour < hours_x_min:
         x_start = hours_x_min
     else:
         x_start = event_time.start.hour + (event_time.start.minute / 60.0)
 
-    if event_time.end.date() > now.date():
+    if event_time.end.date() > now.date() or event_time.end.hour >= hours_x_max:
         x_end = hours_x_max
     else:
         x_end = event_time.end.hour + (event_time.end.minute / 60.0)
 
     x_start_pct = 100.0 * float(x_start - hours_x_min) / hours_x
     x_end_pct = 100.0 * float(x_end - hours_x_min) / hours_x
-
+    print(x_start_pct)
+    print(x_end_pct)
     width_pct = x_end_pct - x_start_pct
 
     return {
@@ -80,3 +81,30 @@ def event_timeline_properties(event_time, now=None):
         "x_end_pct": x_end_pct,
         "width_pct": width_pct,
     }
+
+
+@register.filter_function
+def dukop_date(dtm):
+    """
+    TODO: Use Django's translation gettext function to translate a date format
+    string that we want so we can specify for each language.
+    """
+    return utils.display_date(dtm)
+
+
+@register.filter_function
+def dukop_time(dtm):
+    """
+    TODO: Use Django's translation gettext function to translate a date format
+    string that we want so we can specify for each language.
+    """
+    return utils.display_time(dtm)
+
+
+@register.filter_function
+def dukop_datetime(dtm):
+    """
+    TODO: Use Django's translation gettext function to translate a date format
+    string that we want so we can specify for each language.
+    """
+    return utils.display_datetime(dtm)
