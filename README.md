@@ -45,6 +45,9 @@ python3 manage.py migrate
 
 # Create a superuser account so you can also log in for the first time.
 python3 manage.py createsuperuser
+
+# Generate some random event data
+python3 manage.py calendar_fixtures
 ```
 
 The development environment is now ready with an empty database and a single

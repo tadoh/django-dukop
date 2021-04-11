@@ -202,3 +202,5 @@ LOGOUT_URL = reverse_lazy("users:logout")
 # Necessary because of unsupported RGBA
 # See: https://github.com/jazzband/sorl-thumbnail/issues/564
 THUMBNAIL_PRESERVE_FORMAT = True
+
+CSP_STYLE_SRC = ["'self'", "'unsafe-inline'"]
