@@ -25,10 +25,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "compressor",
     "dukop.apps.calendar",
+    "dukop.apps.news",
     "dukop.apps.users",
     "dukop.apps.utils",
     "sekizai",
     "sorl.thumbnail",
+    "markdownfield",
 ]
 
 MIDDLEWARE = [
@@ -137,6 +139,11 @@ MEDIA_ROOT = str(BASE_DIR.parent.parent / "media")
 
 SITE_ID = 1
 
+# This is an annoying setting for django-markdownfield
+# Would be ideal if it could be replaced with something using django.contrib.sites
+# Avoid using it elsewhere.
+SITE_URL = "https://beta.dukop.dk"
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -207,3 +214,7 @@ THUMBNAIL_PRESERVE_FORMAT = True
 
 CSP_STYLE_SRC = ["'self'", "'unsafe-inline'"]
 CSP_IMG_SRC = ["'self'", "data:"]
+
+# This sucks
+# https://code.djangoproject.com/ticket/15727
+CSP_EXCLUDE_URL_PREFIXES = ("/en/admin",)

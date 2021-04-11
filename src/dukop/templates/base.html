@@ -1,4 +1,4 @@
-{% load i18n static compress sekizai_tags %}<!DOCTYPE html>
+{% load i18n static compress sekizai_tags news_tags %}<!DOCTYPE html>
 <html>
 <head>
     <title>Duk Op</title>
@@ -65,21 +65,24 @@
             <div class="footer">
                 <div class="footer__content">
                     <div class="footer__about">
-                        <h2 class="title title--footer">Om os</h2>
+                        <h2 class="title title--footer">{% trans "About us" %}</h2>
                         <p>DukOp er vores fælles guide til, hvad der sker i København og omegn, hvad enten du leder efter demonstrationer, koncerter, fester, møder, folkekøkkener, havedage, workshops, kunst- og filmfremvisninger, mv..</p>
                     </div>
                     <div class="footer__news">
-                        <h2 class="title title--footer">Nyt</h2>
+                        <h2 class="title title--footer">{% trans "Latest news" %}</h2>
+                        {% get_short_news as latest_news %}
+                        {% for story in latest_news %}
                         <div class="news">
-                                <a href="/posts/27?locale=da" class="news__link">
+                                <a href="{{ news.url_read_more }}" class="news__link">
                                 <div class="news__date">
-                                    28.12.18
+                                    {{ story.created|date }}
                                 </div>
                                 <div class="news__title">
-                                    DukOp anbefaler det nye Konfront.dk - Nyheder og Baggrund med mening!
+                                    {{ story.short_story }}
                                 </div>
                             </a>
                         </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
