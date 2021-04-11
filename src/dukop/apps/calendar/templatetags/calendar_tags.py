@@ -27,9 +27,9 @@ def get_event_times(
         to_date = from_date + timedelta(days=days)
 
     if from_date:
-        lookup["end__gte"] = from_date
+        lookup["end__gte"] = from_date.replace(minute=0, hour=0, second=0)
     if to_date:
-        lookup["start__lt"] = to_date
+        lookup["start__lte"] = to_date.replace(minute=0, hour=0, second=0)
 
     if featured is not None:
         lookup["event__featured"] = bool(featured)
