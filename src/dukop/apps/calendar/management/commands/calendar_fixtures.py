@@ -1,12 +1,5 @@
 """
-Event importing script
-
-Currently unsupported:
-
-- Updating images from old location. They only get created once
-- Updating event times
-- Updating event links
-
+For development purposes: Create a bunch of random events at random times.
 """
 import json
 import random
@@ -63,11 +56,12 @@ def random_event_name():
     ]
     purposes = [
         "bring peace",
-        "well-ness for everyone",
+        "wellness for everyone",
         "inner balance",
         "restore equality",
         "prove that nihilism is true",
-        "make nice" "be great",
+        "make nice",
+        "be great",
     ]
 
     return "{adverb} {thing} {proposition} {purpose}".format(
@@ -117,6 +111,7 @@ def random_image():
         print(image_url)
         r = requests.get(image_url)
         IMAGES.append(r.content)
+        return r.content
     return random.choice(IMAGES)
 
 
@@ -152,10 +147,13 @@ class Command(BaseCommand):
 
                 for __ in range(random.choice(range(1, max_per_day))):
 
-                    start = timezone.now() + timedelta(days=n)
-                    end = timezone.now() + timedelta(
-                        days=n + random.choice([0, 0, 0, 0, 0, 1])
+                    start = (timezone.now() + timedelta(days=n)).replace(
+                        hour=0, minute=0, second=0
                     )
+                    end = (
+                        timezone.now()
+                        + timedelta(days=n + random.choice([0, 0, 0, 0, 0, 1]))
+                    ).replace(hour=0, minute=0, second=0)
 
                     start += timedelta(hours=random.choice(range(0, 24)))
                     start += timedelta(minutes=random.choice([0, 0, 15, 30, 30, 45]))
