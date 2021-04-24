@@ -9,12 +9,12 @@ DATABASES = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": str(BASE_DIR.parent / "test.sqlite3"),
     },
-    "detsker": {
-        "NAME": "detsker",
-        "ENGINE": "django.db.backends.postgresql",
-        "USER": "",
-        "PASSWORD": "",
-    },
+    #    "detsker": {
+    #        "NAME": "detsker",
+    #        "ENGINE": "django.db.backends.postgresql",
+    #        "USER": "",
+    #        "PASSWORD": "",
+    #    },
 }
 
 INSTALLED_APPS.append("dukop.apps.sync_old")
