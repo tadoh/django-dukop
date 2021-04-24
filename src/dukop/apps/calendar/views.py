@@ -24,11 +24,14 @@ class EventDetailView(DetailView):
         qs = DetailView.get_queryset(self)
 
         if not self.request.user or not self.request.user.is_staff:
-            qs = qs.filter(
-                Q(published=True)
-                | Q(owner_user=self.request.user)
-                | Q(owner_group__members=self.request.user)
-            )
+            if self.request.user.is_authenticated:
+                qs = qs.filter(
+                    Q(published=True)
+                    | Q(owner_user=self.request.user)
+                    | Q(owner_group__members=self.request.user)
+                )
+            else:
+                qs = qs.filter(published=True)
         return qs
 
 
