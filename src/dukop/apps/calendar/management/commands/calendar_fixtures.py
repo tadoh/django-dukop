@@ -2,12 +2,14 @@
 For development purposes: Create a bunch of random events at random times.
 """
 import json
+import os
 import random
 import sys
 import traceback
 from datetime import timedelta
 
 import requests
+from django.contrib.sites.models import Site
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
 from django.core.management.base import CommandError
@@ -47,7 +49,7 @@ def random_event_name():
         "workshop",
         "role-play",
         "flash mob",
-        "celebartion",
+        "celebration",
     ]
     propositions = [
         "in order to",
@@ -89,9 +91,14 @@ def random_venue():
 IMAGES = []
 
 
-def random_image():
+def random_image(use_local=False):
     global IMAGES
     image_width = 1024
+
+    if use_local:
+        return open(
+            os.path.join(os.path.dirname(__file__), "testphoto.jpg"), "rb"
+        ).read()
 
     url = (
         "http://commons.wikimedia.org/w/api.php"
@@ -137,12 +144,19 @@ class Command(BaseCommand):
             default=10,
             help="Number of days from now and into future",
         )
+        parser.add_argument(
+            "--local-image",
+            type=bool,
+            default=False,
+            help="Use the local test image, not from Wikimedia",
+        )
 
     @transaction.atomic
     def handle(self, *args, **options):
 
         no_days = options["days"]
         max_per_day = options["max_per_day"]
+        local_image = options.get("local_image", False)
         try:
             self.stdout.write("Starting to import")
 
@@ -181,7 +195,7 @@ class Command(BaseCommand):
                     )
 
                     if random.choice([True, False]):
-                        image_data = random_image()
+                        image_data = random_image(use_local=local_image)
                         event_image = models.EventImage(event=event)
                         event_image.image.save("jpeg", ContentFile(image_data))
                         event_image.save()
@@ -204,7 +218,15 @@ class Command(BaseCommand):
                     url="https://www.djangoproject.com/",
                 )
 
-            self.stdout.write("Command execution completed\n".format())
+            if Site.objects.filter(domain="example.com").exists():
+                Site.objects.filter(domain="example.com").update(
+                    domain="localhost:8000"
+                )
+                self.stdout.write(
+                    self.style.SUCCESS("Changed example.com to localhost:8000")
+                )
+
+            self.stdout.write(self.style.SUCCESS("Created a bunch of example data"))
 
         except Exception as e:  # noqa
             exc_type, exc_value, exc_traceback = sys.exc_info()
