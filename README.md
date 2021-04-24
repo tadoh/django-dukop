@@ -1,6 +1,6 @@
 # dukop.dk
 
-[![Build Status](https://travis-ci.com/dukop/django-dukop.svg?branch=master)](https://travis-ci.com/dukop/django-dukop)
+[![Build Status](https://circleci.com/gh/dukop/django-dukop/tree/main.svg?style=shield)](https://circleci.com/gh/dukop/django-dukop/tree/main)
 
 Collaborate calendar for local *spheres*, such as "DukOp Copenhagen" or "DukOp Århus".
 
