@@ -3,6 +3,8 @@
 {% load calendar_tags sorl_thumbnail %}
 {% load l10n %}
 
+{% block dukop_title %}{{ event.name }} - {{ event.venue_name }}{% endblock %}
+
 {% block content %}
 
 <div class="create-event">
