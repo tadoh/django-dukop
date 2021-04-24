@@ -1,3 +1,20 @@
+.header-wrapper {
+    position: relative;
+    padding-top: 10px;
+    .language {
+        position: absolute;
+        right: 20px;
+        z-index: 20;
+        a, a:active, a:visited {
+            display: inline-block;
+            background-color: #222;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+    }
+}
 .header {
   display: flex;
   flex-wrap: wrap;
