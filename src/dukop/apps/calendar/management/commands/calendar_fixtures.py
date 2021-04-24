@@ -8,6 +8,7 @@ import traceback
 from datetime import timedelta
 
 import requests
+from django.contrib.sites.models import Site
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
 from django.core.management.base import CommandError
@@ -47,7 +48,7 @@ def random_event_name():
         "workshop",
         "role-play",
         "flash mob",
-        "celebartion",
+        "celebration",
     ]
     propositions = [
         "in order to",
@@ -204,7 +205,15 @@ class Command(BaseCommand):
                     url="https://www.djangoproject.com/",
                 )
 
-            self.stdout.write("Command execution completed\n".format())
+            if Site.objects.filter(domain="example.com").exists():
+                Site.objects.filter(domain="example.com").update(
+                    domain="localhost:8000"
+                )
+                self.stdout.write(
+                    self.style.SUCCESS("Changed example.com to localhost:8000")
+                )
+
+            self.stdout.write(self.style.SUCCESS("Created a bunch of example data"))
 
         except Exception as e:  # noqa
             exc_type, exc_value, exc_traceback = sys.exc_info()

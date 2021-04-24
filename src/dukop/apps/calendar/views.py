@@ -1,3 +1,6 @@
+from django.db import transaction
+from django.db.models import Q
+from django.shortcuts import redirect
 from django.shortcuts import render
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
@@ -16,6 +19,25 @@ class EventDetailView(DetailView):
     template_name = "calendar/event/detail.html"
     model = models.Event
     context_object_name = "event"
+
+    def get_queryset(self):
+        qs = DetailView.get_queryset(self)
+
+        if not self.request.user or not self.request.user.is_staff:
+            qs = qs.filter(
+                Q(published=True)
+                | Q(owner_user=self.request.user)
+                | Q(owner_group__members=self.request.user)
+            )
+        return qs
+
+
+class EventCreateSuccess(EventDetailView):
+    """
+    Same as viewing an event - but with a different template
+    """
+
+    template_name = "calendar/event/create_success.html"
 
 
 class EventCreate(CreateView):
@@ -39,7 +61,9 @@ class EventCreate(CreateView):
         POST variables and then check if it's valid.
         """
         self.object = None
-        self.images_form = forms.EventImageFormSet(data=request.POST, prefix="images")
+        self.images_form = forms.EventImageFormSet(
+            data=request.POST, files=request.FILES, prefix="images"
+        )
         self.times_form = forms.EventTimeFormSet(data=request.POST, prefix="times")
         self.links_form = forms.EventLinkFormSet(data=request.POST, prefix="links")
         form = self.get_form()
@@ -53,8 +77,39 @@ class EventCreate(CreateView):
         else:
             return self.form_invalid(form)
 
+    @transaction.atomic()
     def form_valid(self, form):
-        return CreateView.form_valid(self, form)
+        self.object = form.save()
+        event = self.object
+
+        for form in self.images_form:
+            if form.is_valid() and form.cleaned_data.get("image"):
+                if form.cleaned_data.get("DELETE") and form.instance.pk:
+                    pass
+                else:
+                    image = form.save(commit=False)
+                    image.event = event
+                    image.save()
+
+        for form in self.times_form:
+            if form.is_valid() and form.has_changed():
+                if form.cleaned_data.get("DELETE") and form.instance.pk:
+                    pass
+                else:
+                    times = form.save(commit=False)
+                    times.event = event
+                    times.save()
+
+        for form in self.links_form:
+            if form.is_valid() and form.has_changed():
+                if form.cleaned_data.get("DELETE") and form.instance.pk:
+                    pass
+                else:
+                    link = form.save(commit=False)
+                    link.event = event
+                    link.save()
+
+        return redirect("calendar:event_create_success", pk=event.pk)
 
     def form_invalid(self, form):
         self.forms_had_errors = True

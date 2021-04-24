@@ -1,0 +1,11 @@
+{% extends "users/mail/base.txt" %}{% load i18n %}
+
+{% block content %}{% url 'admin:calendar_event_change' event.id as event_url %}{% blocktrans with name=event.name published=event.published|yesno created=event.created %}A new event has been created!
+
+Title: {{ name }}
+Published: {{ published }}
+Created: {{ created }}
+
+{{ protocol }}://{{ domain }}{{ event_url }}
+
+{% endblocktrans %}{% endblock %}

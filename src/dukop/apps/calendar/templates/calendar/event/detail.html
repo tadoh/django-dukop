@@ -21,7 +21,7 @@
     <div class="card__text">
         <div class="card__header">
           <div class="card__date">
-            {{ event.times.first.start|dukop_datetime }}
+            {{ event.times.all.first.start|dukop_datetime|default:_("None") }}
           </div>
           <div class="card__place card__link">
             <a href="">{{ event.venue_name }}</a>
@@ -48,10 +48,5 @@
 
   </div>
 </div>
-
-
-{% addtoblock "js" %}
-    <script type="text/javascript" src="{% static 'js/event.js' %}"></script>
-{% endaddtoblock %}
 
 {% endblock %}

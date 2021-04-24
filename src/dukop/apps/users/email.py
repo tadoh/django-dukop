@@ -60,7 +60,7 @@ class UserConfirm(BaseEmail):
 class UserToken(BaseEmail):
 
     template = "users/mail/token_login.txt"
-    default_subject = _("")
+    default_subject = _("Hello here is an account on Dukop")
 
     def __init__(self, *args, **kwargs):
         self.next = kwargs.pop("next", None)
@@ -70,3 +70,12 @@ class UserToken(BaseEmail):
         c = super().get_context_data()
         c["next"] = self.next
         return c
+
+
+class AdminEventCreated(BaseEmail):
+
+    template = "users/mail/admin_event_created.txt"
+    default_subject = _("A new event has been created")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(None, *args, **kwargs)

@@ -3,7 +3,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.utils import timezone
 from django.utils.formats import date_format
-from django.utils.formats import time_format
+from django.utils.translation import gettext as _
 
 
 def get_now():
@@ -23,11 +23,11 @@ def display_date(dtm):
 
 
 def display_time(dtm):
-    return time_format(dtm)
+    return dtm.strftime("%H:%M")
 
 
 def display_datetime(dtm):
-    return date_format(dtm) + " " + time_format(dtm)
+    return _("{date} at {time}").format(date=date_format(dtm), time=display_time(dtm))
 
 
 def populate_interval():

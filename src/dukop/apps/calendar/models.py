@@ -66,6 +66,11 @@ class Sphere(models.Model):
 
     default = models.BooleanField(default=False)
 
+    admins = models.ManyToManyField(
+        "users.User",
+        limit_choices_to={"is_staff": True},
+    )
+
     class Meta:
         ordering = ("-default", "name")
         verbose_name = _("Sphere")
