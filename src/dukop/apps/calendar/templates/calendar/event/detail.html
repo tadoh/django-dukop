@@ -7,7 +7,6 @@
 
 {% block content %}
 
-<div class="create-event">
   <div class="card__layout">
     <div class="card__media">
         {% with event.images.first as feature_image %}
@@ -43,12 +42,12 @@
         <p>
             <a href="{{ event.share_link }}">
                 {% trans "Share link" %}
-            </a> <input type="text" value="{{ event.share_link }}">
+            </a><br>
+            <input type="text" value="{{ event.share_link }}" class="share-text-input">
         </p>
 
     </div>
 
   </div>
-</div>
 
 {% endblock %}
