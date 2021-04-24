@@ -3,8 +3,9 @@
 {% load i18n %}
 {% load l10n %}
 
-{% block content_wrapper %}
+{% block dukop_title %}{% trans "Start" %}{% endblock %}
 
+{% block content_wrapper %}
 
 {% addtoblock "js" %}
 <script type="text/javascript" src="{% static 'calendar/js/calendar.js' %}"></script>
