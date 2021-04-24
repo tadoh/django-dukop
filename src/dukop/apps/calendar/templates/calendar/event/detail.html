@@ -21,7 +21,7 @@
     <div class="card__text">
         <div class="card__header">
           <div class="card__date">
-            {{ event.times.first.start }}
+            {{ event.times.first.start|dukop_datetime }}
           </div>
           <div class="card__place card__link">
             <a href="">{{ event.venue_name }}</a>

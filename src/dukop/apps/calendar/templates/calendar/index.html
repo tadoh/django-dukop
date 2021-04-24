@@ -27,7 +27,7 @@
     <div class="card__text">
       <div class="card__header">
         <div class="card__date">
-          {{ event_time.start }}
+          {{ event_time.start|dukop_datetime }}
         </div>
         <div class="card__place card__link">
           <a href="{% url "calendar:event_detail" pk=event_time.event.pk slug=event_time.event.slug %}">{{ event_time.event.venue_name }}</a>
@@ -185,13 +185,13 @@
     <div class="table__day">
       {% ifchanged event_time.start.date %}
       <div class="table__header">
-        {{ event_time.start.date|date }}
+        {{ event_time.start.date|dukop_date }}
       </div>
       {% endifchanged %}
 
       <a href="{% url "calendar:event_detail" pk=event_time.event.pk slug=event_time.event.slug %}" class="table__event">
         <div class="table__time">
-          {{ event_time.start.time|time }}
+          {{ event_time.start|time:"H:i" }}
         </div>
         <div class="table__title">
           {{ event_time.event.name }}

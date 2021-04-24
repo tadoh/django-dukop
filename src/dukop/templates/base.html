@@ -73,7 +73,7 @@
                         {% get_short_news as latest_news %}
                         {% for story in latest_news %}
                         <div class="news">
-                                <a href="{{ news.url_read_more }}" class="news__link">
+                                <a href="{{ story.url_read_more }}" class="news__link">
                                 <div class="news__date">
                                     {{ story.created|date }}
                                 </div>
