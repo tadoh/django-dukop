@@ -46,13 +46,17 @@ class EventTimeForm(forms.ModelForm):
 
 class EventImageForm(forms.ModelForm):
 
-    is_cover = forms.BooleanField()
+    is_cover = forms.BooleanField(
+        required=False,
+        label=_("Cover image"),
+        help_text=_("If you have several images, use this one as the cover"),
+    )
 
     def save(self, commit=True):
         # A very naive implementation of priority, just sets '0' on the
         # cover image
         image = forms.ModelForm.save(self, commit=False)
-        if self.cleaned_data["is_cover"]:
+        if self.cleaned_data.get("is_cover", False):
             image.priority = 0
         else:
             image.priority = 1
@@ -60,7 +64,7 @@ class EventImageForm(forms.ModelForm):
 
     class Meta:
         model = models.EventImage
-        fields = ("image",)
+        fields = ("image", "is_cover")
 
 
 class EventLinkForm(forms.ModelForm):

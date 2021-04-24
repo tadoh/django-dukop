@@ -6,7 +6,7 @@ Django settings for dukop project.
 import pathlib
 
 from django.urls.base import reverse_lazy
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: str(BASE_DIR / "static")
 BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
@@ -197,12 +197,12 @@ LOGGING = {
 }
 
 COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
-COMPRESS_CSS_FILTERS = (
+COMPRESS_FILTERS = {
     # CssAbsoluteFilter is incredibly slow, especially when dealing with our _flags.scss
     # However, we don't need it if we consequently use the static() function in Sass
     # 'compressor.filters.css_default.CssAbsoluteFilter',
-    "compressor.filters.cssmin.CSSCompressorFilter",
-)
+    "css": ["compressor.filters.cssmin.CSSCompressorFilter"],
+}
 
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = reverse_lazy("users:login")

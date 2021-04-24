@@ -30,7 +30,7 @@
       {% trans "After creating the event, it's possible to edit it. You can also create an event and publish it later." %}
   </p>
 
-    <form action="" method="post" class="event__form">
+    <form action="" method="POST" class="event__form" enctype="multipart/form-data">
       {% csrf_token %}
       <h2>{% trans "Basic details" %}</h2>
       <table>
@@ -174,7 +174,7 @@
 
 
 {% addtoblock "js" %}
-    <script type="text/javascript" src="{% static 'js/event.js' %}"></script>
+    <script type="text/javascript" src="{% static 'calendar/js/create_event.js' %}"></script>
 {% endaddtoblock %}
 
 {% endblock %}

@@ -62,6 +62,7 @@ class LoginView(FormView, SuccessURLAllowedHostsMixin):
             )
             mail.send_with_feedback(success_msg=_("Check your inbox"))
         except models.User.DoesNotExist:
+            # The email did not exist, but we are not going to do anything differently because of this.
             pass
         self.request.session["email_token"] = form.cleaned_data["email"]
         return redirect("users:login_token_sent")
@@ -157,18 +158,23 @@ class SignupView(FormView):
 
     def form_valid(self, form):
 
+        print("Starting form_valid")
         try:
             user = models.User.objects.get(email=form.cleaned_data["email"])
             user.set_token()
             mail = email.UserToken(self.request, user=user)
             mail.send_with_feedback(success_msg=_("Check your inbox"))
+            print("Sent a token to existing user")
         except models.User.DoesNotExist:
             user = models.User.objects.create_user(email=form.cleaned_data["email"])
             user.is_active = True  # The user is active by default
             user.save()
             user.set_token()
             mail = email.UserConfirm(self.request, user=user)
+            # Give the same feedback regardless so this isn't used to lookup
+            # email addresses
             mail.send_with_feedback(success_msg=_("Check your inbox"))
+            print("Created a new user")
 
         self.request.session["user_confirm_pending_id"] = user.id
 
