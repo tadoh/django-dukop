@@ -12,6 +12,8 @@ def event_created(**kwargs):
     created = kwargs.get("created", False)
 
     if created:
+        if hasattr(event, "skip_admin_notifications"):
+            return
         admins = {}
         for sphere in event.spheres.all():
             for user in sphere.admins.filter(is_active=True):

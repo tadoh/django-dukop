@@ -138,11 +138,14 @@ def create_event(old_event, group, from_event_series=False):
         created = True
         event = Event()
 
+    # This is not a database field
+    event.skip_admin_notifications = True
+
     event.name = old_event.title
     event.short_description = old_event.short_description or ""
     event.description = old_event.long_description or ""
     event.is_cancelled = bool(old_event.cancelled)
-    event.created = old_event.created_at
+    event.created = df(old_event.created_at)
     event.published = bool(old_event.published)
 
     if not from_event_series:
@@ -156,6 +159,11 @@ def create_event(old_event, group, from_event_series=False):
         event.zip_code = old_event.location.postcode[:16]
         event.city = old_event.location.town
     event.save()
+    OldEventSync.objects.get_or_create(
+        is_series=from_event_series,
+        old_fk=old_event.id,
+        event=event,
+    )
     return created, event
 
 
@@ -274,13 +282,15 @@ def import_event(event, import_base_dir, from_event_series=False):
         new_event = None
 
     # EventTime
-    if not from_event_series and event.start_time:
+    if created and not from_event_series and event.start_time:
         create_event_time(event, attach_to_event)
 
-    if new_event:
-        print("Imported event: {}".format(new_event))
+    if created:
+        print("Imported new event: {}".format(new_event))
+    elif new_event:
+        print("Updated existing event: {}".format(attach_to_event))
     else:
-        print("Attached time to event: {}".format(attach_to_event))
+        print("Did not create an event for old event id {}".format(event.id))
 
     return new_event
 
