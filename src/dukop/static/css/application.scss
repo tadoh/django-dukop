@@ -119,6 +119,15 @@ h5 {
 
 .footer {
   margin-top: 40px;
+
+  .footer__about {
+      margin-right: 20px;
+  }
+  .footer__news {
+      margin-left: 20px;
+  }
+
+
 }
 
 @media (min-width: 700px){

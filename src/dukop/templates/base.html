@@ -37,7 +37,6 @@
                         </a>
                     </div>
                     <div class="header__filler"></div>
-                    <a class="header__link" href="{% url "news:about" %}">{% trans "About" %}</a>
                     {% if user.is_authenticated %}
                       <a class="header__link" href="{% url "calendar:event_create" %}">{% trans "New event" %}</a>
                       <a class="header__link" href="{% url "users:logout" %}">{% trans "Log out" %}</a>
@@ -76,7 +75,11 @@
                 <div class="footer__content">
                     <div class="footer__about">
                         <h2 class="title title--footer">{% trans "About us" %}</h2>
-                        <p>DukOp er vores fælles guide til, hvad der sker i København og omegn, hvad enten du leder efter demonstrationer, koncerter, fester, møder, folkekøkkener, havedage, workshops, kunst- og filmfremvisninger, mv..</p>
+                        <p>{% trans "Duk Op is your guide to what happens in and around Copenhagen, whether you are looking for demonstrations, concerts, parties, meetings, soup kitchens, gardening days, workshops, art exhibitions, film screenings and much more." %}</p>
+                        <p>
+                            <a href="{% url "news:about" %}">{% trans "Read more" %}</a><br>
+                            <a href="{% url "news:about" %}#contact">{% trans "Contact us" %}</a>
+                        </p>
                     </div>
                     <div class="footer__news">
                         <h2 class="title title--footer">{% trans "Latest news" %}</h2>
@@ -91,6 +94,10 @@
                                     {{ story.short_story }}
                                 </div>
                             </a>
+                        </div>
+                        {% empty %}
+                        <div class="news">
+                            <p>{% trans "No news is good news?" %}</p>
                         </div>
                         {% endfor %}
                     </div>
