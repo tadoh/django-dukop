@@ -26,6 +26,7 @@ from dukop.apps.calendar.models import EventInterval
 from dukop.apps.calendar.models import EventLink
 from dukop.apps.calendar.models import EventTime
 from dukop.apps.calendar.models import OldEventSync
+from dukop.apps.calendar.models import Sphere
 from dukop.apps.calendar.models import Weekday
 from dukop.apps.sync_old import models
 from dukop.apps.users.models import Group
@@ -141,6 +142,7 @@ def create_event(old_event, group, from_event_series=False):
     # This is not a database field
     event.skip_admin_notifications = True
 
+    event.sphere = Sphere.objects.get(slug="cph")
     event.name = old_event.title
     event.short_description = old_event.short_description or ""
     event.description = old_event.long_description or ""
