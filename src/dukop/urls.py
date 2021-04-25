@@ -25,6 +25,7 @@ from django.urls import path
 
 urlpatterns = i18n_patterns(
     path("admin/", admin.site.urls),
+    path("news/", include("dukop.apps.news.urls")),
     path("users/", include("dukop.apps.users.urls")),
     path("", include("dukop.apps.calendar.urls")),
 )

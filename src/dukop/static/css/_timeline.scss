@@ -58,12 +58,12 @@
   position: absolute;
   display: block;
   width: 200px;
-  color: #444;
+  color: #fff;
 }
 
 
 .timeline__scale {
-  border-top: 1px solid rgba(0, 0, 0, 0.7);
+  border-top: 2px solid rgba(0, 0, 0, 0.7);
   margin: 20px 0 0px 0;
 }
 
@@ -93,7 +93,7 @@
   display: block;
   height: 100%;
   width: 1px;
-  margin-left: 8px;
+  margin-left: 7px;
   content: '';
-  border-left: 1px solid #666;
+  border-left: 2px solid #666;
 }

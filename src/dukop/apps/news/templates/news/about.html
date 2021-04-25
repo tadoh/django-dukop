@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load i18n static compress sekizai_tags news_tags %}
+
+{% block content %}
+
+<h1>{% trans "About Duk Op" %}</h1>
+
+{# Notice that if you change the English original, the Danish translation will not be matched #}
+{# You have to run makemessages and compilemessages #}
+{% blocktrans %}
+<p>Duk Op is your guide to what happens in and around Copenhagen, whether you are looking for demonstrations, concerts, parties, meetings, soup kitchens, gardening days, workshops, art exhibitions, film screenings and much more.</p>
+
+<p>Jump to:</p>
+
+ <ul>
+     <li><a href="#contact">Contact</a></li>
+     <li><a href="#policy">Our security policy</a></li>
+     <li><a href="#users">Duk Op's different user types</a></li>
+     <li><a href="#why">Why should I think about internet security?</a></li>
+     <li><a href="#protect">How should I protect myself when on Duk Op?</a></li>
+     <li><a href="#read">Further readings about internet security</a></li>
+ </ul>
+
+<p>The idea behind the calendar is that there is a need for a simple and accessible way to get involved and involve others in these cool activities. Money shouldn't be an issue, as you should not be dependent on having the "right" friends on Facebook or on checking ten different online calendars to get an overview of what's happening. Duk Op is a possibility to open up, gather and discover new and exciting projects.</p>
+
+<p>The crew behind the homepage does not upload events to the calendar, so Duk Op is entirely dependent on you and your group contributing with your events and activities!</p>
+
+<p>Duk Op is a political project. We dream of a different and better world. A world based on principles of freedom, equality and autonomy and without discrimination and oppression in all its forms. We get excited about activism, self-organisation and about initiatives and cultural projects that are more than something you can write on your CV or that you can earn money from. We wish to support places, groups and individuals who share these values. For this reason, events that for instance have a parlamentarian goal or that aim at commercial profit are not welcome on the calendar.</p>
+
+<p>Generally, Duk Op aims at hosting open events. However, we do see exceptions, for example in the case of separatistic events that focus on gender. On the other hand, closed member-meetings and the like do not belong on the calendar, but belong to the organisation or group's own communication channels (e.g. mailing-list).</p>
+
+<p>We hope that Duk Op can function as a mobilising platform, can make it easier to get involved and involve others and can inspire and motivate by showing all the great activities that are happening out there.</p>
+
+<h2 id="contact">Contact us</h2>
+
+<p>If you have questions regarding what you have just read, or about anything else, write as an email to dukop@riseup.net</p>
+
+<p>To the security conscious: We have <a href="https://pgp.mit.edu/pks/lookup?op=get&search=0xE74B09BA26CE1DD7">a PGP key</a>.</p>
+
+<p>The key ID is <code>0x26CE1DD7</code>. The full key fingerprint is:</p>
+
+<pre>
+Key fingerprint = 5832 0CBF 30E8 8572 F8A4 1943 E74B 09BA 26CE 1DD7
+</pre>
+{% endblocktrans %}
+
+{# Notice that if you change the English original, the Danish translation will not be matched #}
+{# You have to run makemessages and compilemessages #}
+{% blocktrans %}
+
+<h1>Duk Op and Online Security</h1>
+
+ <p>
+  Duk Op takes your internet privacy seriously, and does its best to avoid gathering unnecessary information about its users. On this page you can read more about our policy, about the different user types we have on the website, about why you should protect yourself when surfing the internet, and also find a simple way to protect your privacy when online.
+  </p>
+
+ <h2 id="policy">Our policy</h2>
+ <p>
+  The aim of our privacy policy is to protect our users from unwanted surveillance of their online activities.
+  User privacy is one of our foremost concerns and we have developed dukop.dk with this in mind.
+  </p>
+ <p>
+ Like almost all websites, we log visits and activity on the website in order to debug errors and identify attackers.
+ However, we delete all logs that are more than two days old and we do not make any effort to connect IP addresses to specific users or their activity.
+ This means that we cannot in practice connect users to IP addresses after these two days, nor do we wish to.
+ Please note however, that if you need to conceal your IP address while on Duk Op, we recommend the use of TOR, as <a href="#protect">described below</a>.
+ </p>
+ <p>
+  For the same reason we have actively chosen not to link our Duk Op login to Facebook or Google, which are companies that you cannot trust, when it concerns your data and your privacy.
+ </p>
+ <p>We do however save the email addresses of our registered users in our database. This is necessary for us to send email confirmations and to allow us to reset users' passwords for them.
+ We may also use user's email address to contact users if there are problems with the events they have created. Users' passwords are stored in an encrypted format in our database (bcrypt). This means that even though we control our database, we still cannot read your password; we can only confirm that you have entered the correct password when you log in.</p>
+ <p>Duk Op is only available over a secure web connection. This means that the data you exchange with the application will always be encrypted to prevent interception by people eavesdropping on your connection.</p>
+
+ <h2 id="users">Duk Op's different user types</h2>
+ <p>
+ There are two different possibilities to create events here on dukop.dk. Events can either be created by registered users or by anonymous users.
+ </p>
+ <h4>Registered user</h4>
+ <p>
+ To log in as a user you need to register with a username and password, and need to write your email in order to get a confirmation. This allows you to access more functions, like editing or deleting events you have created or commenting on your and others' events with your visible username.
+ </p>
+ <h4>Anonymous user</h4>
+ <p>
+  Alternatively, you can choose to create events anonymously. A username is generated for you, and you do not need to provide a password or a valid email address. The event is created by the user "Anonymous". Keep in mind that you cannot edit or delete your event after your session expires or you log out.
+ </p>
+ <p>
+  Cool, right? Yes, but there are still some things you need to be aware of, if you need to make sure that no one else (for instance your internet provider) eavesdrops when you use dukop.dk and if you want to make use of all the features on the website. Read on to find out why should protect yourself on the internet, or jump directly to how you can do it.
+ </p>
+
+ <h2 id="why">Why should I think about internet security?</h2>
+ <p>
+  Despite the fact that we do not register your IP address when you visit dukop.dk, as a rule of thumb you cannot trust that your internet provider or other actors do not keep an eye on what you do online. For this reason you need to be very careful if you want to protect yourself and your private life, for instance when you invite other people to participate in political activities. Perhaps you are sitting there and thinking that the activities you are advertising for on Duk Op are legal and innocent, and that you do not need to worry about internet security. Well, you might be right, but there are at least two good reasons to protect yourself when you use Duk Op (and all the rest of the internet, too!).
+ </p>
+ <p>
+  The first good reason is that it is all about habits: the more we get used to protect ourselves in normal and "innocent" situations on the internet, the less we will need to change our ways of doing when we actually do need to be anonymous. So it may very well be that you don't think that the lecture on Swedish birds you are holding in two weeks is anything dangerous, but by acting securely and by protecting you today, you get used to it, and do not panic or make mistakes when you need to invite to pirate party or a blockade in two months.
+ </p>
+ <p>
+  The second good reason is solidarity: the more people hides their traces from the internet, the less suspicious it looks, when others, that might need it more than us, do it too. So, by using the intenet securely, you are doing a favour to both yourself and your comrades!
+  </p>
+
+ <h2 id="project">How should I protect myself when on Duk Op?</h2>
+ <p>
+ If you have come this far, you have hopefully been convinced of the need of doing a small effort to protect your data and hide your traces on the internet. The most normal situation, and probably also what you are interested in here on Duk Op, is to avoid that your name, email or IP address gets connected to a specific place, group of activists or type of activity. Fortunately there is a good and easy-to-use tool that can help you with it! Its name is TOR (The Onion Router), and can be downloaded here: <a href="https://www.torproject.org">www.torproject.org</a>
+ </p>
+ <p>
+  TOR is very simple to use: you unpack its compressed file, install it (Ubuntu and Linux users: no install needed), and click on the icon. TOR then launches a version of Mozilla Firefox, which is set up so that you can surf anonymously on the internet. This means that no one can see which websites you are visiting and, here on Duk Op, that no one can see that it is you, that is creating a certain event. You can read more about TOR on their homepage, but we can give you a couple of ideas on how you can use TOR on Duk Op.
+ </p>
+ <p>You can use TOR on Duk Op in two different ways:</p>
+ <ol>
+     <li>
+          You can use it when you create anonmyous events (highly recommended!). Only in this way you can be sure that there is no one else reading the communication between your computer and our server, when you create an event. In practice it means that you open TOR, write dukop.dk in the address field of the TOR browser and create your anonymous events from there.
+     </li>
+     <li>
+          The other way to use TOR is to create a new email account, which you can use to create a user on Duk Op. By creating a new email address and by NEVER logging into it without using TOR, no one can see who the person that sits behind the email address is. After you have created an email address, you can use it to create a new Duk Op user. Afterwards, when you log in to Duk Op via the TOR browser, you can make use of all the features that registered users have access to, without compromising your internet security.
+     </li>
+ </ol>
+ <p>Remember to read TOR's <a href="https://www.torproject.org/download/download-easy.html.en#warning">warning page</a>.</p>
+ <h2 id="read">Further reading material about online security</h2>
+ <ul class="list">
+     <li>You can find guides and get an overview on Riseup <a href="https://help.riseup.net/en/security/resources">Security Resources</a></li>
+     <li><a href="https://prism-break.org/en/">Prism Break</a> is a new page that has gathered an overview of the newest and best security programs.</li>
+     <li><a href="https://emailselfdefense.fsf.org/en/">Pedagogic guide to E-mail encryption</a>.</li>
+ </ul>
+{% endblocktrans %}
+
+
+{% endblock %}

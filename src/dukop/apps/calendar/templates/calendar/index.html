@@ -11,7 +11,7 @@
 <script type="text/javascript" src="{% static 'calendar/js/calendar.js' %}"></script>
 {% endaddtoblock %}
 
-{% get_event_times max_count=20 has_image=True as event_times %}
+{% get_event_times max_count=20 has_image=True days=14 as event_times %}
 
 {% for event_time in event_times %}
 <div class="card" data-hash="event-{{ event_time.event.pk }}" id="event-{{ event_time.event.pk }}">
@@ -77,89 +77,6 @@
     <div class="timeline__event timeline__event--right" data-text="{% trans "Nothing planned today, this is your chance to do something! Gather your people!" %}">
     </div>
   {% endfor %}
-
-  {% comment %}
-
-    <div class="timeline__event timeline__event--color3 timeline__event--right" data-text="Yoga med Natalie"
-      style="width: 17.812499999999996%; margin-left: 13.437500000000002%">
-    </div>
-    <div class="timeline__event timeline__event--color1 " data-text="Biograf i Folkets Hus kl 16.00"
-      style="width: 18.75%; margin-left: 50.0%">
-      Biograf i Folkets Hus ...
-    </div>
-    <div class="timeline__event timeline__event--color1 " data-text="Bogcaféen Barrikaden + Distro 61"
-      style="width: 18.75%; margin-left: 50.0%">
-      Bogcaféen Barrikaden +...
-    </div>
-    <div class="timeline__event timeline__event--color3  timeline__event--left" data-text="Yin Flow Yoga"
-      style="width: 8.125000000000004%; margin-left: 56.25%">
-    </div>
-    <div class="timeline__event timeline__event--color3  timeline__event--left" data-text="Taekwondo"
-      style="width: 7.187499999999991%; margin-left: 64.375%">
-    </div>
-    <div class="timeline__event timeline__event--color2  timeline__event--left" data-text="Mandagsmøde"
-      style="width: 12.5%; margin-left: 68.75%">
-    </div>
-    <div class="timeline__event timeline__event--color1  timeline__event--left" data-text="Tai chi og Qi Gong med Bo "
-      style="width: 12.5%; margin-left: 75.0%">
-    </div>
-    <div class="timeline__event timeline__event--color3 timeline__event--right" data-text="Tai Chi med Viggo "
-      style="width: 9.062499999999996%; margin-left: 12.5%">
-    </div>
-    <div class="timeline__event timeline__event--color3 timeline__event--right" data-text="Pop-up legestue for børn"
-      style="width: 12.5%; margin-left: 43.75%">
-    </div>
-    <div class="timeline__event timeline__event--color3  timeline__event--left" data-text="Vinjasa yoga med Pernille "
-      style="width: 6.25%; margin-left: 59.06249999999999%">
-    </div>
-    <div class="timeline__event timeline__event--color2  timeline__event--left" data-text="Yoga and Dance"
-      style="width: 18.75%; margin-left: 68.75%">
-    </div>
-    <div class="timeline__event timeline__event--color2  timeline__event--left"
-      data-text="Feministisk lige uger / LGBT selvforsvar ulige uger"
-      style="width: 8.125000000000004%; margin-left: 68.75%">
-    </div>
-    <div class="timeline__event timeline__event--color2  timeline__event--left" data-text="Free style drum jam med dans"
-      style="width: 4.374999999999996%; margin-left: 89.375%">
-    </div>
-    <div class="timeline__event timeline__event--color3 timeline__event--right" data-text="Yoga med Fanny"
-      style="width: 10.625000000000002%; margin-left: -4.375000000000001%">
-    </div>
-    <div class="timeline__event timeline__event--color3 timeline__event--right" data-text="Tai chi og Qi Gong med Bo"
-      style="width: 12.5%; margin-left: 6.25%">
-    </div>
-    <div class="timeline__event timeline__event--color1  timeline__event--left" data-text="Yin yoga med Laura"
-      style="width: 7.187499999999991%; margin-left: 56.25%">
-    </div>
-    <div class="timeline__event timeline__event--color1 " data-text="BumZen Community Kitchen"
-      style="width: 25.0%; margin-left: 62.5%">
-      BumZen Community Kitchen
-    </div>
-    <div class="timeline__event timeline__event--color3  timeline__event--left" data-text="AFROFONKO"
-      style="width: 12.5%; margin-left: 64.375%">
-    </div>
-    <div class="timeline__event timeline__event--color2 " data-text="Små stjerner (forældrebørnehave)"
-      style="width: 37.5%; margin-left: 12.5%">
-      Små stjerner (forældre...
-    </div>
-    <div class="timeline__event timeline__event--color2  timeline__event--left" data-text="Yoga med Ida"
-      style="width: 10.624999999999996%; margin-left: 51.87500000000001%">
-    </div>
-    <div class="timeline__event timeline__event--color1 " data-text="Bogcaféen Barrikaden + Distro 61"
-      style="width: 25.0%; margin-left: 56.25%">
-      Bogcaféen Barrikaden +...
-    </div>
-    <div class="timeline__event timeline__event--color3  timeline__event--left" data-text="Folkekøkken"
-      style="width: 12.5%; margin-left: 68.75%">
-    </div>
-    <div class="timeline__event timeline__event--color1  timeline__event--left" data-text="Slow-Jam folkedans musik"
-      style="width: 12.5%; margin-left: 75.0%">
-    </div>
-    <div class="timeline__event timeline__event--color3 timeline__event--right" data-text="Tai Chi og Qi Gong med Bo"
-      style="width: 10.624999999999996%; margin-left: 1.8750000000000044%">
-    </div>
-
-    {% endcomment %}
 
     <div class="timeline__scale">
       <div class="timeline__min">
