@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load i18n static compress sekizai_tags news_tags %}
 
+{% block dukop_title %}{% trans "About Duk Op" %}{% endblock %}
+
 {% block content %}
 
 <h1>{% trans "About Duk Op" %}</h1>
@@ -14,6 +16,7 @@
 
  <ul>
      <li><a href="#contact">Contact</a></li>
+     <li><a href="#guidelines">Event Guidelines</a></li>
      <li><a href="#policy">Our security policy</a></li>
      <li><a href="#users">Duk Op's different user types</a></li>
      <li><a href="#why">Why should I think about internet security?</a></li>
@@ -31,9 +34,9 @@
 
 <p>We hope that Duk Op can function as a mobilising platform, can make it easier to get involved and involve others and can inspire and motivate by showing all the great activities that are happening out there.</p>
 
-<h2 id="contact">Contact us</h2>
+<h2 id="contact">Contact Duk Op</h2>
 
-<p>If you have questions regarding what you have just read, or about anything else, write as an email to dukop@riseup.net</p>
+<p>If you have questions regarding what you have just read, or about anything else, write an email to <a href="mailto:dukop@riseup.net">dukop@riseup.net</a></p>
 
 <p>To the security conscious: We have <a href="https://pgp.mit.edu/pks/lookup?op=get&search=0xE74B09BA26CE1DD7">a PGP key</a>.</p>
 
@@ -43,6 +46,22 @@
 Key fingerprint = 5832 0CBF 30E8 8572 F8A4 1943 E74B 09BA 26CE 1DD7
 </pre>
 {% endblocktrans %}
+
+{# Notice that if you change the English original, the Danish translation will not be matched #}
+{# You have to run makemessages and compilemessages #}
+{% blocktrans %}
+<h1 id="guidelines">Guidelines to making great events</h1>
+
+<p>This section is yet to be written</p>
+
+<ul>
+    <li>Always have an illustration for the event, otherwise it will look unfinished.</li>
+    <li>Write the description in Danish first, but make it accessible for non-Danish speakers by adding an English translation at the bottom of the description.</li>
+    <li>Do not create a new event for translations</li>
+</ul>
+
+{% endblocktrans %}
+
 
 {# Notice that if you change the English original, the Danish translation will not be matched #}
 {# You have to run makemessages and compilemessages #}

@@ -48,15 +48,19 @@ img {
   height: auto;
 }
 
-ol, ul {
-    margin: 0 0 1em 0;
-}
-
 .card__text
 {
     p, ul, ol, pre {
         max-width: 600px;
     }
+
+    ol, ul {
+        margin: 0 0 1em 0;
+    }
+    form {
+        margin: 0 0 1em 0;
+    }
+
 }
 
 textarea {
@@ -68,6 +72,14 @@ pre, code {
     border: 1px solid #ccc;
     padding: 4px 6px;
     border-radius: 3px;
+}
+
+hr
+{
+    border: 0;
+    padding: 0;
+    background: transparent;
+    border-top: 2px solid #ccc;
 }
 
 .hide {

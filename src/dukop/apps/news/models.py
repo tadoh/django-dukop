@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls.base import reverse
 from django.utils.translation import gettext_lazy as _
 from markdownfield.models import MarkdownField
 from markdownfield.models import RenderedMarkdownField
@@ -14,6 +15,7 @@ class NewsStory(models.Model):
     text_rendered = RenderedMarkdownField()
 
     created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
     published = models.BooleanField(default=False)
     url = models.URLField(blank=True, null=True)
 
@@ -21,6 +23,7 @@ class NewsStory(models.Model):
     def url_read_more(self):
         if self.url:
             return self.url
+        return reverse("news:story", kwargs={"pk": self.pk})
 
     def __str__(self):
         return self.headline

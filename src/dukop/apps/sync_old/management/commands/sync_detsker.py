@@ -19,6 +19,7 @@ from django.core.files.images import ImageFile
 from django.core.management.base import BaseCommand
 from django.core.management.base import CommandError
 from django.db import transaction
+from django.template.defaultfilters import truncatewords
 from django.utils import timezone
 from dukop.apps.calendar.models import Event
 from dukop.apps.calendar.models import EventImage
@@ -28,6 +29,7 @@ from dukop.apps.calendar.models import EventTime
 from dukop.apps.calendar.models import OldEventSync
 from dukop.apps.calendar.models import Sphere
 from dukop.apps.calendar.models import Weekday
+from dukop.apps.news.models import NewsStory
 from dukop.apps.sync_old import models
 from dukop.apps.users.models import Group
 
@@ -337,6 +339,22 @@ class Command(BaseCommand):
             for event in events:
                 self.stdout.write("-----------------------------")
                 import_event(event, import_base_dir)
+
+            # Sync news
+            for news in models.Posts.objects.all():
+                self.stdout.write("-----------------------------")
+                self.stdout.write("News: {}".format(news.title))
+                story, __ = NewsStory.objects.get_or_create(
+                    headline=news.title,
+                    short_story=truncatewords(news.body, 100),
+                    text=news.body,
+                    published=news.featured,
+                )
+                # Update the auto fields like this
+                NewsStory.objects.filter(pk=story.pk).update(
+                    created=df(news.created_at),
+                    modified=df(news.updated_at),
+                )
 
             self.stdout.write("Command execution completed\n".format())
 

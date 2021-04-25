@@ -68,7 +68,6 @@
 
 {% endblock %}
 
-
     <footer>
         <div class="page-container">
             <div class="footer">
@@ -91,7 +90,7 @@
                                     {{ story.created|date }}
                                 </div>
                                 <div class="news__title">
-                                    {{ story.short_story }}
+                                    {{ story.short_story|truncatewords:20 }}
                                 </div>
                             </a>
                         </div>
