@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n static compress sekizai_tags news_tags %}
+
+{% block dukop_title %}{{ story.headline }}{% endblock %}
+
+{% block content %}
+
+<h1>{{ story.headline }}</h1>
+
+{{ story.text_rendered|safe }}
+
+{% endblock %}

@@ -44,7 +44,7 @@
         {{ event_time.event.short_description|truncatechars:100 }}
         <div class="card__more">
             {% if event_time.event.description %}
-            {{ event_time.event.description|linebreaks }}
+            {{ event_time.event.description|truncatewords:100|linebreaks }}
             {% else %}
             {{ event_time.event.short_description|linebreaks }}
             {% endif %}

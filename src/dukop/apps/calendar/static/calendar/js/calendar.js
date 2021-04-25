@@ -35,8 +35,10 @@ function ready(event) {
 
     // Change active URL
     if (this.parentNode.classList.contains('js-active')) {
-       //prevents browser from storing history with each change:
+       // prevents browser from storing history with each change:
        window.location.hash = this.parentNode.dataset.hash;
+       window.scrollTo(0,0);
+
     }
   }
 
