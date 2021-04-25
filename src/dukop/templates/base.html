@@ -37,8 +37,9 @@
                         </a>
                     </div>
                     <div class="header__filler"></div>
+                    <a class="header__link" href="{% url "news:about" %}">{% trans "About" %}</a>
                     {% if user.is_authenticated %}
-                      <a class="header__link" href="{% url 'calendar:event_create' %}">{% trans "New event" %}</a>
+                      <a class="header__link" href="{% url "calendar:event_create" %}">{% trans "New event" %}</a>
                       <a class="header__link" href="{% url "users:logout" %}">{% trans "Log out" %}</a>
                     {% else %}
                       <a class="header__link" href="{% url "users:signup" %}">{% trans "Sign up" %}</a>
@@ -58,9 +59,11 @@
 {% block content_wrapper %}
 
 <div class="card card--static">
+  <div class="card__text">
     {% block content %}
 
     {% endblock %}
+  </div>
 </div>
 
 

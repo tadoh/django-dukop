@@ -5,8 +5,8 @@
 
 {% block dukop_title %}{{ event.name }} - {{ event.venue_name }}{% endblock %}
 
-{% block content %}
-
+{% block content_wrapper %}
+<div class="card card--static">
   <div class="card__layout">
     <div class="card__media">
         {% with event.images.first as feature_image %}
@@ -49,5 +49,5 @@
     </div>
 
   </div>
-
+</div>
 {% endblock %}

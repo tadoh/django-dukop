@@ -13,7 +13,7 @@ itself.
 
 These are the system requirements necessary for running the below Quickstart:
 
-* Python 3.6+ (is already on your system)
+* Python 3.8+ (is already on your system)
 * Postgres (**only** for deployment, not needed for development)
 
 Other requirements are specified as Python packages in the *Quickstart* below
