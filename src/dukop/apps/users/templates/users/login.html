@@ -2,9 +2,13 @@
 {% load i18n %}
 {% load dukop_utils %}
 
+{% block dukop_title %}{% trans "Log in" %}{% endblock %}
+
 {% block content %}
 
-<h1>{% trans "Login" %}</h1>
+<h1>{% trans "Log in" %}</h1>
+
+<p>{% trans "You will only have a password if you choose to have one after signing up. Don't have an account yet?" %} <a href="{% url "users:signup" %}?next={{ next }}">{% trans "Sign up here" %} &gt;</a></p>
 
 <form method="post" action="{% url 'users:login' %}">
 {% csrf_token %}
@@ -16,7 +20,7 @@
 </form>
 
 
-<h2>{% trans "Login with password" %}</h2>
+<h2>{% trans "Log in with password" %}</h2>
 
 <form method="post" action="{% url 'users:login_password' %}">
 {% dukop_form password_form %}

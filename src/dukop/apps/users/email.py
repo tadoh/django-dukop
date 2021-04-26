@@ -54,7 +54,13 @@ class UserConfirm(BaseEmail):
     default_subject = _("Your new account for Dukop")
 
     def __init__(self, *args, **kwargs):
+        self.next = kwargs.pop("next", None)
         super().__init__(*args, **kwargs)
+
+    def get_context_data(self):
+        c = super().get_context_data()
+        c["next"] = self.next
+        return c
 
 
 class UserToken(BaseEmail):

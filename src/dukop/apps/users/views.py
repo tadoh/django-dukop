@@ -48,6 +48,7 @@ class LoginView(FormView, SuccessURLAllowedHostsMixin):
 
     def get_context_data(self, **kwargs):
         c = FormView.get_context_data(self, **kwargs)
+        c["next"] = self.request.GET.get("next", "")
         c["password_form"] = forms.PasswordLogin()
         return c
 
@@ -58,7 +59,7 @@ class LoginView(FormView, SuccessURLAllowedHostsMixin):
             mail = email.UserToken(
                 self.request,
                 user=user,
-                next=self.request.GET.get(self.redirect_field_name, ""),
+                next=self.request.POST.get(self.redirect_field_name, ""),
             )
             mail.send_with_feedback(success_msg=_("Check your inbox"))
         except models.User.DoesNotExist:
@@ -124,6 +125,13 @@ class LoginTokenView(FormView, SuccessURLAllowedHostsMixin):
         kwargs["token_uuid"] = self.kwargs["token"]
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        c = FormView.get_context_data(self, **kwargs)
+        c["next"] = self.request.POST.get(
+            self.redirect_field_name, self.request.GET.get(self.redirect_field_name, "")
+        )
+        return c
+
     def form_valid(self, form):
         # Find a suitable backend.
         form.user.use_token()
@@ -151,18 +159,26 @@ class SignupView(FormView):
 
     template_name = "users/signup.html"
     form_class = forms.SignupForm
+    redirect_field_name = "next"
 
     @ratelimit(key="ip", rate="5/h", method="POST")
     def post(self, request, *args, **kwargs):
         return FormView.post(self, request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        c = FormView.get_context_data(self, **kwargs)
+        c["next"] = self.request.POST.get(
+            self.redirect_field_name, self.request.GET.get(self.redirect_field_name, "")
+        )
+        return c
+
     def form_valid(self, form):
 
-        print("Starting form_valid")
+        next_url = self.request.POST.get("next", "")
         try:
             user = models.User.objects.get(email=form.cleaned_data["email"])
             user.set_token()
-            mail = email.UserToken(self.request, user=user)
+            mail = email.UserToken(self.request, user=user, next=next_url)
             mail.send_with_feedback(success_msg=_("Check your inbox"))
             print("Sent a token to existing user")
         except models.User.DoesNotExist:
@@ -170,7 +186,7 @@ class SignupView(FormView):
             user.is_active = True  # The user is active by default
             user.save()
             user.set_token()
-            mail = email.UserConfirm(self.request, user=user)
+            mail = email.UserConfirm(self.request, user=user, next=next_url)
             # Give the same feedback regardless so this isn't used to lookup
             # email addresses
             mail.send_with_feedback(success_msg=_("Check your inbox"))

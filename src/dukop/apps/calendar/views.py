@@ -1,7 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from ratelimit.decorators import ratelimit
@@ -48,6 +50,10 @@ class EventCreate(CreateView):
     template_name = "calendar/event/create.html"
     model = models.Event
     form_class = forms.EventForm
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         """Handle GET requests: instantiate a blank version of the form."""
