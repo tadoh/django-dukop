@@ -2,6 +2,8 @@
 {% load i18n %}
 {% load dukop_utils %}
 
+{% block dukop_title %}{% trans "Sign up" %}{% endblock %}
+
 {% block content %}
 
 <h1>{% trans "Sign up" %}</h1>
@@ -13,6 +15,7 @@
     <form method="post" action="{% url 'users:signup' %}">
     {% csrf_token %}
     {% dukop_form form %}
+    <input type="hidden" name="next" value="{{ next }}">
 
     <p><button type="submit">{% trans "Confirm email..." %}</button></p>
 
