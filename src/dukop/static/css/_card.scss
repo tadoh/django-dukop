@@ -116,6 +116,10 @@
   background: rgba(236, 236, 222,.8);
 }
 
+.card.js-active .card__more__cut {
+    display: none;
+}
+
 .card.js-active .card__more {
   height: auto;
   opacity: 1;

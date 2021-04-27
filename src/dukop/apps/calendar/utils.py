@@ -30,5 +30,33 @@ def display_datetime(dtm):
     return _("{date} at {time}").format(date=date_format(dtm), time=display_time(dtm))
 
 
+def display_interval(start, end=None):
+    """
+    Displays an interval, something with a start and finish. Since having a
+    finish isn't mandatory, it may be omitted silently.
+
+    This can be made even more elegant.
+
+    Remember that when changing formats, translations have to be updated, too.
+    """
+    if not end:
+        return _("{start_date} at {start_time}").format(
+            start_date=date_format(start), start_time=display_time(start)
+        )
+    elif end.date() == start.date():
+        return _("{start_date} at {start_time}-{end_time}").format(
+            start_date=date_format(start),
+            start_time=display_time(start),
+            end_time=display_time(end),
+        )
+    else:
+        return _("{start_date} at {start_time}-{end_date} at {end_time}").format(
+            start_date=date_format(start),
+            end_date=date_format(end),
+            start_time=display_time(start),
+            end_time=display_time(end),
+        )
+
+
 def populate_interval():
     pass

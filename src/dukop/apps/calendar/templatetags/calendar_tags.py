@@ -84,26 +84,22 @@ def event_timeline_properties(event_time, now=None):
 
 @register.filter_function
 def dukop_date(dtm):
-    """
-    TODO: Use Django's translation gettext function to translate a date format
-    string that we want so we can specify for each language.
-    """
     return utils.display_date(dtm)
 
 
 @register.filter_function
 def dukop_time(dtm):
-    """
-    TODO: Use Django's translation gettext function to translate a date format
-    string that we want so we can specify for each language.
-    """
     return utils.display_time(dtm)
 
 
 @register.filter_function
 def dukop_datetime(dtm):
-    """
-    TODO: Use Django's translation gettext function to translate a date format
-    string that we want so we can specify for each language.
-    """
     return utils.display_datetime(dtm)
+
+
+@register.filter_function
+def dukop_interval(start, end=None):
+    """
+    Displays an interval, e.g. "2021-04-02 15:00-16:00"
+    """
+    return utils.display_interval(start, end)

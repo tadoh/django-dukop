@@ -1,0 +1,75 @@
+{% load i18n sekizai_tags static %}
+{% load calendar_tags sorl_thumbnail %}
+{% load l10n %}
+
+  <div class="card__layout">
+    <div class="card__media">
+        {% with event.images.first as feature_image %}
+            {% if feature_image.image %}
+                {% thumbnail feature_image.image "400x250" crop="center" as event_thumbnail %}
+                    <img src="{{ event_thumbnail.url }}" alt="{{ event.name }}">
+                {% endthumbnail %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+
+    <div class="card__text">
+        <div class="card__header">
+          <div class="card__date">
+            {% for time in event.times.all %}
+                {% if time.start %}
+                {{ time.start|dukop_interval:time.end }}
+                {% else %}
+                -
+                {% endif %}
+            {% empty %}
+                {% trans "No scheduled times" %}
+            {% endfor %}
+          </div>
+          <div class="card__place card__link">
+            <a href="">{{ event.venue_name }}</a>
+          </div>
+          <div class="card__util card__link card__more">
+            <a href="">Download til kalender (ICS)</a>
+          </div>
+        </div>
+
+        <h1 class="card__title">{{ event.name }}</h1>
+
+        {% if not event_truncate %}
+            {% if event.description %}
+            {{ event.description|linebreaks }}
+            {% else %}
+            {{ event.short_description|linebreaks }}
+            {% endif %}
+        {% else %}
+        <div class="card__more__cut">
+        {{ event_time.event.short_description|truncatechars:100 }}
+        </div>
+        <div class="card__more">
+            {% if event.description %}
+            {{ event.description|truncatewords:event_truncate|linebreaks }}
+            {% else %}
+            {{ event.short_description|truncatewords:event_truncate|linebreaks }}
+            {% endif %}
+            <p>
+                <a href="{% url "calendar:event_detail" pk=event_time.event.pk slug=event_time.event.slug %}">
+                    {% trans "Event detail page" %}
+                </a>
+            </p>
+        </div>
+        {% endif %}
+
+        {% if not event_hide_share %}
+        <p>
+            <a href="{{ event.share_link }}">
+                {% trans "Share link" %}
+            </a><br>
+            <input type="text" value="{{ event.share_link }}" class="share-text-input">
+        </p>
+        {% endif %}
+
+    </div>
+
+  </div>
