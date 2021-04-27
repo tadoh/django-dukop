@@ -15,48 +15,7 @@
 
 {% for event_time in event_times %}
 <div class="card" data-hash="event-{{ event_time.event.pk }}" id="event-{{ event_time.event.pk }}">
-  <div class="card__layout">
-    <div class="card__media">
-        {% with event_time.event.images.first as feature_image %}
-            {% if feature_image.image %}
-                {% thumbnail feature_image.image "400x250" crop="center" as event_thumbnail %}
-                    <img src="{{ event_thumbnail.url }}" alt="{{ event_time.event.name }}">
-                {% endthumbnail %}
-            {% endif %}
-        {% endwith %}
-    </div>
-    <div class="card__text">
-      <div class="card__header">
-        <div class="card__date">
-          {{ event_time.start|dukop_datetime }}
-        </div>
-        <div class="card__place card__link">
-          <a href="{% url "calendar:event_detail" pk=event_time.event.pk slug=event_time.event.slug %}">{{ event_time.event.venue_name }}</a>
-        </div>
-        <div class="card__util card__link card__more">
-          <a href="{% url "calendar:event_detail" pk=event_time.event.pk slug=event_time.event.slug %}">Download til kalender (ICS)</a>
-        </div>
-      </div>
-      <div class="card__main">
-        <h1 class="card__title">
-          {{ event_time.event.name }}
-        </h1>
-        {{ event_time.event.short_description|truncatechars:100 }}
-        <div class="card__more">
-            {% if event_time.event.description %}
-            {{ event_time.event.description|truncatewords:100|linebreaks }}
-            {% else %}
-            {{ event_time.event.short_description|linebreaks }}
-            {% endif %}
-            <p>
-            <a href="{% url "calendar:event_detail" pk=event_time.event.pk slug=event_time.event.slug %}">
-                {% trans "Event detail page" %}
-            </a>
-            </p>
-        </div>
-      </div>
-    </div>
-  </div>
+  {% include "calendar/includes/event_card.html" with event=event_time.event event_hide_share=True event_truncate=100 %}
   <a class="card__toggle js-toggle-card" href="{% url "calendar:event_detail" pk=event_time.event.pk slug=event_time.event.slug %}"></a>
 </div>
 

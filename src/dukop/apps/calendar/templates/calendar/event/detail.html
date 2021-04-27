@@ -7,47 +7,6 @@
 
 {% block content_wrapper %}
 <div class="card card--static">
-  <div class="card__layout">
-    <div class="card__media">
-        {% with event.images.first as feature_image %}
-            {% if feature_image.image %}
-                {% thumbnail feature_image.image "400x250" crop="center" as event_thumbnail %}
-                    <img src="{{ event_thumbnail.url }}" alt="{{ event.name }}">
-                {% endthumbnail %}
-            {% endif %}
-        {% endwith %}
-    </div>
-
-
-    <div class="card__text">
-        <div class="card__header">
-          <div class="card__date">
-            {{ event.times.all.first.start|dukop_datetime|default:_("None") }}
-          </div>
-          <div class="card__place card__link">
-            <a href="">{{ event.venue_name }}</a>
-          </div>
-          <div class="card__util card__link card__more">
-            <a href="">Download til kalender (ICS)</a>
-          </div>
-        </div>
-
-        <h1 class="card__title">{{ event.name }}</h1>
-
-        {% if event.description %}
-        {{ event.description|linebreaks }}
-        {% else %}
-        {{ event.short_description|linebreaks }}
-        {% endif %}
-        <p>
-            <a href="{{ event.share_link }}">
-                {% trans "Share link" %}
-            </a><br>
-            <input type="text" value="{{ event.share_link }}" class="share-text-input">
-        </p>
-
-    </div>
-
-  </div>
+    {% include "calendar/includes/event_card.html" %}
 </div>
 {% endblock %}
