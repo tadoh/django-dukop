@@ -17,7 +17,7 @@
     <div class="card__text">
         <div class="card__header">
           <div class="card__date">
-            {% for time in event.times.all %}
+            {% for time in event.times.future %}
                 {% if time.start %}
                 {{ time.start|dukop_interval:time.end }}
                 {% else %}
@@ -30,9 +30,11 @@
           <div class="card__place card__link">
             <a href="">{{ event.venue_name }}</a>
           </div>
-          <div class="card__util card__link card__more">
+          {% if not event_truncate %}
+          <div class="card__util card__link">
             <a href="">Download til kalender (ICS)</a>
           </div>
+          {% endif %}
         </div>
 
         <h1 class="card__title">{{ event.name }}</h1>

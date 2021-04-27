@@ -15,6 +15,8 @@ from dukop.apps.calendar.utils import display_datetime
 from dukop.apps.calendar.utils import display_time
 from sorl.thumbnail import get_thumbnail
 
+from . import utils
+
 
 def image_upload_to(instance, filename):
     ext = filename.split(".")[-1]
@@ -47,6 +49,20 @@ class EventManager(models.Manager):
         return (
             super().get_queryset().prefetch_related("times").prefetch_related("images")
         )
+
+
+class EventTimeQuerySet(models.QuerySet):
+    def future(self):
+        now = utils.get_now()
+        return self.filter(start__gte=now)
+
+
+class EventTimeManager(models.Manager):
+    def get_queryset(self):
+        return EventTimeQuerySet(self.model, using=self._db)
+
+    def future(self):
+        return self.get_queryset().future()
 
 
 class Sphere(models.Model):
@@ -314,6 +330,8 @@ class EventTime(models.Model):
             "changed automatically"
         ),
     )
+
+    objects = EventTimeManager()
 
     class Meta:
         verbose_name = _("Event time")
