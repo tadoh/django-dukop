@@ -62,9 +62,10 @@ class User(PermissionsMixin, AbstractBaseUser):
 
     # Used for confirmations and password reminders to NOT disclose email in URL
     token_uuid = models.UUIDField(default=uuid.uuid4, editable=False, null=True)
-    token_expiry = models.DateTimeField(null=True)
+    token_expiry = models.DateTimeField(null=True, editable=False)
     token_passphrase = models.CharField(
         null=True,
+        blank=True,
         help_text=_("One time passphrase"),
         max_length=128,
     )
