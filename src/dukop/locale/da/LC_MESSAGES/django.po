@@ -1,0 +1,1041 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-04-30 22:42+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/dukop/apps/calendar/admin.py:45 src/dukop/apps/calendar/models.py:175
+msgid "short description"
+msgstr "kort beskrivelse"
+
+#: src/dukop/apps/calendar/admin.py:53
+msgid "time(s)"
+msgstr ""
+
+#: src/dukop/apps/calendar/forms.py:14
+msgid "Relevance"
+msgstr "Relevans"
+
+#: src/dukop/apps/calendar/forms.py:15
+msgid "Select which versions of the calendar this is relevant for."
+msgstr ""
+
+#: src/dukop/apps/calendar/forms.py:32
+msgid ""
+"A group may host an event and be displayed as the author of the event text. "
+"You can only choose a host if you have been allowed membership of a group."
+msgstr ""
+
+#: src/dukop/apps/calendar/forms.py:51
+msgid "Cover image"
+msgstr ""
+
+#: src/dukop/apps/calendar/forms.py:52
+msgid "If you have several images, use this one as the cover"
+msgstr ""
+
+#: src/dukop/apps/calendar/migrations/0004_weekdays.py:6
+msgid "Monday"
+msgstr ""
+
+#: src/dukop/apps/calendar/migrations/0004_weekdays.py:7
+msgid "Tuesday"
+msgstr ""
+
+#: src/dukop/apps/calendar/migrations/0004_weekdays.py:8
+msgid "Wednesday"
+msgstr ""
+
+#: src/dukop/apps/calendar/migrations/0004_weekdays.py:9
+msgid "Thursday"
+msgstr ""
+
+#: src/dukop/apps/calendar/migrations/0004_weekdays.py:10
+msgid "Friday"
+msgstr ""
+
+#: src/dukop/apps/calendar/migrations/0004_weekdays.py:11
+msgid "Saturday"
+msgstr ""
+
+#: src/dukop/apps/calendar/migrations/0004_weekdays.py:12
+msgid "Sunday"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:79 src/dukop/apps/calendar/models.py:191
+msgid "slug"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:80
+msgid "The part of a URL that is displayed in dukop.dk/sphere/<slug>/"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:92
+msgid "Sphere"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:93
+msgid "Spheres"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:171 src/dukop/apps/calendar/models.py:456
+#: src/dukop/apps/users/models.py:107
+msgid "name"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:177
+msgid ""
+"A special short version of the event description, leave blank to auto-"
+"generate. Text-only, no Markdown."
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:182 src/dukop/apps/calendar/models.py:360
+#: src/dukop/apps/users/models.py:118
+msgid "description"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:184
+msgid ""
+"Enter details, which will be displayed on the event's own page. You can use "
+"Markdown."
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:192
+msgid "The part of a URL that is displayed in dukop.dk/event/<slug>/"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:202
+msgid ""
+"A group may host an event and be displayed as the author of the event text."
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:213
+msgid "venue name"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:216 src/dukop/apps/calendar/models.py:223
+#: src/dukop/apps/calendar/models.py:230 src/dukop/apps/calendar/models.py:237
+msgid "If left blank, will be copied from host group"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:220 src/dukop/apps/users/models.py:132
+msgid "street"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:227 src/dukop/apps/users/models.py:138
+msgid "city"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:233 src/dukop/apps/users/models.py:143
+msgid "zip code"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:245
+msgid "owner (user)"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:253
+msgid "owner (group)"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:262
+msgid "edit secret"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:270
+msgid "view secret"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:279
+msgid "Event"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:306
+msgid "start"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:309
+msgid "end"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:315
+msgid "comment"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:316
+msgid "Leave blank and nothing will be shown to readers"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:326
+msgid "automatic recurrence"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:328
+msgid ""
+"If true, this interval is currently maintained automatically and has not "
+"been rescheduled. If the interval is edited, it may be changed automatically"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:337
+msgid "Event time"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:367
+msgid "Event update"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:375
+msgid "image"
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:377
+msgid ""
+"Allowed formats: JPEG, PNG, GIF. Please upload high resolution (>1000 pixels "
+"wide)."
+msgstr ""
+
+#: src/dukop/apps/calendar/models.py:382 src/dukop/apps/calendar/models.py:420
+msgid "0=first, 1=second etc."
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:4
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:14
+#: src/dukop/templates/base.html:41 src/dukop/templates/base.html:44
+msgid "Create event"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:11
+msgid ""
+"There were errors. Please check below. If you submited images, you have to "
+"re-select them."
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:16
+msgid "Creating your first event?"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:17
+msgid "Please read our"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:17
+msgid "Guidelines"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:20
+msgid ""
+"Getting all the details right for you event can take some time. Spend time "
+"to ensure that it looks nice. This form contains the following sections:"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:24
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:36
+msgid "Basic details"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:25
+msgid "Dates and times"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:26
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:97
+msgid "Images"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:27
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:134
+msgid "Links"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:31
+msgid ""
+"After creating the event, it's possible to edit it. You can also create an "
+"event and publish it later."
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:52
+msgid "Date and times"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:53
+msgid ""
+"Most events just had a single start and finish time. But if your event spans "
+"several days, you can add additional start and finish times."
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:63
+msgid "Time slot"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:82
+msgid "Add timeslot"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:87
+msgid "Remove timeslot"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:98
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:135
+msgid ""
+"We really recommend that you add an illustration. Don't let your Facebook "
+"event look better than your Duk Op event!"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:103
+msgid "Image"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:119
+msgid "Add image"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:124
+msgid "Remove image"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:140
+msgid "Link"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:146
+msgid "Add link"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:151
+msgid "Remove link"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create.html:166
+msgid "Create"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create_success.html:4
+#: src/dukop/apps/calendar/templates/calendar/event/create_success.html:10
+msgid "Event created"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create_success.html:12
+msgid "Your event has been created."
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create_success.html:14
+msgid "Maybe you should "
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/event/create_success.html:14
+msgid "view and share it"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/includes/event_card.html:27
+msgid "No scheduled times"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/includes/event_card.html:60
+msgid "Event detail page"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/includes/event_card.html:69
+msgid "Share link"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/index.html:6
+msgid "Start"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/index.html:27
+msgid "Also happening"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/index.html:27
+msgid "today"
+msgstr ""
+
+#: src/dukop/apps/calendar/templates/calendar/index.html:36
+msgid ""
+"Nothing planned today, this is your chance to do something! Gather your "
+"people!"
+msgstr ""
+
+#: src/dukop/apps/calendar/utils.py:30
+#, python-brace-format
+msgid "{date} at {time}"
+msgstr ""
+
+#: src/dukop/apps/calendar/utils.py:43
+#, python-brace-format
+msgid "{start_date} at {start_time}"
+msgstr ""
+
+#: src/dukop/apps/calendar/utils.py:47
+#, python-brace-format
+msgid "{start_date} at {start_time}-{end_time}"
+msgstr ""
+
+#: src/dukop/apps/calendar/utils.py:53
+#, python-brace-format
+msgid "{start_date} at {start_time}-{end_date} at {end_time}"
+msgstr ""
+
+#: src/dukop/apps/news/models.py:33
+msgid "News story"
+msgstr ""
+
+#: src/dukop/apps/news/models.py:34
+msgid "News stories"
+msgstr ""
+
+#: src/dukop/apps/news/templates/news/about.html:4
+#: src/dukop/apps/news/templates/news/about.html:8
+msgid "About Duk Op"
+msgstr ""
+
+#: src/dukop/apps/news/templates/news/about.html:12
+msgid ""
+"\n"
+"<p>Duk Op is your guide to what happens in and around Copenhagen, whether "
+"you are looking for demonstrations, concerts, parties, meetings, soup "
+"kitchens, gardening days, workshops, art exhibitions, film screenings and "
+"much more.</p>\n"
+"\n"
+"<p>Jump to:</p>\n"
+"\n"
+" <ul>\n"
+"     <li><a href=\"#contact\">Contact</a></li>\n"
+"     <li><a href=\"#guidelines\">Event Guidelines</a></li>\n"
+"     <li><a href=\"#policy\">Our security policy</a></li>\n"
+"     <li><a href=\"#users\">Duk Op's different user types</a></li>\n"
+"     <li><a href=\"#why\">Why should I think about internet security?</a></"
+"li>\n"
+"     <li><a href=\"#protect\">How should I protect myself when on Duk Op?</"
+"a></li>\n"
+"     <li><a href=\"#read\">Further readings about internet security</a></"
+"li>\n"
+" </ul>\n"
+"\n"
+"<p>The idea behind the calendar is that there is a need for a simple and "
+"accessible way to get involved and involve others in these cool activities. "
+"Money shouldn't be an issue, as you should not be dependent on having the "
+"\"right\" friends on Facebook or on checking ten different online calendars "
+"to get an overview of what's happening. Duk Op is a possibility to open up, "
+"gather and discover new and exciting projects.</p>\n"
+"\n"
+"<p>The crew behind the homepage does not upload events to the calendar, so "
+"Duk Op is entirely dependent on you and your group contributing with your "
+"events and activities!</p>\n"
+"\n"
+"<p>Duk Op is a political project. We dream of a different and better world. "
+"A world based on principles of freedom, equality and autonomy and without "
+"discrimination and oppression in all its forms. We get excited about "
+"activism, self-organisation and about initiatives and cultural projects that "
+"are more than something you can write on your CV or that you can earn money "
+"from. We wish to support places, groups and individuals who share these "
+"values. For this reason, events that for instance have a parlamentarian goal "
+"or that aim at commercial profit are not welcome on the calendar.</p>\n"
+"\n"
+"<p>Generally, Duk Op aims at hosting open events. However, we do see "
+"exceptions, for example in the case of separatistic events that focus on "
+"gender. On the other hand, closed member-meetings and the like do not belong "
+"on the calendar, but belong to the organisation or group's own communication "
+"channels (e.g. mailing-list).</p>\n"
+"\n"
+"<p>We hope that Duk Op can function as a mobilising platform, can make it "
+"easier to get involved and involve others and can inspire and motivate by "
+"showing all the great activities that are happening out there.</p>\n"
+"\n"
+"<h2 id=\"contact\">Contact Duk Op</h2>\n"
+"\n"
+"<p>If you have questions regarding what you have just read, or about "
+"anything else, write an email to <a href=\"mailto:dukop@riseup.net"
+"\">dukop@riseup.net</a></p>\n"
+"\n"
+"<p>To the security conscious: We have <a href=\"https://pgp.mit.edu/pks/"
+"lookup?op=get&search=0xE74B09BA26CE1DD7\">a PGP key</a>.</p>\n"
+"\n"
+"<p>The key ID is <code>0x26CE1DD7</code>. The full key fingerprint is:</p>\n"
+"\n"
+"<pre>\n"
+"Key fingerprint = 5832 0CBF 30E8 8572 F8A4 1943 E74B 09BA 26CE 1DD7\n"
+"</pre>\n"
+msgstr ""
+
+#: src/dukop/apps/news/templates/news/about.html:52
+msgid ""
+"\n"
+"<h1 id=\"guidelines\">Guidelines to making great events</h1>\n"
+"\n"
+"<p>This section is yet to be written</p>\n"
+"\n"
+"<ul>\n"
+"    <li>Always have an illustration for the event, otherwise it will look "
+"unfinished.</li>\n"
+"    <li>Write the description in Danish first, but make it accessible for "
+"non-Danish speakers by adding an English translation at the bottom of the "
+"description.</li>\n"
+"    <li>Do not create a new event for translations</li>\n"
+"</ul>\n"
+"\n"
+msgstr ""
+
+#: src/dukop/apps/news/templates/news/about.html:68
+msgid ""
+"\n"
+"\n"
+"<h1>Duk Op and Online Security</h1>\n"
+"\n"
+" <p>\n"
+"  Duk Op takes your internet privacy seriously, and does its best to avoid "
+"gathering unnecessary information about its users. On this page you can read "
+"more about our policy, about the different user types we have on the "
+"website, about why you should protect yourself when surfing the internet, "
+"and also find a simple way to protect your privacy when online.\n"
+"  </p>\n"
+"\n"
+" <h2 id=\"policy\">Our policy</h2>\n"
+" <p>\n"
+"  The aim of our privacy policy is to protect our users from unwanted "
+"surveillance of their online activities.\n"
+"  User privacy is one of our foremost concerns and we have developed dukop."
+"dk with this in mind.\n"
+"  </p>\n"
+" <p>\n"
+" Like almost all websites, we log visits and activity on the website in "
+"order to debug errors and identify attackers.\n"
+" However, we delete all logs that are more than two days old and we do not "
+"make any effort to connect IP addresses to specific users or their "
+"activity.\n"
+" This means that we cannot in practice connect users to IP addresses after "
+"these two days, nor do we wish to.\n"
+" Please note however, that if you need to conceal your IP address while on "
+"Duk Op, we recommend the use of TOR, as <a href=\"#protect\">described "
+"below</a>.\n"
+" </p>\n"
+" <p>\n"
+"  For the same reason we have actively chosen not to link our Duk Op login "
+"to Facebook or Google, which are companies that you cannot trust, when it "
+"concerns your data and your privacy.\n"
+" </p>\n"
+" <p>We do however save the email addresses of our registered users in our "
+"database. This is necessary for us to send email confirmations and to allow "
+"us to reset users' passwords for them.\n"
+" We may also use user's email address to contact users if there are problems "
+"with the events they have created. Users' passwords are stored in an "
+"encrypted format in our database (bcrypt). This means that even though we "
+"control our database, we still cannot read your password; we can only "
+"confirm that you have entered the correct password when you log in.</p>\n"
+" <p>Duk Op is only available over a secure web connection. This means that "
+"the data you exchange with the application will always be encrypted to "
+"prevent interception by people eavesdropping on your connection.</p>\n"
+"\n"
+" <h2 id=\"users\">Duk Op's different user types</h2>\n"
+" <p>\n"
+" There are two different possibilities to create events here on dukop.dk. "
+"Events can either be created by registered users or by anonymous users.\n"
+" </p>\n"
+" <h4>Registered user</h4>\n"
+" <p>\n"
+" To log in as a user you need to register with a username and password, and "
+"need to write your email in order to get a confirmation. This allows you to "
+"access more functions, like editing or deleting events you have created or "
+"commenting on your and others' events with your visible username.\n"
+" </p>\n"
+" <h4>Anonymous user</h4>\n"
+" <p>\n"
+"  Alternatively, you can choose to create events anonymously. A username is "
+"generated for you, and you do not need to provide a password or a valid "
+"email address. The event is created by the user \"Anonymous\". Keep in mind "
+"that you cannot edit or delete your event after your session expires or you "
+"log out.\n"
+" </p>\n"
+" <p>\n"
+"  Cool, right? Yes, but there are still some things you need to be aware of, "
+"if you need to make sure that no one else (for instance your internet "
+"provider) eavesdrops when you use dukop.dk and if you want to make use of "
+"all the features on the website. Read on to find out why should protect "
+"yourself on the internet, or jump directly to how you can do it.\n"
+" </p>\n"
+"\n"
+" <h2 id=\"why\">Why should I think about internet security?</h2>\n"
+" <p>\n"
+"  Despite the fact that we do not register your IP address when you visit "
+"dukop.dk, as a rule of thumb you cannot trust that your internet provider or "
+"other actors do not keep an eye on what you do online. For this reason you "
+"need to be very careful if you want to protect yourself and your private "
+"life, for instance when you invite other people to participate in political "
+"activities. Perhaps you are sitting there and thinking that the activities "
+"you are advertising for on Duk Op are legal and innocent, and that you do "
+"not need to worry about internet security. Well, you might be right, but "
+"there are at least two good reasons to protect yourself when you use Duk Op "
+"(and all the rest of the internet, too!).\n"
+" </p>\n"
+" <p>\n"
+"  The first good reason is that it is all about habits: the more we get used "
+"to protect ourselves in normal and \"innocent\" situations on the internet, "
+"the less we will need to change our ways of doing when we actually do need "
+"to be anonymous. So it may very well be that you don't think that the "
+"lecture on Swedish birds you are holding in two weeks is anything dangerous, "
+"but by acting securely and by protecting you today, you get used to it, and "
+"do not panic or make mistakes when you need to invite to pirate party or a "
+"blockade in two months.\n"
+" </p>\n"
+" <p>\n"
+"  The second good reason is solidarity: the more people hides their traces "
+"from the internet, the less suspicious it looks, when others, that might "
+"need it more than us, do it too. So, by using the intenet securely, you are "
+"doing a favour to both yourself and your comrades!\n"
+"  </p>\n"
+"\n"
+" <h2 id=\"project\">How should I protect myself when on Duk Op?</h2>\n"
+" <p>\n"
+" If you have come this far, you have hopefully been convinced of the need of "
+"doing a small effort to protect your data and hide your traces on the "
+"internet. The most normal situation, and probably also what you are "
+"interested in here on Duk Op, is to avoid that your name, email or IP "
+"address gets connected to a specific place, group of activists or type of "
+"activity. Fortunately there is a good and easy-to-use tool that can help you "
+"with it! Its name is TOR (The Onion Router), and can be downloaded here: <a "
+"href=\"https://www.torproject.org\">www.torproject.org</a>\n"
+" </p>\n"
+" <p>\n"
+"  TOR is very simple to use: you unpack its compressed file, install it "
+"(Ubuntu and Linux users: no install needed), and click on the icon. TOR then "
+"launches a version of Mozilla Firefox, which is set up so that you can surf "
+"anonymously on the internet. This means that no one can see which websites "
+"you are visiting and, here on Duk Op, that no one can see that it is you, "
+"that is creating a certain event. You can read more about TOR on their "
+"homepage, but we can give you a couple of ideas on how you can use TOR on "
+"Duk Op.\n"
+" </p>\n"
+" <p>You can use TOR on Duk Op in two different ways:</p>\n"
+" <ol>\n"
+"     <li>\n"
+"          You can use it when you create anonmyous events (highly "
+"recommended!). Only in this way you can be sure that there is no one else "
+"reading the communication between your computer and our server, when you "
+"create an event. In practice it means that you open TOR, write dukop.dk in "
+"the address field of the TOR browser and create your anonymous events from "
+"there.\n"
+"     </li>\n"
+"     <li>\n"
+"          The other way to use TOR is to create a new email account, which "
+"you can use to create a user on Duk Op. By creating a new email address and "
+"by NEVER logging into it without using TOR, no one can see who the person "
+"that sits behind the email address is. After you have created an email "
+"address, you can use it to create a new Duk Op user. Afterwards, when you "
+"log in to Duk Op via the TOR browser, you can make use of all the features "
+"that registered users have access to, without compromising your internet "
+"security.\n"
+"     </li>\n"
+" </ol>\n"
+" <p>Remember to read TOR's <a href=\"https://www.torproject.org/download/"
+"download-easy.html.en#warning\">warning page</a>.</p>\n"
+" <h2 id=\"read\">Further reading material about online security</h2>\n"
+" <ul class=\"list\">\n"
+"     <li>You can find guides and get an overview on Riseup <a href=\"https://"
+"help.riseup.net/en/security/resources\">Security Resources</a></li>\n"
+"     <li><a href=\"https://prism-break.org/en/\">Prism Break</a> is a new "
+"page that has gathered an overview of the newest and best security programs."
+"</li>\n"
+"     <li><a href=\"https://emailselfdefense.fsf.org/en/\">Pedagogic guide to "
+"E-mail encryption</a>.</li>\n"
+" </ul>\n"
+msgstr ""
+
+#: src/dukop/apps/users/email.py:41
+msgid "Email successfully sent to {}"
+msgstr ""
+
+#: src/dukop/apps/users/email.py:47
+msgid "Not sent, something wrong with the mail server."
+msgstr ""
+
+#: src/dukop/apps/users/email.py:54
+msgid "Your new account for Dukop"
+msgstr ""
+
+#: src/dukop/apps/users/email.py:69
+msgid "Hello here is an account on Dukop"
+msgstr ""
+
+#: src/dukop/apps/users/email.py:84
+msgid "A new event has been created"
+msgstr ""
+
+#: src/dukop/apps/users/forms.py:18 src/dukop/apps/users/forms.py:72
+msgid "Email"
+msgstr ""
+
+#: src/dukop/apps/users/forms.py:33
+msgid "Token"
+msgstr ""
+
+#: src/dukop/apps/users/forms.py:49
+msgid "Are you a 'bot' or a 'human'?"
+msgstr ""
+
+#: src/dukop/apps/users/forms.py:49
+msgid "human"
+msgstr ""
+
+#: src/dukop/apps/users/forms.py:51
+msgid "What do you do when you are not awake? Starts with S, ends with P."
+msgstr ""
+
+#: src/dukop/apps/users/forms.py:52
+msgid "sleep"
+msgstr ""
+
+#: src/dukop/apps/users/forms.py:56
+msgid ""
+"Toilets. We all use them. After which we... [fl*sh]. Just write that word "
+"here."
+msgstr ""
+
+#: src/dukop/apps/users/forms.py:58
+msgid "flush"
+msgstr ""
+
+#: src/dukop/apps/users/forms.py:74
+msgid "Are you a bot?"
+msgstr ""
+
+#: src/dukop/apps/users/models.py:51
+msgid "email"
+msgstr ""
+
+#: src/dukop/apps/users/models.py:53
+msgid ""
+"Your email address will be used for password resets and notification about "
+"your event/submissions."
+msgstr ""
+
+#: src/dukop/apps/users/models.py:69
+msgid "One time passphrase"
+msgstr ""
+
+#: src/dukop/apps/users/models.py:78
+msgid "Unnamed user"
+msgstr ""
+
+#: src/dukop/apps/users/models.py:99
+msgid "User"
+msgstr ""
+
+#: src/dukop/apps/users/models.py:100
+msgid "Users"
+msgstr ""
+
+#: src/dukop/apps/users/models.py:113
+msgid "Do not allow others to add events to this group"
+msgstr ""
+
+#: src/dukop/apps/users/models.py:120
+msgid ""
+"Enter details, which will be displayed on the group's own page. You can use "
+"Markdown."
+msgstr ""
+
+#: src/dukop/apps/users/models.py:153
+msgid "Group"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/logged_out.html:4
+msgid "Logged out"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/logged_out.html:8
+msgid "Thanks for spending some quality time with the Web site today."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/logged_out.html:10
+msgid "Log in again"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/login.html:5
+#: src/dukop/apps/users/templates/users/login.html:9
+#: src/dukop/apps/users/templates/users/login.html:28
+#: src/dukop/apps/users/templates/users/password_reset_complete.html:11
+#: src/dukop/templates/base.html:45
+msgid "Log in"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/login.html:11
+msgid ""
+"You will only have a password if you choose to have one after signing up. "
+"Don't have an account yet?"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/login.html:11
+msgid "Sign up here"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/login.html:18
+msgid "Send a 1-time login"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/login.html:23
+msgid "Log in with password"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/login_password.html:7
+msgid "Login with a password"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/login_token.html:5
+msgid "Token check"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/login_token.html:9
+msgid "Login"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/login_token.html:25
+msgid "Validate token and login"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/login_token.html:29
+msgid "Get a new token"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/login_token_sent.html:5
+#: src/dukop/apps/users/templates/users/login_token_sent.html:9
+#: src/dukop/apps/users/views.py:64 src/dukop/apps/users/views.py:182
+#: src/dukop/apps/users/views.py:192
+msgid "Check your inbox"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/login_token_sent.html:11
+#, python-format
+msgid ""
+"Click the link sent to %(email_token)s and enter the token on the link that "
+"is found in the email."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/mail/admin_event_created.txt:3
+#, python-format
+msgid ""
+"A new event has been created!\n"
+"\n"
+"Title: %(name)s\n"
+"Published: %(published)s\n"
+"Created: %(created)s\n"
+"\n"
+"%(protocol)s://%(domain)s%(event_url)s\n"
+"\n"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/mail/base.txt:1
+#, python-format
+msgid "Dear %(recipient_name)s,"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/mail/new_account_token_login.txt:3
+#, python-format
+msgid ""
+"Here is a token for confirming your account:\n"
+"\n"
+"%(token_passphrase)s\n"
+"\n"
+"Use this token code within 1 hour (before %(expiry)s). You can login here:\n"
+"\n"
+"%(protocol)s://%(domain)s%(login_url)s?next=%(next)s\n"
+"\n"
+"If you did not request this account, get in touch with us."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/mail/token_login.txt:3
+#, python-format
+msgid ""
+"Here is a token for logging in:\n"
+"\n"
+"%(token_passphrase)s\n"
+"\n"
+"Use this token code within 1 hour (before %(expiry)s). You can login here:\n"
+"\n"
+"%(protocol)s://%(domain)s%(login_url)s?next=%(next)s\n"
+"\n"
+"If you did not request this login, get in touch with us."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_change_done.html:7
+msgid "Your password was changed."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_change_form.html:13
+msgid "Please correct the error below."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_change_form.html:13
+msgid "Please correct the errors below."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_change_form.html:18
+msgid ""
+"Please enter your old password, for security's sake, and then enter your new "
+"password twice so we can verify you typed it in correctly."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_change_form.html:46
+#: src/dukop/apps/users/templates/users/password_reset_confirm.html:24
+msgid "Change my password"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_reset_complete.html:9
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_reset_confirm.html:10
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_reset_confirm.html:16
+msgid "New password:"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_reset_confirm.html:21
+msgid "Confirm password:"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_reset_confirm.html:30
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_reset_done.html:8
+msgid ""
+"We've emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_reset_done.html:10
+msgid ""
+"If you don't receive an email, please make sure you've entered the address "
+"you registered with, and check your spam folder."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_reset_email.html:2
+#, python-format
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"user account at %(site_name)s."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_reset_email.html:4
+msgid "Please go to the following page and choose a new password:"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_reset_email.html:8
+msgid "Your username, in case you've forgotten:"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_reset_email.html:10
+msgid "Thanks for using our site!"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_reset_email.html:12
+#, python-format
+msgid "The %(site_name)s team"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_reset_form.html:4
+#: src/dukop/apps/users/templates/users/password_reset_form.html:8
+msgid "Forgotten password?"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_reset_form.html:10
+msgid ""
+"Forgotten your password? Enter your email address below, and we'll email "
+"instructions for setting a new one."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_reset_form.html:14
+msgid "Email address:"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/password_reset_form.html:16
+msgid "Reset my password"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/signup.html:5
+#: src/dukop/apps/users/templates/users/signup.html:9
+msgid "Sign up"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/signup.html:12
+msgid "The form contained errors, please review below..."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/signup.html:20
+msgid "Confirm email..."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/signup.html:24
+msgid "Already have an account? Log in..."
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/signup_confirm.html:4
+#: src/dukop/apps/users/templates/users/signup_confirm.html:8
+msgid "Confirm your email"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/signup_confirm.html:10
+msgid ""
+"You've got mail - click the link or copy paste it to this browser session "
+"and you'll be logged in."
+msgstr ""
+
+#: src/dukop/settings/base.py:104
+msgid "English"
+msgstr ""
+
+#: src/dukop/settings/base.py:104
+msgid "Danish"
+msgstr ""
+
+#: src/dukop/templates/base.html:42
+msgid "Log out"
+msgstr ""
+
+#: src/dukop/templates/base.html:76
+msgid "About us"
+msgstr ""
+
+#: src/dukop/templates/base.html:77
+msgid ""
+"Duk Op is your guide to what happens in and around Copenhagen, whether you "
+"are looking for demonstrations, concerts, parties, meetings, soup kitchens, "
+"gardening days, workshops, art exhibitions, film screenings and much more."
+msgstr ""
+
+#: src/dukop/templates/base.html:79
+msgid "Read more"
+msgstr ""
+
+#: src/dukop/templates/base.html:80
+msgid "Contact us"
+msgstr ""
+
+#: src/dukop/templates/base.html:84
+msgid "Latest news"
+msgstr ""
+
+#: src/dukop/templates/base.html:99
+msgid "No news is good news?"
+msgstr ""
