@@ -24,7 +24,7 @@ msgstr "kort beskrivelse"
 
 #: src/dukop/apps/calendar/admin.py:53
 msgid "time(s)"
-msgstr ""
+msgstr "gang(e)"
 
 #: src/dukop/apps/calendar/forms.py:14
 msgid "Relevance"
