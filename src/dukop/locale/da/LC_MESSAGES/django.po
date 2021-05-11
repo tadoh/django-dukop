@@ -38,8 +38,8 @@ msgstr "Vælg hvilken version af kalederen dette er relevent for"
 msgid ""
 "A group may host an event and be displayed as the author of the event text. "
 "You can only choose a host if you have been allowed membership of a group."
-msgstr "En gruppe kan eje en begivenhed og blive vist som forfattere af en "
-"begivenhedstekst. Du kan kun vælge en host hvis du er medlem af en gruppe."
+msgstr "En gruppe kan "eje" et event og blive vist som forfattere af en event tekst."
+"Du kan kun vælge en "ejer" hvis du er medlem af en gruppe" 
 
 #: src/dukop/apps/calendar/forms.py:51
 msgid "Cover image"
@@ -47,7 +47,7 @@ msgstr "Forside billede"
 
 #: src/dukop/apps/calendar/forms.py:52
 msgid "If you have several images, use this one as the cover"
-msgstr "Hvis du har flere billede, vælg den her som forside billede"
+msgstr "Hvis du har flere billeder, vælg den her som forside billede"
 
 #: src/dukop/apps/calendar/migrations/0004_weekdays.py:6
 msgid "Monday"
@@ -113,7 +113,7 @@ msgstr "beskrivelse"
 msgid ""
 "Enter details, which will be displayed on the event's own page. You can use "
 "Markdown."
-msgstr "Skriv detaljer som vil blive vist på begivenhedens egne side. Formatering af teksten er mulig."
+msgstr "Skriv detaljer som vil blive vist på begivenhedens egen side. Formatering af teksten er mulig."
 
 #: src/dukop/apps/calendar/models.py:192
 msgid "The part of a URL that is displayed in dukop.dk/event/<slug>/"
@@ -122,7 +122,7 @@ msgstr "Den del af af URL der bliver vist på dukop.dk/sphere/<slug>/"
 #: src/dukop/apps/calendar/models.py:202
 msgid ""
 "A group may host an event and be displayed as the author of the event text."
-msgstr "En gruppe kan eje en begivenhed og blive vist som forfattere til en begivenhedstekst."
+msgstr "En gruppe kan "hoste" en begivenhed og blive vist som forfattere til en event tekst."
 
 #: src/dukop/apps/calendar/models.py:213
 msgid "venue name"
@@ -131,7 +131,7 @@ msgstr "venue navn"
 #: src/dukop/apps/calendar/models.py:216 src/dukop/apps/calendar/models.py:223
 #: src/dukop/apps/calendar/models.py:230 src/dukop/apps/calendar/models.py:237
 msgid "If left blank, will be copied from host group"
-msgstr "Hvis tom, bliver den kopieret fra ejer-gruppen."
+msgstr "hvis tom, bliver den kopieret fra "host" gruppen."
 
 #: src/dukop/apps/calendar/models.py:220 src/dukop/apps/users/models.py:132
 msgid "street"
@@ -143,7 +143,7 @@ msgstr "by"
 
 #: src/dukop/apps/calendar/models.py:233 src/dukop/apps/users/models.py:143
 msgid "zip code"
-msgstr "postnummer"
+msgstr "post nr"
 
 #: src/dukop/apps/calendar/models.py:245
 msgid "owner (user)"
@@ -155,7 +155,7 @@ msgstr "ejer (gruppe)"
 
 #: src/dukop/apps/calendar/models.py:262
 msgid "edit secret"
-msgstr "redigere hemnelighed"
+msgstr "rediger hemnelighed"
 
 #: src/dukop/apps/calendar/models.py:270
 msgid "view secret"
@@ -245,7 +245,7 @@ msgstr "Retningslinjer"
 msgid ""
 "Getting all the details right for you event can take some time. Spend time "
 "to ensure that it looks nice. This form contains the following sections:"
-msgstr "Det kan tage tid at oprette et event. Brug noget tid på at få det til at se godt id. Udfyldningsformularen indeholder følgende:"
+msgstr "Det kan tage tid at oprette et event. Brug noget tid på at få det til at se godt ud. Udfyldningsformularen indeholder følgende:"
 
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:24
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:36
@@ -299,7 +299,7 @@ msgstr "Fjern tidsvindue"
 msgid ""
 "We really recommend that you add an illustration. Don't let your Facebook "
 "event look better than your Duk Op event!"
-msgstr "Tilføj meget gerne et billede - lad ikke din facebook event, så bedre ud end din Duk Op begivenhed!"
+msgstr "Tilføj meget gerne et billede - lad ikke din facebook event, se bedre ud end din Duk Op begivenhed!"
 
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:103
 msgid "Image"
@@ -379,22 +379,22 @@ msgstr "Det sker ikke ikke en skid i dag"
 #: src/dukop/apps/calendar/utils.py:30
 #, python-brace-format
 msgid "{date} at {time}"
-msgstr "{date} kl. {time}"
+msgstr "{dato} at {tid}"
 
 #: src/dukop/apps/calendar/utils.py:43
 #, python-brace-format
 msgid "{start_date} at {start_time}"
-msgstr "{start_date} kl. {start_time}"
+msgstr "{start_dato} at {start_tid}"
 
 #: src/dukop/apps/calendar/utils.py:47
 #, python-brace-format
 msgid "{start_date} at {start_time}-{end_time}"
-msgstr "{start_date} kl. {start_time}-{end_time}"
+msgstr "{start_dato} at {start_tid}-{slut_tid}"
 
 #: src/dukop/apps/calendar/utils.py:53
 #, python-brace-format
 msgid "{start_date} at {start_time}-{end_date} at {end_time}"
-msgstr "{start_date} kl. {start_time}-{end_date} kl. {end_time}"
+msgstr "{start_dato} at {start_tid}-{slut_dato} at {slut_tid}"
 
 #: src/dukop/apps/news/models.py:33
 msgid "News story"
@@ -666,7 +666,7 @@ msgstr "Email blev sendt til"
 
 #: src/dukop/apps/users/email.py:47
 msgid "Not sent, something wrong with the mail server."
-msgstr "Emailen blev ikke send, noget gik galt med mailserveren"
+msgstr "Emailen blev ikke sendt, noget gik galt med mailserveren"
 
 #: src/dukop/apps/users/email.py:54
 msgid "Your new account for DukOp"
@@ -678,7 +678,7 @@ msgstr "Her er en DukOp konto"
 
 #: src/dukop/apps/users/email.py:84
 msgid "A new event has been created"
-msgstr ""
+msgstr "En ny begivenhed er blevet oprettet"
 
 #: src/dukop/apps/users/forms.py:18 src/dukop/apps/users/forms.py:72
 msgid "Email"
@@ -708,11 +708,11 @@ msgstr "sover"
 msgid ""
 "Toilets. We all use them. After which we... [fl*sh]. Just write that word "
 "here."
-msgstr ""
+msgstr "Vi bruger alle toiletter. Hvad gør vi bagefter? [sk*ller] ud."
 
 #: src/dukop/apps/users/forms.py:58
 msgid "flush"
-msgstr ""
+msgstr "skyller"
 
 #: src/dukop/apps/users/forms.py:74
 msgid "Are you a bot?"
@@ -738,7 +738,7 @@ msgstr "Unavngivet bruger"
 
 #: src/dukop/apps/users/models.py:99
 msgid "User"
-msgstr "Bruge"
+msgstr "Bruger"
 
 #: src/dukop/apps/users/models.py:100
 msgid "Users"
@@ -746,7 +746,7 @@ msgstr "Brugere"
 
 #: src/dukop/apps/users/models.py:113
 msgid "Do not allow others to add events to this group"
-msgstr "Tillad ikke at andre kan tilføje begivenheder il denne gruppe"
+msgstr "Tillad ikke at andre kan tilføje begivenheder til denne gruppe"
 
 #: src/dukop/apps/users/models.py:120
 msgid ""
@@ -815,22 +815,22 @@ msgstr "Valdiderer token med log ind"
 
 #: src/dukop/apps/users/templates/users/login_token.html:29
 msgid "Get a new token"
-msgstr "Få en en new token"
+msgstr "Få en en ny token"
 
 #: src/dukop/apps/users/templates/users/login_token_sent.html:5
 #: src/dukop/apps/users/templates/users/login_token_sent.html:9
 #: src/dukop/apps/users/views.py:64 src/dukop/apps/users/views.py:182
 #: src/dukop/apps/users/views.py:192
 msgid "Check your inbox"
-msgstr "Tjek din mail inbox"
+msgstr "Tjek din mail inboc"
 
 #: src/dukop/apps/users/templates/users/login_token_sent.html:11
 #, python-format
 msgid ""
 "Click the link sent to %(email_token)s and enter the token on the link that "
 "is found in the email."
-msgstr "Click the link sent to %(email_token)s and enter the token on the link that "
-"is found in the email."
+msgstr ""Click the link sent to %(email_token)s and enter the token on the link that "
+"is found in the email.""
 
 #: src/dukop/apps/users/templates/users/mail/admin_event_created.txt:3
 #, python-format
@@ -843,12 +843,19 @@ msgid ""
 "\n"
 "%(protocol)s://%(domain)s%(event_url)s\n"
 "\n"
-msgstr ""
+msgstr "En ny begivenhed er blevet oprettet !\n"
+"\n"
+"Titel: %(name)s\n"
+"Offetnliggjort: %(published)s\n"
+"Oprettet: %(created)s\n"
+"\n"
+"%(protocol)s://%(domain)s%(event_url)s\n"
+"\n"
 
 #: src/dukop/apps/users/templates/users/mail/base.txt:1
 #, python-format
 msgid "Dear %(recipient_name)s,"
-msgstr ""
+msgstr "Kære %(recipient_name)s,"
 
 #: src/dukop/apps/users/templates/users/mail/new_account_token_login.txt:3
 #, python-format
@@ -863,6 +870,15 @@ msgid ""
 "\n"
 "If you did not request this account, get in touch with us."
 msgstr ""
+"Her er en token for at bekræfte din konto:\n"
+"\n"
+"%(token_passphrase)s\n"
+"\n"
+"Brug denne token kode indenfor 1 time (before %(expiry)s). Du kan logge ind her:\n"
+"\n"
+"%(protocol)s://%(domain)s%(login_url)s?next=%(next)s\n"
+"\n"
+"Har du ikke bedt om denne konto, så kontakt os."
 
 #: src/dukop/apps/users/templates/users/mail/token_login.txt:3
 #, python-format
@@ -877,65 +893,78 @@ msgid ""
 "\n"
 "If you did not request this login, get in touch with us."
 msgstr ""
+"Her er en token for at bekræfte din konto:\n"
+"\n"
+"%(token_passphrase)s\n"
+"\n"
+"Brug denne token kode indenfor 1 time (before %(expiry)s). Du kan logge ind her:\n"
+"\n"
+"%(protocol)s://%(domain)s%(login_url)s?next=%(next)s\n"
+"\n"
+"Har du ikke bedt om denne konto, så kontakt os."
 
 #: src/dukop/apps/users/templates/users/password_change_done.html:7
 msgid "Your password was changed."
-msgstr ""
+msgstr "Dit kodeord er blevet ændret"
 
 #: src/dukop/apps/users/templates/users/password_change_form.html:13
 msgid "Please correct the error below."
-msgstr ""
+msgstr "Ret venligst nedenstående fejl"
 
 #: src/dukop/apps/users/templates/users/password_change_form.html:13
 msgid "Please correct the errors below."
-msgstr ""
+msgstr "Ret venligst nedenstående fejl"
 
 #: src/dukop/apps/users/templates/users/password_change_form.html:18
 msgid ""
 "Please enter your old password, for security's sake, and then enter your new "
 "password twice so we can verify you typed it in correctly."
-msgstr ""
+msgstr "Skriv venligst dit gamle kodeord af sikkerheds grunde, 
+"derefter dit nye kodeord to gange, så vi ved du har skrevet det rigtigt."
 
 #: src/dukop/apps/users/templates/users/password_change_form.html:46
 #: src/dukop/apps/users/templates/users/password_reset_confirm.html:24
 msgid "Change my password"
-msgstr ""
+msgstr "Ændr min adgangskode"
 
 #: src/dukop/apps/users/templates/users/password_reset_complete.html:9
 msgid "Your password has been set.  You may go ahead and log in now."
-msgstr ""
+msgstr "Du har lavet en adgangskode. Du kan nu logge ind"
 
 #: src/dukop/apps/users/templates/users/password_reset_confirm.html:10
 msgid ""
 "Please enter your new password twice so we can verify you typed it in "
 "correctly."
-msgstr ""
+msgstr "Skriv dit nye kodeord to gange, så vi ved du har skrevet det rigtigt."
 
 #: src/dukop/apps/users/templates/users/password_reset_confirm.html:16
 msgid "New password:"
-msgstr ""
+msgstr "Nyt kodeord:"
 
 #: src/dukop/apps/users/templates/users/password_reset_confirm.html:21
 msgid "Confirm password:"
-msgstr ""
+msgstr "Bekræft Kodeord:"
 
 #: src/dukop/apps/users/templates/users/password_reset_confirm.html:30
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
-msgstr ""
+msgstr "Kodeords ændringslinket er ikke gyldigt, måske fordi det allerede har været brugt."
+"Anmod om en ny kodeordsændring."
 
 #: src/dukop/apps/users/templates/users/password_reset_done.html:8
 msgid ""
 "We've emailed you instructions for setting your password, if an account "
 "exists with the email you entered. You should receive them shortly."
-msgstr ""
+msgstr "Vi har sendt en email med instruktioner for hvordan du indstiller dit kodeord. " 
+"Hvis der findes en konto med den email du har skrevet, får du snart emailen."
 
 #: src/dukop/apps/users/templates/users/password_reset_done.html:10
 msgid ""
 "If you don't receive an email, please make sure you've entered the address "
 "you registered with, and check your spam folder."
-msgstr ""
+msgstr "Hvis du ikke modtager en email, så tjek at du har skrevet den rigtige emailadresse "
+"og tjek dit spam-filter."
 
 #: src/dukop/apps/users/templates/users/password_reset_email.html:2
 #, python-format
@@ -943,106 +972,112 @@ msgid ""
 "You're receiving this email because you requested a password reset for your "
 "user account at %(site_name)s."
 msgstr ""
+"Du har fået denne email fordi du har bedt om at få ændret dit kodeord "
+"til din bruger på %(site_name)s."
 
 #: src/dukop/apps/users/templates/users/password_reset_email.html:4
 msgid "Please go to the following page and choose a new password:"
-msgstr ""
+msgstr "Gå til denne side og lav et nyt kodeord:"
 
 #: src/dukop/apps/users/templates/users/password_reset_email.html:8
 msgid "Your username, in case you've forgotten:"
-msgstr ""
+msgstr "Dit brugernavn, hvis du skulle have glemt det:"
 
 #: src/dukop/apps/users/templates/users/password_reset_email.html:10
 msgid "Thanks for using our site!"
-msgstr ""
+msgstr "Tak fordi du bruger vores side!"
 
 #: src/dukop/apps/users/templates/users/password_reset_email.html:12
 #, python-format
 msgid "The %(site_name)s team"
-msgstr ""
+msgstr "%(site_name) holdet"
 
 #: src/dukop/apps/users/templates/users/password_reset_form.html:4
 #: src/dukop/apps/users/templates/users/password_reset_form.html:8
 msgid "Forgotten password?"
-msgstr ""
+msgstr "Glemt kodeord?"
 
 #: src/dukop/apps/users/templates/users/password_reset_form.html:10
 msgid ""
 "Forgotten your password? Enter your email address below, and we'll email "
 "instructions for setting a new one."
-msgstr ""
+msgstr "Har du glemt dit kodeord? Skriv din email adresse nedenunder, "
+"og vi sender instruktioner til hvordan du kan ændre det."
 
 #: src/dukop/apps/users/templates/users/password_reset_form.html:14
 msgid "Email address:"
-msgstr ""
+msgstr "Email adresse:"
 
 #: src/dukop/apps/users/templates/users/password_reset_form.html:16
 msgid "Reset my password"
-msgstr ""
+msgstr "Ændr mit kodeord"
 
 #: src/dukop/apps/users/templates/users/signup.html:5
 #: src/dukop/apps/users/templates/users/signup.html:9
 msgid "Sign up"
-msgstr ""
+msgstr "Tilmeld dig"
 
 #: src/dukop/apps/users/templates/users/signup.html:12
 msgid "The form contained errors, please review below..."
-msgstr ""
+msgstr "Der var fejl i formularen, tjek venligst nedenstående..."
 
 #: src/dukop/apps/users/templates/users/signup.html:20
 msgid "Confirm email..."
-msgstr ""
+msgstr "Bekræft email..."
 
 #: src/dukop/apps/users/templates/users/signup.html:24
 msgid "Already have an account? Log in..."
-msgstr ""
+msgstr "Har du allerede en konto? Log in..."
 
 #: src/dukop/apps/users/templates/users/signup_confirm.html:4
 #: src/dukop/apps/users/templates/users/signup_confirm.html:8
 msgid "Confirm your email"
-msgstr ""
+msgstr "Bekræft din email"
 
 #: src/dukop/apps/users/templates/users/signup_confirm.html:10
 msgid ""
 "You've got mail - click the link or copy paste it to this browser session "
 "and you'll be logged in."
-msgstr ""
+msgstr "Du har fået en email - klik på linket eller kopier det ind i din browser "
+"og du bliver logget ind."
 
 #: src/dukop/settings/base.py:104
 msgid "English"
-msgstr ""
+msgstr "Engelsk"
 
 #: src/dukop/settings/base.py:104
 msgid "Danish"
-msgstr ""
+msgstr "Dansk"
 
 #: src/dukop/templates/base.html:42
 msgid "Log out"
-msgstr ""
+msgstr "Log ud"
 
 #: src/dukop/templates/base.html:76
 msgid "About us"
-msgstr ""
+msgstr "Om os"
 
 #: src/dukop/templates/base.html:77
 msgid ""
 "Duk Op is your guide to what happens in and around Copenhagen, whether you "
 "are looking for demonstrations, concerts, parties, meetings, soup kitchens, "
 "gardening days, workshops, art exhibitions, film screenings and much more."
-msgstr ""
+msgstr "Duk Op er din guide til hvad der sker, uanse om du leder efter "
+"demonstrationer, koncerter, fester, møder, folkekøkken, havedage, workshops, "
+"kunst udstillinger, filmvisinger, debatter og meget mere."
 
 #: src/dukop/templates/base.html:79
 msgid "Read more"
-msgstr ""
+msgstr "Læs mere"
 
 #: src/dukop/templates/base.html:80
 msgid "Contact us"
-msgstr ""
+msgstr "Kontakt os"
 
 #: src/dukop/templates/base.html:84
 msgid "Latest news"
-msgstr ""
+msgstr "Seneste nyt"
 
 #: src/dukop/templates/base.html:99
 msgid "No news is good news?"
-msgstr ""
+msgstr "Ingen nyheder"
