@@ -38,8 +38,8 @@ msgstr "Vælg hvilken version af kalederen dette er relevent for"
 msgid ""
 "A group may host an event and be displayed as the author of the event text. "
 "You can only choose a host if you have been allowed membership of a group."
-msgstr "En gruppe kan "eje" et event og blive vist som forfattere af en event tekst."
-"Du kan kun vælge en "ejer" hvis du er medlem af en gruppe" 
+msgstr "En gruppe kan \"eje\" et event og blive vist som forfattere af en event tekst."
+"Du kan kun vælge en \"ejer\" hvis du er medlem af en gruppe" 
 
 #: src/dukop/apps/calendar/forms.py:51
 msgid "Cover image"
@@ -122,7 +122,7 @@ msgstr "Den del af af URL der bliver vist på dukop.dk/sphere/<slug>/"
 #: src/dukop/apps/calendar/models.py:202
 msgid ""
 "A group may host an event and be displayed as the author of the event text."
-msgstr "En gruppe kan "hoste" en begivenhed og blive vist som forfattere til en event tekst."
+msgstr "En gruppe kan eje en begivenhed og blive vist som forfattere til en event tekst."
 
 #: src/dukop/apps/calendar/models.py:213
 msgid "venue name"
@@ -131,7 +131,7 @@ msgstr "venue navn"
 #: src/dukop/apps/calendar/models.py:216 src/dukop/apps/calendar/models.py:223
 #: src/dukop/apps/calendar/models.py:230 src/dukop/apps/calendar/models.py:237
 msgid "If left blank, will be copied from host group"
-msgstr "hvis tom, bliver den kopieret fra "host" gruppen."
+msgstr "hvis tom, bliver den kopieret fra ejer-gruppen."
 
 #: src/dukop/apps/calendar/models.py:220 src/dukop/apps/users/models.py:132
 msgid "street"
@@ -155,7 +155,7 @@ msgstr "ejer (gruppe)"
 
 #: src/dukop/apps/calendar/models.py:262
 msgid "edit secret"
-msgstr "rediger hemnelighed"
+msgstr "rediger hemmelighed"
 
 #: src/dukop/apps/calendar/models.py:270
 msgid "view secret"
@@ -379,22 +379,22 @@ msgstr "Det sker ikke ikke en skid i dag"
 #: src/dukop/apps/calendar/utils.py:30
 #, python-brace-format
 msgid "{date} at {time}"
-msgstr "{dato} at {tid}"
+msgstr "{date} kl. {tid}"
 
 #: src/dukop/apps/calendar/utils.py:43
 #, python-brace-format
 msgid "{start_date} at {start_time}"
-msgstr "{start_dato} at {start_tid}"
+msgstr "{start_date} kl. {start_time}"
 
 #: src/dukop/apps/calendar/utils.py:47
 #, python-brace-format
 msgid "{start_date} at {start_time}-{end_time}"
-msgstr "{start_dato} at {start_tid}-{slut_tid}"
+msgstr "{start_date} kl. {start_time}-{end_time}"
 
 #: src/dukop/apps/calendar/utils.py:53
 #, python-brace-format
 msgid "{start_date} at {start_time}-{end_date} at {end_time}"
-msgstr "{start_dato} at {start_tid}-{slut_dato} at {slut_tid}"
+msgstr "{start_date} kl. {start_time}-{end_date} kl. {end_time}"
 
 #: src/dukop/apps/news/models.py:33
 msgid "News story"
@@ -822,15 +822,15 @@ msgstr "Få en en ny token"
 #: src/dukop/apps/users/views.py:64 src/dukop/apps/users/views.py:182
 #: src/dukop/apps/users/views.py:192
 msgid "Check your inbox"
-msgstr "Tjek din mail inboc"
+msgstr "Tjek din mail inbox"
 
 #: src/dukop/apps/users/templates/users/login_token_sent.html:11
 #, python-format
 msgid ""
 "Click the link sent to %(email_token)s and enter the token on the link that "
 "is found in the email."
-msgstr ""Click the link sent to %(email_token)s and enter the token on the link that "
-"is found in the email.""
+msgstr "Click the link sent to %(email_token)s and enter the token on the link that "
+"is found in the email."
 
 #: src/dukop/apps/users/templates/users/mail/admin_event_created.txt:3
 #, python-format
