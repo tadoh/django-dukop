@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django import template
+from django.db.models import Q
 
 from .. import models
 from .. import utils
@@ -19,29 +20,29 @@ def get_event_times(
     has_image=None,
 ):
 
-    lookup = {"event__published": published}
+    lookups = [Q(event__published=published)]
 
     if not from_date:
-        from_date = utils.get_now()
+        from_date = utils.get_now().replace(minute=0, hour=0, second=0)
     if days:
-        to_date = from_date + timedelta(days=days)
+        to_date = (from_date + timedelta(days=days)).replace(minute=0, hour=0, second=0)
 
     if from_date:
-        lookup["end__gte"] = from_date.replace(minute=0, hour=0, second=0)
+        lookups.append(Q(end__gte=from_date))
     if to_date:
-        lookup["start__lte"] = to_date.replace(minute=0, hour=0, second=0)
+        lookups.append(Q(start__lte=to_date) | Q(end__gte=to_date))
 
     if featured is not None:
-        lookup["event__featured"] = bool(featured)
+        lookups.append(Q(event__featured=bool(featured)))
 
     if has_image is not None:
         if has_image:
-            lookup["event__images__id__gte"] = 0
+            lookups.append(Q(event__images__id__gte=0))
         else:
-            lookup["event__images"] = None
+            lookups.append(Q(event__images=None))
 
     return (
-        models.EventTime.objects.filter(**lookup)
+        models.EventTime.objects.filter(*lookups)
         .select_related("event")
         .prefetch_related("event__images", "event__links")
     ).distinct()[:max_count]
