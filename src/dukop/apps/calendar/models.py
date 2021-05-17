@@ -7,6 +7,7 @@ from functools import lru_cache
 
 from django.contrib.sites.models import Site
 from django.db import models
+from django.db.models import Q
 from django.urls.base import reverse
 from django.utils.functional import cached_property
 from django.utils.text import slugify
@@ -52,17 +53,20 @@ class EventManager(models.Manager):
 
 
 class EventTimeQuerySet(models.QuerySet):
-    def future(self):
-        now = utils.get_now()
-        return self.filter(start__gte=now)
+    def future(self, truncate_time_today=True):
+        if truncate_time_today:
+            now = utils.get_now().replace(minute=0, hour=0, second=0)
+        else:
+            now = utils.get_now()
+        return self.filter(Q(start__gte=now) | Q(end__gte=now))
 
 
 class EventTimeManager(models.Manager):
     def get_queryset(self):
         return EventTimeQuerySet(self.model, using=self._db)
 
-    def future(self):
-        return self.get_queryset().future()
+    def future(self, truncate_time_today=True):
+        return self.get_queryset().future(truncate_time_today=truncate_time_today)
 
 
 class Sphere(models.Model):
