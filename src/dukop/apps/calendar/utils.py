@@ -44,13 +44,13 @@ def display_interval(start, end=None):
             start_date=date_format(start), start_time=display_time(start)
         )
     elif end.date() == start.date():
-        return _("{start_date} at {start_time}-{end_time}").format(
+        return _("{start_date} at {start_time} - {end_time}").format(
             start_date=date_format(start),
             start_time=display_time(start),
             end_time=display_time(end),
         )
     else:
-        return _("{start_date} at {start_time}-{end_date} at {end_time}").format(
+        return _("{start_date} at {start_time} - {end_date} at {end_time}").format(
             start_date=date_format(start),
             end_date=date_format(end),
             start_time=display_time(start),

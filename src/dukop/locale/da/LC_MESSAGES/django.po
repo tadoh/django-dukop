@@ -405,13 +405,13 @@ msgstr "{start_date} kl. {start_time}"
 
 #: src/dukop/apps/calendar/utils.py:47
 #, python-brace-format
-msgid "{start_date} at {start_time}-{end_time}"
-msgstr "{start_date} kl. {start_time}-{end_time}"
+msgid "{start_date} at {start_time} - {end_time}"
+msgstr "{start_date} kl. {start_time} - {end_time}"
 
 #: src/dukop/apps/calendar/utils.py:53
 #, python-brace-format
-msgid "{start_date} at {start_time}-{end_date} at {end_time}"
-msgstr "{start_date} kl. {start_time}-{end_date} kl. {end_time}"
+msgid "{start_date} at {start_time} - {end_date} at {end_time}"
+msgstr "{start_date} kl. {start_time} - {end_date} kl. {end_time}"
 
 #: src/dukop/apps/news/models.py:33
 msgid "News story"
