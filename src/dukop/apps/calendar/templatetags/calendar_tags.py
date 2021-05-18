@@ -22,15 +22,21 @@ def get_event_times(
 
     lookups = [Q(event__published=published)]
 
-    if not from_date:
+    if from_date == "today":
         from_date = utils.get_now().replace(minute=0, hour=0, second=0)
+    elif from_date == "future":
+        from_date = utils.get_now()
+    else:
+        from_date = utils.get_now().replace(minute=0, hour=0, second=0)
+
     if days:
-        to_date = (from_date + timedelta(days=days)).replace(minute=0, hour=0, second=0)
+        to_date = from_date + timedelta(days=days)
 
     if from_date:
-        lookups.append(Q(end__gte=from_date))
+        lookups.append((Q(start__gte=from_date) & Q(end=None)) | Q(end__gte=from_date))
+
     if to_date:
-        lookups.append(Q(start__lte=to_date) | Q(end__gte=to_date))
+        lookups.append(Q(start__lte=to_date))
 
     if featured is not None:
         lookups.append(Q(event__featured=bool(featured)))

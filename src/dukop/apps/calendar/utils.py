@@ -12,7 +12,7 @@ def get_now():
     eyes of any function in the calendar. It is used to mimic the past in
     testing and development.
     """
-    now = timezone.now()
+    now = timezone.localtime()
     if hasattr(settings, "DUKOP_BACKWARDS_DAYS"):
         return now - timedelta(days=settings.DUKOP_BACKWARDS_DAYS)
     return now

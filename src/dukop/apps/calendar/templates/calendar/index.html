@@ -11,7 +11,7 @@
 <script type="text/javascript" src="{% static 'calendar/js/calendar.js' %}"></script>
 {% endaddtoblock %}
 
-{% get_event_times max_count=20 has_image=True days=14 as event_times %}
+{% get_event_times from_date=future max_count=20 has_image=True days=14 as event_times %}
 
 {% for event_time in event_times %}
 <div class="card" data-hash="event-{{ event_time.event.pk }}" id="event-{{ event_time.event.pk }}">
@@ -21,7 +21,7 @@
 
 {% endfor %}
 
-{% get_event_times days=1 max_count=30 as todays_events %}
+{% get_event_times from_date=today days=1 max_count=30 as todays_events %}
 
 <div class="page-container">
   <h1 class="title title--space">{% trans "Also happening" %} <span class="title__bold">{% trans "today" %}</span></h1>
