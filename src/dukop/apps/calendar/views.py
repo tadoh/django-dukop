@@ -1,3 +1,4 @@
+import pytz
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
@@ -6,6 +7,7 @@ from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
+from django_ical.views import ICalFeed
 from ratelimit.decorators import ratelimit
 
 from . import forms
@@ -131,3 +133,41 @@ class EventCreate(CreateView):
         c["links"] = self.links_form
         c["forms_had_errors"] = getattr(self, "forms_had_errors", False)
         return c
+
+
+class EventFeed(ICalFeed):
+    """
+    A simple event calender
+    """
+
+    product_id = "-//dukop.dk//Kalender"
+    timezone = "UTC"
+    file_name = "dukop.ics"
+
+    def items(self):
+        return models.EventTime.objects.future()
+
+    def item_link(self, item):
+        return item.event.share_link()
+
+    def item_title(self, item):
+        return item.event.name
+
+    def item_description(self, item):
+        return item.event.short_description
+
+    def item_start_datetime(self, item):
+        return item.start.astimezone(pytz.timezone("UTC"))
+
+    def item_end_datetime(self, item):
+        return item.end.astimezone(pytz.timezone("UTC"))
+
+    def item_location(self, item):
+        location = item.event.venue_name or ""
+        if item.event.street:
+            location += "\n" + item.event.street
+        if item.event.city:
+            location += "\n" + item.event.city
+        if item.event.zip_code:
+            location += " " + item.event.zip_code
+        return location

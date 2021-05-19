@@ -23,7 +23,7 @@ def display_date(dtm):
 
 
 def display_time(dtm):
-    return dtm.strftime("%H:%M")
+    return timezone.localtime(dtm).strftime("%H:%M")
 
 
 def display_datetime(dtm):
