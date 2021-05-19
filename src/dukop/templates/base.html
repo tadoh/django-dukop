@@ -1,4 +1,4 @@
-{% load i18n static compress sekizai_tags news_tags %}<!DOCTYPE html>
+{% load i18n static compress sekizai_tags news_tags calendar_tags %}<!DOCTYPE html>
 <html lang="{{ request.LANGUAGE_CODE }}">
 <head>
     <title>{% block dukop_title %}{% endblock %} (Duk Op)</title>
@@ -81,6 +81,11 @@
                         </p>
                     </div>
                     <div class="footer__news">
+                        <h2 class="title title--footer">{% trans "Feed subscription" %}</h2>
+                        <p>
+                        {% trans "Copy into your calendar (iCAL/ICS)" %}:<br>
+                        <input type="text" value="{% feed_link %}" class="share-text-input feed-link-input">
+                        </p>
                         <h2 class="title title--footer">{% trans "Latest news" %}</h2>
                         {% get_short_news as latest_news %}
                         {% for story in latest_news %}

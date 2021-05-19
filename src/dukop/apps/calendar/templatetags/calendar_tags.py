@@ -1,7 +1,9 @@
 from datetime import timedelta
 
 from django import template
+from django.contrib.sites.models import Site
 from django.db.models import Q
+from django.urls.base import reverse
 
 from .. import models
 from .. import utils
@@ -110,3 +112,10 @@ def dukop_interval(start, end=None):
     Displays an interval, e.g. "2021-04-02 15:00-16:00"
     """
     return utils.display_interval(start, end)
+
+
+@register.simple_tag
+def feed_link():
+    current_site = Site.objects.get_current()
+    domain = current_site.domain
+    return "https://{}{}".format(domain, reverse("calendar:feed"))
