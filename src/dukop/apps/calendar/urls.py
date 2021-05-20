@@ -19,5 +19,5 @@ urlpatterns = [
         views.EventDetailView.as_view(),
         name="event_detail",
     ),
-    path(r"feed", views.EventFeed(), name="feed"),
+    path(r"feed/ical/", views.EventFeed(), name="feed"),
 ]
