@@ -19,5 +19,6 @@ urlpatterns = [
         views.EventDetailView.as_view(),
         name="event_detail",
     ),
-    path(r"feed/ical/", views.EventFeed(), name="feed"),
+    path("feed/ical/", views.EventFeed(), name="feed"),
+    path("sphere/change/<pk>/", views.set_sphere_session, name="sphere_change"),
 ]

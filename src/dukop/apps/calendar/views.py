@@ -2,8 +2,10 @@ import pytz
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
+from django.urls.base import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
@@ -133,6 +135,16 @@ class EventCreate(CreateView):
         c["links"] = self.links_form
         c["forms_had_errors"] = getattr(self, "forms_had_errors", False)
         return c
+
+
+def set_sphere_session(request, pk):
+    get_object_or_404(models.Sphere, pk=pk)
+    request.session["dukop_sphere"] = pk
+
+    next_url = request.GET.get("next")
+    if not next_url:
+        next_url = reverse("calendar:index")
+    return redirect(next_url)
 
 
 class EventFeed(ICalFeed):

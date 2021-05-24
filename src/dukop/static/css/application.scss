@@ -117,6 +117,14 @@ h5 {
   flex: 1;
 }
 
+a.sphere-link {
+  display: inline-block;
+  padding: 0 5px;
+  text-decoration: underline;
+}
+a.sphere-link-chosen {
+  font-weight: bold;
+}
 
 .footer {
   margin-top: 40px;

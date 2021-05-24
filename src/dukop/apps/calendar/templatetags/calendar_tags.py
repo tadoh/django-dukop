@@ -20,9 +20,13 @@ def get_event_times(
     featured=None,
     published=True,
     has_image=None,
+    sphere=None,
 ):
 
     lookups = [Q(event__published=published)]
+
+    if sphere:
+        lookups.append(Q(event__spheres=sphere))
 
     if from_date == "today":
         from_date = utils.get_now().replace(minute=0, hour=0, second=0)
