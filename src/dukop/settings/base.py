@@ -63,6 +63,7 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "sekizai.context_processors.sekizai",
+                "dukop.apps.calendar.context_processors.dukop_sphere",
             ]
         },
     }

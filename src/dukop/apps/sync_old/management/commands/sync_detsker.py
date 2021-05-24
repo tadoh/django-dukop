@@ -144,7 +144,6 @@ def create_event(old_event, group, from_event_series=False):
     # This is not a database field
     event.skip_admin_notifications = True
 
-    event.sphere = Sphere.objects.get(slug="cph")
     event.name = old_event.title
     event.short_description = old_event.short_description or ""
     event.description = old_event.long_description or ""
@@ -163,6 +162,8 @@ def create_event(old_event, group, from_event_series=False):
         event.zip_code = old_event.location.postcode[:16]
         event.city = old_event.location.town
     event.save()
+    event.spheres.add(Sphere.objects.get(slug="cph"))
+    event.spheres.add(Sphere.objects.get(default=True))
     OldEventSync.objects.get_or_create(
         is_series=from_event_series,
         old_fk=old_event.id,

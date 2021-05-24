@@ -11,7 +11,17 @@
 <script type="text/javascript" src="{% static 'calendar/js/calendar.js' %}"></script>
 {% endaddtoblock %}
 
-{% get_event_times from_date=future max_count=20 has_image=True days=14 as event_times %}
+{% get_event_times from_date=future max_count=20 has_image=True days=14 sphere=SPHERE as event_times %}
+
+<div class="page-container">
+  <h1 class="title title--space">
+    {% trans "Events mixed for" %}
+    {% for sphere in SPHERES %}
+    <a href="{% url "calendar:sphere_change" pk=sphere.pk %}" class="sphere-link{% if sphere.pk == SPHERE.id %} sphere-link-chosen{% endif %}">{{ sphere.name }}</a>
+    {% endfor %}
+
+  </h1>
+</div>
 
 {% for event_time in event_times %}
 <div class="card" data-hash="event-{{ event_time.event.pk }}" id="event-{{ event_time.event.pk }}">
@@ -19,12 +29,18 @@
   <a class="card__toggle js-toggle-card" href="{% url "calendar:event_detail" pk=event_time.event.pk slug=event_time.event.slug %}"></a>
 </div>
 
-{% endfor %}
-
-{% get_event_times from_date=today days=1 max_count=30 as todays_events %}
+{% empty %}
 
 <div class="page-container">
-  <h1 class="title title--space">{% trans "Also happening" %} <span class="title__bold">{% trans "today" %}</span></h1>
+    <p><em>{% trans "No events found in this period." %}</em></p>
+</div>
+
+{% endfor %}
+
+{% get_event_times from_date=today days=1 max_count=30 sphere=SPHERE as todays_events %}
+
+<div class="page-container">
+  <h1 class="title title--space">{% trans "Happening" %} <span class="title__bold">{% trans "today" %}</span></h1>
   <div class="timeline">
 
   {% for event_time in todays_events %}
@@ -52,7 +68,7 @@
 </div>
 
 
-{% get_event_times days=31 as event_times %}
+{% get_event_times days=31 sphere=SPHERE as event_times %}
 
 <div class="page-container">
   <div class="table">

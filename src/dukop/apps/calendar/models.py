@@ -6,6 +6,7 @@ from builtins import staticmethod
 from functools import lru_cache
 
 from django.contrib.sites.models import Site
+from django.core.cache import cache
 from django.db import models
 from django.db.models import Q
 from django.urls.base import reverse
@@ -116,14 +117,27 @@ class Sphere(models.Model):
                 name="Auto-created sphere", slug="auto", default=True
             )
 
-    @staticmethod
     @cached_property
+    @staticmethod
     def get_default_cached():
         """
         This can be cached in-memory insofar that we don't do any more funky
         stuff with the Spheres, like related querysets etc.
         """
         return Sphere.get_default()
+
+    @staticmethod
+    def get_all_cached():
+        """
+        This can be cached in-memory insofar that we don't do any more funky
+        stuff with the Spheres, like related querysets etc.
+        """
+        spheres = cache.get("dukop_all_spheres", None)
+        if not spheres:
+            spheres = list(Sphere.objects.all().order_by("default"))
+            cache.set("dukop_all_spheres", spheres)
+
+        return spheres
 
     @staticmethod
     def get_by_id_or_default(sphere_id=None):
@@ -133,7 +147,7 @@ class Sphere(models.Model):
         if not sphere_id:
             return Sphere.get_default()
         try:
-            return Sphere.get_by_id_or_default(sphere_id=sphere_id)
+            return Sphere.objects.get(pk=sphere_id)
         except Sphere.DoesNotExist:
             return Sphere.get_default()
 
