@@ -22,8 +22,9 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include
 from django.urls import path
+from dukop.apps.sync_old.views import RedirectOld
 
-urlpatterns = i18n_patterns(
+urlpatterns = [path("events/<int:pk>", RedirectOld.as_view())] + i18n_patterns(
     path("admin/", admin.site.urls),
     path("news/", include("dukop.apps.news.urls")),
     path("users/", include("dukop.apps.users.urls")),
