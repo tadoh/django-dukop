@@ -1,31 +1,57 @@
 .header-wrapper {
+  .language {
+    text-align: right;
+    margin-top: 5px;
     position: relative;
-    .language {
-        padding-top: 5px;
-        position: absolute;
-        right: 0px;
-        z-index: 20;
-        a, a:active, a:visited {
-            display: inline-block;
-            background-color: #222;
-            color: #fff;
-            padding: 4px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            opacity: 0.8;
-        }
+    z-index: 20;
+    margin-bottom: -20px;
+    a,
+    a:active,
+    a:visited {
+      display: inline-block;
+      background-color: #222;
+      color: #fff;
+      padding: 4px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      opacity: 0.8;
     }
+  }
 }
 .header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  margin-bottom: -10px;
+  @include tablet {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+
   &__logo {
-    width: 264px;
-    padding-right: 40px;
+    flex: 0 0 264px;
+    img {
+      display: block;
+      margin: 0 auto;
+      max-width: 264px;
+    }
+  }
+  &__menu {
+    text-align: center;
+    margin-right: -10px;
+  }
+  &__link {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: inherit;
+    text-decoration: none;
+    font-weight: bold;
+    white-space: nowrap;
+    background-color: #222;
+    color: #fff;
+    padding: 10px 25px;
+    border-radius: 5px;
   }
   &__controls {
     display: none;
@@ -39,43 +65,12 @@
     background-color: #aaa;
     padding: 20px 20px 20px 0;
   }
-  &__link {
-    margin-bottom: -10px;
-    margin-left: 10px;
-    text-align: center;
-    color: inherit;
-    text-decoration: none;
-    font-weight: bold;
-    display: block;
-    white-space: nowrap;
-    flex-grow: 0;
-    flex-shrink: 0;
-    flex-basis: 10%;
-    background-color: #222;
-    color: #fff;
-    padding: 10px 25px;
-    border-radius: 5px;
-  }
+
   &__link img {
     vertical-align: middle;
     display: inline-block;
     margin-top: -1px;
     flex-grow: 1;
     flex-shrink: 1;
-  }
-  &__burger div {
-    height: 3px;
-    background-color: #aaa;
-    margin-bottom: 4px;
-    border-radius: 2px;
-    width: 30px;
-    margin-left: 20px;
-  }
-  &__filler {
-    padding-left: 20px;
-    display: block;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: 10%;
   }
 }

@@ -25,10 +25,10 @@
     <header>
         <div class="page-container">
             <div class="header-wrapper">
-                <nav id="language" class="language">
+                <div id="language" class="language">
                     <a href="/en/" hreflang="en"><abbr lang="en" title="English">en</abbr></a>
                     <a href="/da/" hreflang="da"><abbr lang="da" title="Dansk">da</abbr></a>
-                </nav>
+                </div>
                 <nav class="header">
                     <div class="header__logo">
                         <a href="{% url "calendar:index" %}">
@@ -36,19 +36,17 @@
 
                         </a>
                     </div>
-                    <div class="header__filler"></div>
-                    {% if user.is_authenticated %}
-                      <a class="header__link" href="{% url "calendar:event_create" %}">{% trans "Create event" %}</a>
-                      <a class="header__link" href="{% url "users:logout" %}">{% trans "Log out" %}</a>
-                    {% else %}
-                      <a class="header__link" href="{% url "calendar:event_create" %}">{% trans "Create event" %}</a>
-                      <a class="header__link" href="{% url "users:login" %}">{% trans "Log in" %}</a>
-                    {% endif %}
-                    <div class="header__burger js-toggle" data-element="js-controls">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
+                    <nav class="header__menu">
+                        
+                        {% if user.is_authenticated %}
+                            <a class="header__link" href="{% url "calendar:event_create" %}">{% trans "Create event" %}</a>
+                            <a class="header__link" href="{% url "users:logout" %}">{% trans "Log out" %}</a>
+                        {% else %}
+                            <a class="header__link" href="{% url "calendar:event_create" %}">{% trans "Create event" %}</a>
+                            <a class="header__link" href="{% url "users:login" %}">{% trans "Log in" %}</a>
+                        {% endif %}
+                    </nav>
+                    
                 </nav>
 
             </div>

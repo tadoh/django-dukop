@@ -14,7 +14,7 @@
 {% get_event_times from_date=future max_count=20 has_image=True days=14 sphere=SPHERE as event_times %}
 
 <div class="page-container">
-  <h1 class="title title--space">
+  <h1 class="title">
     {% trans "Events mixed for" %}
     {% for sphere in SPHERES %}
     <a href="{% url "calendar:sphere_change" pk=sphere.pk %}" class="sphere-link{% if sphere.pk == SPHERE.id %} sphere-link-chosen{% endif %}">{{ sphere.name }}</a>
