@@ -359,7 +359,7 @@ class EventTime(models.Model):
         representation = display_datetime(self.start)
         if self.end:
             if self.end.date() == self.start.date():
-                representation += " - {}".format(display_time(self.end.time()))
+                representation += " - {}".format(display_time(self.end))
             else:
                 representation += " - {}".format(display_datetime(self.end))
         return representation

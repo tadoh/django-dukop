@@ -194,6 +194,8 @@ class Command(BaseCommand):
                         comment="This is a randomly generated time",
                     )
 
+                    event.spheres.add(models.Sphere.get_default())
+
                     if random.choice([True, False]):
                         image_data = random_image(use_local=local_image)
                         event_image = models.EventImage(event=event)
