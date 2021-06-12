@@ -17,6 +17,7 @@
     {% compress css %}
         <link rel="stylesheet" type="text/x-scss" href="{% static 'css/application.scss' %}">
     {% endcompress %}
+    <link rel="alternate" type="application/rss+xml" title="Upcoming 30 events on DukOp" href="{% feed_link 'calendar:feed_rss' %}" />
 
 </head>
 <body>
@@ -92,7 +93,7 @@
                         <h2 class="title title--footer">{% trans "Feed subscription" %}</h2>
                         <p>
                         {% trans "Copy into your calendar (iCAL/ICS)" %}:<br>
-                        <input type="text" value="{% feed_link %}" class="share-text-input feed-link-input">
+                        <input type="text" value="{% feed_link 'calendar:feed_ical' %}" class="share-text-input feed-link-input">
                         </p>
                         <h2 class="title title--footer">{% trans "Latest news" %}</h2>
                         {% get_short_news as latest_news %}

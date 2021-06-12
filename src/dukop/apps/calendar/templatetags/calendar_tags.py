@@ -119,7 +119,10 @@ def dukop_interval(start, end=None):
 
 
 @register.simple_tag
-def feed_link():
+def feed_link(feed_url):
+    """
+    Takes a resolvable view name and returns a full path, i.e. calendar:feed_rss
+    """
     current_site = Site.objects.get_current()
     domain = current_site.domain
-    return "https://{}{}".format(domain, reverse("calendar:feed"))
+    return "https://{}{}".format(domain, reverse(feed_url))

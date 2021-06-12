@@ -313,6 +313,13 @@ class Event(models.Model):
             domain, reverse("calendar:event_detail", kwargs={"pk": self.pk})
         )
 
+    def get_display_host(self):
+        if self.host:
+            return self.host.name
+        if self.owner_user:
+            return self.owner_user.get_display_name()
+        return _("Unspecified host")
+
 
 class EventTime(models.Model):
     """

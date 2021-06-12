@@ -1,7 +1,7 @@
 from django.urls import path
 
+from . import feeds
 from . import views
-
 
 app_name = "calendar"
 
@@ -19,6 +19,7 @@ urlpatterns = [
         views.EventDetailView.as_view(),
         name="event_detail",
     ),
-    path("feed/ical/", views.EventFeed(), name="feed"),
+    path("feed/ical/", feeds.EventFeed(), name="feed_ical"),
+    path("feed/rss/", feeds.RssFeed(), name="feed_rss"),
     path("sphere/change/<pk>/", views.set_sphere_session, name="sphere_change"),
 ]
