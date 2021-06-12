@@ -3,7 +3,9 @@ from django.contrib.syndication.views import Feed
 from django.urls.base import reverse
 from django.utils import feedgenerator
 from django.utils.feedgenerator import rfc2822_date
+from django.utils.translation import gettext as _
 from django_ical.views import ICalFeed
+from sorl.thumbnail.shortcuts import get_thumbnail
 
 from . import models
 
@@ -58,6 +60,12 @@ class RssFeed(Feed):
     """
 
     feed_type = DukOpEventRssGenerator
+    description_template = "calendar/feeds/future.html"
+
+    def get_object(self, request, *args, **kwargs):
+        # Am confused as to why Django stopped storing the request object
+        self.request = request
+        return None
 
     def item_extra_kwargs(self, item):
         """
@@ -70,14 +78,33 @@ class RssFeed(Feed):
             "location": self.item_location(item),
         }
 
+    def get_image_url(self, url):
+        return self.request.build_absolute_uri(url)
+
+    def item_enclosures(self, item):
+        """
+        See: https://stackoverflow.com/questions/60227116/django-rss-feed-add-image-to-description
+        """
+        images = []
+        for image in item.event.images.all():
+            thumbnail = get_thumbnail(image.image, "800x800", quality=90)
+            images.append(
+                feedgenerator.Enclosure(
+                    self.get_image_url(thumbnail.url),
+                    str(image.image.size),
+                    "image/{}".format(thumbnail.name.split(".")[-1]),
+                )
+            )
+        return images
+
     def title(self):
-        return "Upcoming 30 events on DukOp"
+        return _("DukOp's next 30 events")
 
     def description(self, obj):
         """
         obj: Needs to be a Sphere object
         """
-        return "Rss feed of the latest events on DukOp"
+        return _("RSS feed of the latest events on DukOp")
 
     def items(self):
         return models.EventTime.objects.future()[:30]
