@@ -1,13 +1,18 @@
+from datetime import timedelta
+
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.urls.base import reverse
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
+from django.views.generic.list import ListView
 from ratelimit.decorators import ratelimit
 
 from . import forms
@@ -133,6 +138,56 @@ class EventCreate(CreateView):
         c["links"] = self.links_form
         c["forms_had_errors"] = getattr(self, "forms_had_errors", False)
         return c
+
+
+class EventListView(ListView):
+    """
+    This lists all Event objects -- BUT! Notice that the listing is happening
+    via the EventTime relation. We are only ever interested in listing events
+    from their occurrence in time, past present or future. The essential feature
+    of the list is to be chronological.
+    """
+
+    template_name = "calendar/event/list.html"
+    model = models.EventTime
+    context_object_name = "event_times"
+    paginate_by = 20
+    max_days_lookback = 30
+
+    def dispatch(self, request, *args, **kwargs):
+        sphere_id = request.GET.get("sphere_id", None)
+        self.sphere = None
+        if sphere_id:
+            self.sphere = get_object_or_404(models.Sphere, pk=sphere_id)
+
+        if not request.GET.get("page"):
+            qs = self.get_queryset()
+            qs__past = qs.filter(start__lte=timezone.now())
+            pages_in_the_past = qs__past.count() // self.paginate_by + 1
+            return HttpResponseRedirect("?page={}".format(pages_in_the_past))
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        qs = DetailView.get_queryset(self)
+
+        if not self.request.user or not self.request.user.is_staff:
+            q_visible_to_all = Q(event__published=True) & Q(
+                start__gte=timezone.now() - timedelta(days=self.max_days_lookback)
+            )
+            if self.request.user.is_authenticated:
+                qs = qs.filter(
+                    q_visible_to_all
+                    | Q(event__owner_user=self.request.user)
+                    | Q(event__owner_group__members=self.request.user)
+                )
+            else:
+                qs = qs.filter(q_visible_to_all)
+
+        if self.sphere:
+            qs = qs.filter(event__spheres=self.sphere)
+
+        return qs
 
 
 def set_sphere_session(request, pk):

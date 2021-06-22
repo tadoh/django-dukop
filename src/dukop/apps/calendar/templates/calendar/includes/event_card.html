@@ -24,7 +24,15 @@
                 -
                 {% endif %}
             {% empty %}
-                {% trans "No scheduled times" %}
+                {% for time in event.times.all %}
+                    {% if time.start %}
+                    {{ time.start|dukop_interval:time.end }}
+                    {% else %}
+                    -
+                    {% endif %}
+                {% empty %}
+                    {% trans "No scheduled times" %}
+                {% endfor %}
             {% endfor %}
           </div>
           <div class="card__place card__link">

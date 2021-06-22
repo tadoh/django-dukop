@@ -7,6 +7,7 @@ app_name = "calendar"
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("events/", views.EventListView.as_view(), name="event_list"),
     path("event/<int:pk>/", views.EventDetailView.as_view(), name="event_detail"),
     path("event/create", views.EventCreate.as_view(), name="event_create"),
     path(
@@ -22,4 +23,9 @@ urlpatterns = [
     path("feed/ical/", feeds.EventFeed(), name="feed_ical"),
     path("feed/rss/", feeds.RssFeed(), name="feed_rss"),
     path("sphere/change/<pk>/", views.set_sphere_session, name="sphere_change"),
+    path(
+        "sphere/<int:sphere_id>/events/",
+        views.EventListView.as_view(),
+        name="event_list",
+    ),
 ]
