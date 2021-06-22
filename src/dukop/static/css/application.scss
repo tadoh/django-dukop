@@ -1,3 +1,4 @@
+@import "mixins";
 @import "base";
 @import "flexboxgrid";
 @import "forms";
@@ -10,28 +11,31 @@
 @import "event-table";
 @import "message";
 
-h1, h2, h3, h4, h5
-{
-    margin: 0.4em 0;
-    padding: 0;
-    line-height: 130%;
-    font-weight: bold;
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 0.4em 0;
+  padding: 0;
+  line-height: 130%;
+  font-weight: bold;
 }
 
 h1 {
-    font-size: 2.2em;
+  font-size: 2.2em;
 }
 h2 {
-    font-size: 1.8em;
+  font-size: 1.8em;
 }
 h3 {
-    font-size: 1.5em;
+  font-size: 1.5em;
 }
 h4 {
-    font-size: 1.3em;
+  font-size: 1.3em;
 }
 h5 {
-    font-size: 1.0em;
+  font-size: 1em;
 }
 
 .lock-body.js-active {
@@ -43,10 +47,10 @@ h5 {
 
 .overlay {
   background: rgba(0, 0, 0, 0);
-  transition: background-color .3s;
+  transition: background-color 0.3s;
 }
 
-.overlay.js-active  {
+.overlay.js-active {
   position: fixed;
   top: 0;
   left: 0;
@@ -69,7 +73,6 @@ h5 {
     text-decoration: none;
     color: inherit;
   }
-
 }
 
 .title--space {
@@ -89,11 +92,11 @@ h5 {
 }
 
 .news__link:hover {
-  background-color: rgba(255,255,255, .3);
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .news__date {
-  color: #42767F;
+  color: #42767f;
   padding-right: 10px;
   flex: 0 0 75px;
   text-align: right;
@@ -128,25 +131,44 @@ a.sphere-link-chosen {
 
 .footer {
   margin-top: 40px;
-
-  .footer__about {
+  @include tablet {
+    .footer__about {
       margin-right: 20px;
-  }
-  .footer__news {
+    }
+    .footer__news {
       margin-left: 20px;
+    }
+    .footer__content {
+      display: flex;
+      padding: 10px;
+    }
+    .footer__content > div {
+      flex: 1;
+    }
   }
 
   .feed-link-input {
-      width: 100%;
-      display: block;
-      margin: 10px 0;
+    width: 100%;
+    display: block;
+    margin: 10px 0;
   }
-
 }
 
-@media (min-width: 700px){
+.page-container {
+  padding: 0 20px;
+  @include tablet {
+    padding: 0 1.1vw;
+  }
+}
+
+@media (min-width: 700px) {
   body {
-    background: linear-gradient(-180deg, rgba(236, 236, 222,.8) 0%, rgba(177, 196, 181,.8) 100%), url('/static/img/bg.jpg') top right -300px no-repeat;
+    background: linear-gradient(
+        -180deg,
+        rgba(236, 236, 222, 0.8) 0%,
+        rgba(177, 196, 181, 0.8) 100%
+      ),
+      url("/static/img/bg.jpg") top right -300px no-repeat;
   }
 
   .header__controls {
@@ -157,12 +179,8 @@ a.sphere-link-chosen {
     display: none;
   }
 
-  .page-container {
-    padding: 0 1.1vw;
-  }
-
   .card {
-    transform: scale(.97, .97);
+    transform: scale(0.97, 0.97);
     margin: 10px auto;
     &--static {
       transform: scale(1, 1);
@@ -188,21 +206,10 @@ a.sphere-link-chosen {
   }
 
   .card:hover {
-    transform: scale(1,1);
-
-  }
-
-  .footer__content {
-    display: flex;
-    padding: 10px;
-  }
-  .footer__content > div {
-    flex: 1;
+    transform: scale(1, 1);
   }
 }
 
-
-.card--static
-{
-    padding: 20px;
+.card--static {
+  padding: 20px;
 }
