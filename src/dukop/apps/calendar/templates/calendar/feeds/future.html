@@ -1,3 +1,12 @@
+{% load i18n calendar_tags %}
 <h1>{{ obj.event.name }}</h1>
+
+<p>
+{% trans "When:" %} {% if obj.start %}
+{{ obj.start|dukop_interval:obj.end }}
+{% else %}
+-
+{% endif %}
+</p>
 
 {{ obj.event.short_description|linebreaks }}
