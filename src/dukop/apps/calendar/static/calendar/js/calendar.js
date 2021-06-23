@@ -22,6 +22,9 @@ function ready(event) {
     element.classList.toggle('js-active');
   }
 
+  document.getElementById('paginator').addEventListener('change', (event) => {
+    location.href = document.querySelector('.result');
+  });
 
   window.onhashchange = function () {
     console.log("window hash changed to", window.location.hash);

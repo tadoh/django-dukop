@@ -1,0 +1,36 @@
+{% load i18n %}
+
+{% if paginator %}
+<nav aria-label="Page navigation" style="margin-top: 20px;">
+    {% if paginator.page_range and paginator.page_range|length > 10 %}
+    <form>
+      {% trans "Page:" %}
+      <select id="paginator">
+        {% for page in paginator.page_range %}
+          <option value="?page={{ page }}"{% if page == page_obj.number %} selected{% endif %}>
+            {{ page }}
+          </option>
+        {% endfor %}
+      </select>
+    </form>
+    {% else %}
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}"><span class="fa fa-angle-left"></span> {% trans "Previous" %}</a>
+          </li>
+        {% endif %}
+        {% for page in paginator.page_range %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page }}"{% if page == page_obj.number %} style="font-weight: bold;"{% endif %}>{{ page }}</a>
+          </li>
+        {% endfor %}
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">{% trans "Next" %} <span class="fa fa-angle-right"></span></a>
+          </li>
+        {% endif %}
+      </ul>
+    {% endif %}
+</nav>
+{% endif %}

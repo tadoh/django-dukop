@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load i18n sekizai_tags static %}
+{% load calendar_tags sorl_thumbnail %}
+{% load l10n %}
+
+{% block dukop_title %}{% trans "Event list" %}{% endblock %}
+
+{% block content_wrapper %}
+
+<div class="page-container">
+
+  <h1 class="title">
+    {% trans "All events from" %}
+    <strong>{{ pivot_date }}</strong>
+    {% trans "to" %}
+    <strong>{{ pivot_date_end }}</strong>
+  </h1>
+
+  <p>
+    <a href="{% url "calendar:event_list" sphere_id=sphere.id pivot_date=pivot_date_previous %}">
+      « {% trans "Previous week" %}
+    </a>
+    <a href="{% url "calendar:event_list" sphere_id=sphere.id pivot_date=pivot_date_next %}">
+      {% trans "Next week" %} »
+    </a>
+  </p>
+
+  <div class="table">
+
+  {% for event_time in event_times %}
+
+    <div class="table__day">
+      {% ifchanged event_time.start.date %}
+      <div class="table__header">
+        {{ event_time.start.date|dukop_date }}
+      </div>
+      {% endifchanged %}
+
+      <a href="{% url "calendar:event_detail" pk=event_time.event.pk slug=event_time.event.slug %}" class="table__event">
+        <div class="table__time">
+          {{ event_time.start|time:"H:i" }}
+        </div>
+        <div class="table__title">
+          {{ event_time.event.name }}
+        </div>
+        <div class="table__place">
+          {{ event_time.event.venue_name }}
+        </div>
+      </a>
+    </div>
+  {% empty %}
+
+  <p><em>{% trans "Nothing to see in this period." %}</em></p>
+
+  {% endfor %}
+
+
+  </div>
+
+</div>
+
+{% endblock %}
