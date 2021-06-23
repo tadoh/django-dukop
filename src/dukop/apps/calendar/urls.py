@@ -1,7 +1,24 @@
+from datetime import datetime
+
 from django.urls import path
+from django.urls import register_converter
 
 from . import feeds
 from . import views
+
+
+class DateConverter:
+    regex = r"\d{4}-\d{2}-\d{2}"
+
+    def to_python(self, value):
+        return datetime.strptime(value, "%Y-%m-%d").date()
+
+    def to_url(self, value):
+        return value
+
+
+register_converter(DateConverter, "date")
+
 
 app_name = "calendar"
 
@@ -22,7 +39,12 @@ urlpatterns = [
     ),
     path("feed/ical/", feeds.EventFeed(), name="feed_ical"),
     path("feed/rss/", feeds.RssFeed(), name="feed_rss"),
-    path("sphere/change/<pk>/", views.set_sphere_session, name="sphere_change"),
+    path("sphere/change/<int:pk>/", views.set_sphere_session, name="sphere_change"),
+    path(
+        "sphere/<int:sphere_id>/events/<date:pivot_date>/",
+        views.EventListView.as_view(),
+        name="event_list",
+    ),
     path(
         "sphere/<int:sphere_id>/events/",
         views.EventListView.as_view(),

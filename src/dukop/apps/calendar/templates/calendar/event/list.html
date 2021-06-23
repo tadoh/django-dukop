@@ -8,6 +8,23 @@
 {% block content_wrapper %}
 
 <div class="page-container">
+
+  <h1 class="title">
+    {% trans "All events from" %}
+    <strong>{{ pivot_date }}</strong>
+    {% trans "to" %}
+    <strong>{{ pivot_date_end }}</strong>
+  </h1>
+
+  <p>
+    <a href="{% url "calendar:event_list" sphere_id=sphere.id pivot_date=pivot_date_previous %}">
+      « {% trans "Previous week" %}
+    </a>
+    <a href="{% url "calendar:event_list" sphere_id=sphere.id pivot_date=pivot_date_next %}">
+      {% trans "Next week" %} »
+    </a>
+  </p>
+
   <div class="table">
 
   {% for event_time in event_times %}
@@ -31,12 +48,14 @@
         </div>
       </a>
     </div>
+  {% empty %}
+
+  <p><em>{% trans "Nothing to see in this period." %}</em></p>
+
   {% endfor %}
 
 
   </div>
-
-  {% include "calendar/includes/pagination.html" %}
 
 </div>
 

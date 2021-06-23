@@ -3,7 +3,6 @@ from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
-from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
@@ -151,20 +150,19 @@ class EventListView(ListView):
     template_name = "calendar/event/list.html"
     model = models.EventTime
     context_object_name = "event_times"
-    paginate_by = 20
     max_days_lookback = 30
 
     def dispatch(self, request, *args, **kwargs):
-        sphere_id = request.GET.get("sphere_id", None)
+        sphere_id = kwargs.get("sphere_id", None)
         self.sphere = None
         if sphere_id:
             self.sphere = get_object_or_404(models.Sphere, pk=sphere_id)
 
-        if not request.GET.get("page"):
-            qs = self.get_queryset()
-            qs__past = qs.filter(start__lte=timezone.now())
-            pages_in_the_past = qs__past.count() // self.paginate_by + 1
-            return HttpResponseRedirect("?page={}".format(pages_in_the_past))
+        self.pivot_date = kwargs.get("pivot_date", None)
+        if not self.pivot_date:
+            self.pivot_date = timezone.now().date()
+
+        self.pivot_date_end = self.pivot_date + timedelta(days=7)
 
         return super().dispatch(request, *args, **kwargs)
 
@@ -184,10 +182,21 @@ class EventListView(ListView):
             else:
                 qs = qs.filter(q_visible_to_all)
 
+        qs = qs.filter(start__gte=self.pivot_date, start__lte=self.pivot_date_end)
+
         if self.sphere:
             qs = qs.filter(event__spheres=self.sphere)
 
         return qs
+
+    def get_context_data(self, **kwargs):
+        c = super().get_context_data(**kwargs)
+        c["pivot_date"] = self.pivot_date
+        c["pivot_date_end"] = self.pivot_date_end
+        c["pivot_date_next"] = self.pivot_date_end
+        c["pivot_date_previous"] = self.pivot_date - timedelta(days=7)
+        c["sphere"] = self.sphere
+        return c
 
 
 def set_sphere_session(request, pk):
