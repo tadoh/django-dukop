@@ -119,8 +119,18 @@ def random_image(use_local=False):
             "imageinfo"
         ][0]["thumburl"]
         print(image_url)
-        r = requests.get(image_url)
-        IMAGES.append(r.content)
+        user_agent = {
+            "User-agent": "DukOp/CalendarFixtures (https://github.com/dukop/django-dukop/; dukop@riseup.net) django-dukop/0.0"
+        }
+        r = requests.get(image_url, headers=user_agent)
+        image_data = r.content
+        if b"Wikimedia Error" in image_data:
+            raise RuntimeError(
+                "Oh no :(\n\n{}\n\nStopping to download because of Wikimedia error.".format(
+                    image_data
+                )
+            )
+        IMAGES.append(image_data)
         return r.content
     return random.choice(IMAGES)
 
