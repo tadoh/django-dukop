@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n sekizai_tags static %}
+{% load i18n sekizai_tags static calendar_tags %}
 
 {% block dukop_title %}{% trans "Subscribing to feeds" %}{% endblock %}
 
@@ -43,6 +43,23 @@
     {% endblocktrans %}
 </p>
 
+<h3>{% trans "Sphere feeds" %}</h3>
+
+<table class="article-table">
+{% for sphere in spheres %}
+<tr>
+    <th colspan="2">{{ sphere.name }}</th>
+</tr>
+<tr>
+    <td style="width: 1%">iCAL</td>
+    <td><input type="text" value="{% feed_link 'calendar:feed_ical' sphere_id=sphere.pk %}" class="share-text-input feed-link-input"></td>
+</tr>
+<tr>
+    <td>RSS</td>
+    <td><input type="text" value="{% feed_link 'calendar:feed_rss' sphere_id=sphere.pk %}" class="share-text-input feed-link-input"></td>
+</tr>
+{% endfor %}
+</table>
 
 <h2>{% trans "How often to update" %}</h2>
 

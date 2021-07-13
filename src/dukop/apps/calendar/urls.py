@@ -37,9 +37,11 @@ urlpatterns = [
         views.EventDetailView.as_view(),
         name="event_detail",
     ),
-    path("feeds/", views.feeds, name="feeds"),
+    path("feeds/", views.FeedInstructionView.as_view(), name="feeds"),
     path("feed/ical/", feeds.EventFeed(), name="feed_ical"),
     path("feed/rss/", feeds.RssFeed(), name="feed_rss"),
+    path("feed/sphere/ical/<int:sphere_id>/", feeds.EventFeed(), name="feed_ical"),
+    path("feed/sphere/rss/<int:sphere_id>/", feeds.RssFeed(), name="feed_rss"),
     path("sphere/change/<int:pk>/", views.set_sphere_session, name="sphere_change"),
     path(
         "sphere/<int:sphere_id>/events/<date:pivot_date>/",
