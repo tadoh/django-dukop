@@ -34,6 +34,12 @@ class EventFeed(ICalFeed):
             return get_object_or_404(models.Sphere, pk=sphere_id)
         return None
 
+    def title(self, obj):
+        if obj:
+            return _("DukOp calendar for {}".format(obj.name))
+        else:
+            return _("DukOp future events")
+
     def items(self, obj):
         event_times = models.EventTime.objects.all()
         if obj:
@@ -47,7 +53,9 @@ class EventFeed(ICalFeed):
         return item.event.name
 
     def item_description(self, item):
-        return item.event.short_description
+        return item.event.short_description + _("\n\nMore details: {}").format(
+            self.item_link(item)
+        )
 
     def item_start_datetime(self, item):
         return item.start.astimezone(pytz.timezone("UTC"))
