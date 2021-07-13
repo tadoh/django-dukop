@@ -22,6 +22,10 @@ def index(request):
     return render(request, "calendar/index.html")
 
 
+def feeds(request):
+    return render(request, "calendar/feeds/instructions.html")
+
+
 class EventDetailView(DetailView):
 
     template_name = "calendar/event/detail.html"

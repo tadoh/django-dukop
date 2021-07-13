@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load i18n sekizai_tags static %}
+
+{% block dukop_title %}{% trans "Subscribing to feeds" %}{% endblock %}
+
+{% block content %}
+
+<h1 class="card__title">{% trans "Subscribing to feeds" %}</h1>
+
+<p>
+    {% blocktrans trimmed %}
+    You can automatically stay updated with events in DukOp by subscribing to
+    "feeds". These are data sources that can be added to your calendar by
+    copy-pasting their URL into the Import function of your calendar.
+    {% endblocktrans %}
+</p>
+
+<p>
+    <strong>{% trans "Feed URLs are found at the bottom of all pages and in calendar listings." %}</strong>
+</p>
+
+<p>
+    {% blocktrans trimmed %}
+    By subscribing to feeds, you will see DukOp events directly in your calendar as a layer
+    that can be switched on and off.
+    {% endblocktrans %}
+</p>
+
+<p>
+    {% blocktrans trimmed %}
+    Both new events will automatically be pulled in, but changes to existing
+    events will also be visible -- for instance date, time, description
+    and location.
+    {% endblocktrans %}
+</p>
+
+<h2>{% trans "Choosing what to subscribe to" %}</h2>
+
+<p>
+    {% blocktrans trimmed %}
+    DukOp consists of different Spheres, Venues and Groups. You will be able
+    to subscribe to any of these, precisely how you want.
+    {% endblocktrans %}
+</p>
+
+
+<h2>{% trans "How often to update" %}</h2>
+
+<p>
+    {% blocktrans trimmed %}
+    We recommend that you just pull in contents a few times daily. There is no
+    need to load your own device or our servers more than this.
+    {% endblocktrans %}
+</p>
+
+{% endblock %}
