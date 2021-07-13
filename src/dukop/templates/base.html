@@ -38,7 +38,7 @@
                         </a>
                     </div>
                     <nav class="header__menu">
-                        
+
                         {% if user.is_authenticated %}
                             <a class="header__link" href="{% url "calendar:event_create" %}">{% trans "Create event" %}</a>
                             <a class="header__link" href="{% url "users:logout" %}">{% trans "Log out" %}</a>
@@ -47,7 +47,7 @@
                             <a class="header__link" href="{% url "users:login" %}">{% trans "Log in" %}</a>
                         {% endif %}
                     </nav>
-                    
+
                 </nav>
 
             </div>
@@ -88,10 +88,13 @@
 
                     </div>
                     <div class="footer__news">
-                        <h2 class="title title--footer">{% trans "Feed subscription" %}</h2>
+                        <h2 class="title title--footer">{% trans "Calendar subscription" %}</h2>
                         <p>
-                        {% trans "Copy into your calendar (iCAL/ICS)" %}:<br>
+                        {% trans "You can subscribe to DukOp in for instance Google, iCal, Thunderbird and more. Copy this URL into your calendar's Import function (iCAL/ICS format)" %}:<br>
                         <input type="text" value="{% feed_link 'calendar:feed_ical' %}" class="share-text-input feed-link-input">
+                        </p>
+                        <p>
+                            <a href="{% url "calendar:feeds" %}">Read more about feed subscriptions</a>
                         </p>
                         <h2 class="title title--footer">{% trans "Latest news" %}</h2>
                         {% get_short_news as latest_news %}

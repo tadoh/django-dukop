@@ -46,3 +46,24 @@
   font-style: italic;
   border-left: 1px solid #ddd;
 }
+
+
+.article-table {
+    border: 0;
+    border-collapse: no-collapse;
+    th {
+        text-align: left;
+        padding: 5px;
+        background-color: #ddd;
+    }
+    td {
+        padding: 5px;
+        margin: 0;
+    }
+    tr
+    {
+        padding: 0;
+        margin: 0;
+    }
+
+}

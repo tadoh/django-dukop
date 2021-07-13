@@ -1,5 +1,6 @@
 import pytz
 from django.contrib.syndication.views import Feed
+from django.shortcuts import get_object_or_404
 from django.urls.base import reverse
 from django.utils import feedgenerator
 from django.utils.feedgenerator import rfc2822_date
@@ -19,8 +20,31 @@ class EventFeed(ICalFeed):
     timezone = "UTC"
     file_name = "dukop.ics"
 
-    def items(self):
-        return models.EventTime.objects.future()
+    def get_object(self, request, *args, **kwargs):
+        """
+        This gets the primary object that the feed revolves around. For instance:
+         * A venue
+         * A sphere
+         * A group
+         * etc...
+        """
+        self.request = request
+        sphere_id = kwargs.get("sphere_id")
+        if sphere_id:
+            return get_object_or_404(models.Sphere, pk=sphere_id)
+        return None
+
+    def title(self, obj):
+        if obj:
+            return _("DukOp calendar for {}".format(obj.name))
+        else:
+            return _("DukOp future events")
+
+    def items(self, obj):
+        event_times = models.EventTime.objects.all()
+        if obj:
+            event_times = event_times.filter(event__spheres=obj)
+        return event_times.future()
 
     def item_link(self, item):
         return item.event.share_link()
@@ -29,7 +53,9 @@ class EventFeed(ICalFeed):
         return item.event.name
 
     def item_description(self, item):
-        return item.event.short_description
+        return item.event.short_description + _("\n\nMore details: {}").format(
+            self.item_link(item)
+        )
 
     def item_start_datetime(self, item):
         return item.start.astimezone(pytz.timezone("UTC"))
@@ -63,8 +89,17 @@ class RssFeed(Feed):
     description_template = "calendar/feeds/future.html"
 
     def get_object(self, request, *args, **kwargs):
-        # Am confused as to why Django stopped storing the request object
+        """
+        This gets the primary object that the feed revolves around. For instance:
+         * A venue
+         * A sphere
+         * A group
+         * etc...
+        """
         self.request = request
+        sphere_id = kwargs.get("sphere_id")
+        if sphere_id:
+            return get_object_or_404(models.Sphere, pk=sphere_id)
         return None
 
     def item_extra_kwargs(self, item):
@@ -106,8 +141,11 @@ class RssFeed(Feed):
         """
         return _("RSS feed of the latest events on DukOp")
 
-    def items(self):
-        return models.EventTime.objects.future()[:30]
+    def items(self, obj):
+        event_times = models.EventTime.objects.all()
+        if obj:
+            event_times = event_times.filter(event__spheres=obj)
+        return event_times.future()[:30]
 
     def feed_url(self):
         return reverse("calendar:feed_rss")

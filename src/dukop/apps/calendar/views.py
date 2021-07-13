@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.urls.base import reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
+from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
@@ -20,6 +21,15 @@ from . import models
 
 def index(request):
     return render(request, "calendar/index.html")
+
+
+class FeedInstructionView(TemplateView):
+    template_name = "calendar/feeds/instructions.html"
+
+    def get_context_data(self, **kwargs):
+        c = super().get_context_data(**kwargs)
+        c["spheres"] = models.Sphere.get_all_cached()
+        return c
 
 
 class EventDetailView(DetailView):
