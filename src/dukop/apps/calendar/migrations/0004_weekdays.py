@@ -17,6 +17,7 @@ def create_weekdays(apps, schema_editor):
     Weekday = apps.get_model('calendar', 'Weekday')
 
     for k, v in weekdays.items():
+        print(f"Create weekday {k} {v}")
         Weekday.objects.get_or_create(number=k, name=v)
 
 

@@ -10,7 +10,6 @@ from django.core.cache import cache
 from django.db import models
 from django.db.models import Q
 from django.urls.base import reverse
-from django.utils.functional import cached_property
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from dukop.apps.calendar.utils import display_datetime
@@ -117,14 +116,17 @@ class Sphere(models.Model):
                 name="Auto-created sphere", slug="auto", default=True
             )
 
-    @cached_property
     @staticmethod
     def get_default_cached():
         """
         This can be cached in-memory insofar that we don't do any more funky
         stuff with the Spheres, like related querysets etc.
         """
-        return Sphere.get_default()
+        if hasattr(Sphere, "_cached_default"):
+            return Sphere._cached_default
+        else:
+            Sphere._cached_default = Sphere.get_default()
+            return Sphere._cached_default
 
     @staticmethod
     def get_all_cached():
@@ -467,6 +469,7 @@ class EventInterval(models.Model):
     third_week_of_month = models.BooleanField(default=False)
     last_week_of_month = models.BooleanField(default=False)
 
+    # Is the starts field problematic?
     starts = models.DateTimeField(null=True, blank=True)
     ends = models.DateTimeField(null=True, blank=True)
 
