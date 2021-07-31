@@ -3,13 +3,16 @@ import random
 import string
 import uuid
 from builtins import staticmethod
+from datetime import timedelta
 from functools import lru_cache
 
 from django.contrib.sites.models import Site
 from django.core.cache import cache
 from django.db import models
+from django.db import transaction
 from django.db.models import Q
 from django.urls.base import reverse
+from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from dukop.apps.calendar.utils import display_datetime
@@ -348,6 +351,18 @@ class EventTime(models.Model):
     modified = models.DateTimeField(auto_now=True)
     is_cancelled = models.BooleanField(default=False)
 
+    interval = models.ForeignKey(
+        "EventInterval",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name=_("interval"),
+        help_text=_("Belonging to a recurring interval"),
+        related_name="times",
+    )
+    #: This can be switched to False and if the EventTime belongs to an
+    #: EventInterval, it will not be maintained automatically anymore.
+    #: This allows for individual changes.
     interval_auto = models.BooleanField(
         default=False,
         verbose_name=_("automatic recurrence"),
@@ -457,10 +472,24 @@ class EventInterval(models.Model):
     https://www.kanzaki.com/docs/ical/rrule.html
     """
 
+    #: A series is based on an event and an anchored EventTime, which is then
+    #: repeated in the interval. This means that we have the flexibility to
+    #: have several intervals for the same event.
     event = models.ForeignKey(Event, related_name="intervals", on_delete=models.CASCADE)
 
-    weekday = models.ForeignKey("Weekday", on_delete=models.CASCADE)
+    #: In order to duplicate an event, we need to start with the first time slot
+    #: which is then duplicated. Afterwards, it might be edited separately, so
+    #: this field is only useful for populating an EventInterval the first time.
+    event_time_anchor = models.ForeignKey(
+        EventTime,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
 
+    # Notice how these recurrences intersect. The really hard part occurs when
+    # an interval changes it recurrence. You can't say if an existing "every_week"
+    # recurrence is supposed to be the same as a new set of "last_week_of_month".
     every_week = models.BooleanField(default=False)
     biweekly_even = models.BooleanField(default=False)
     biweekly_odd = models.BooleanField(default=False)
@@ -469,12 +498,71 @@ class EventInterval(models.Model):
     third_week_of_month = models.BooleanField(default=False)
     last_week_of_month = models.BooleanField(default=False)
 
-    # Is the starts field problematic?
-    starts = models.DateTimeField(null=True, blank=True)
-    ends = models.DateTimeField(null=True, blank=True)
+    #: The end time of an interval gives us an upper bound so occurences arent't
+    #: created for eternity. If none is supplied, we use a system-default
+    #: relative to ``now()``.
+    end = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name=_("End of series"),
+    )
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+
+    def event_time_generator(self, maximum, existing_times):
+        """A generator that yields new EventTime objects (unsaved)"""
+        assert self.event_time_anchor, "Needs a start time or an anchor"
+
+        yield self.event_time_anchor
+
+        end = self.end or (self.event_time_anchor.start + timedelta(days=maximum))
+
+        if self.event_time_anchor.end:
+            duration = self.event_time_anchor.end - self.event_time_anchor.start
+        else:
+            duration = None
+
+        if self.every_week:
+            for event_time_start, event_time_end in self._every_week_generator(
+                end, duration
+            ):
+                if event_time_start.date() in existing_times:
+                    event_time = existing_times[event_time_start.date()]
+                else:
+                    event_time = EventTime(event=self.event)
+                event_time.start = event_time_start
+                event_time.end = event_time_end
+                event_time.interval = self
+                event_time.interval_auto = True
+                yield event_time
+
+    def _every_week_generator(self, end, duration):
+        interval = timedelta(days=7)
+        current_start = self.event_time_anchor.start + interval
+        while current_start < end:
+            current_end = current_start + duration if duration else None
+            yield current_start, current_end
+            current_start += interval
+
+    @method_decorator(transaction.atomic)
+    def sync(self, maximum=365):
+        """
+        This is in a transaction.
+
+        Stupid examples of things that are annoying:
+
+        - An interval that occurs both
+
+        Creates the necessary EventTime objects for an Event.
+        That is to say: Given a "main" or "prototype" event, populate a series
+        of copied EventTime for some maximum, respecting
+        """
+        existing_times = {
+            et.start.date(): et for et in self.times.filter(interval_auto=True)
+        }
+        for event_time in self.event_time_generator(maximum, existing_times):
+            event_time.save()
 
 
 class Weekday(models.Model):

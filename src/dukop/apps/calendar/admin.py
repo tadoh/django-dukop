@@ -65,5 +65,5 @@ class EventAdmin(admin.ModelAdmin):
 @admin.register(models.EventInterval)
 class EventInvervalAdmin(admin.ModelAdmin):
 
-    list_display = ("event", "starts", "ends")
-    list_filter = ("starts", "ends")
+    list_display = ("event", "end")
+    list_filter = ("end",)

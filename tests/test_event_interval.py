@@ -14,8 +14,12 @@ def test_create_weekly_interval(single_event):  # noqa
     """
     Create and test weekly intervals
     """
-    models.EventInterval.objects.create(
+    interval = models.EventInterval.objects.create(
         event=single_event,
-        weekday=models.Weekday.objects.get(number=0),
+        event_time_anchor=single_event.times.first(),
         every_week=True,
     )
+    interval.sync()
+    assert interval.times.all().count() == 365 // 7
+    interval.sync()
+    assert interval.times.all().count() == 365 // 7
