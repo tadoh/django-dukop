@@ -23,8 +23,8 @@ from django.template.defaultfilters import truncatewords
 from django.utils import timezone
 from dukop.apps.calendar.models import Event
 from dukop.apps.calendar.models import EventImage
-from dukop.apps.calendar.models import EventInterval
 from dukop.apps.calendar.models import EventLink
+from dukop.apps.calendar.models import EventRecurrence
 from dukop.apps.calendar.models import EventTime
 from dukop.apps.calendar.models import OldEventSync
 from dukop.apps.calendar.models import Sphere
@@ -49,7 +49,7 @@ weekday_numbers = {
 }
 
 
-# Map between old EventSeries and new Interval
+# Map between old EventSeries and new recurrence
 event_series_map = {}
 
 
@@ -68,32 +68,36 @@ def df(value):
     )
 
 
-def create_interval(event_series, new_event):
+def create_recurrence(event_series, new_event):
     """
-    Creates an Interval from old EventSeries object
+    Creates an EventRecurrence from old EventSeries object
     """
     if event_series:
         days = event_series.days.split(",")
         if len(days) > 1:
             print("WARNING: Several weekdays in an EventSeries")
 
-        interval = new_event.intervals.all().first() or EventInterval(event=new_event)
+        recurrence = new_event.recurrences.all().first() or EventRecurrence(
+            event=new_event
+        )
 
-        interval.weekday = Weekday.objects.get(number=weekday_numbers[days[0]])
-        interval.every_week = bool(event_series.rule == "weekly")
-        interval.biweekly_even = bool(event_series.rule == "biweekly_even")
-        interval.biweekly_odd = bool(event_series.rule == "biweekly_odd")
-        interval.first_week_of_month = bool(event_series.rule == "first")
-        interval.second_week_of_month = bool(event_series.rule == "second")
-        interval.third_week_of_month = bool(event_series.rule == "third")
-        interval.last_week_of_month = bool(event_series.rule == "last")
-        interval.starts = df(
+        recurrence.weekday = Weekday.objects.get(number=weekday_numbers[days[0]])
+        recurrence.every_week = bool(event_series.rule == "weekly")
+        recurrence.biweekly_even = bool(event_series.rule == "biweekly_even")
+        recurrence.biweekly_odd = bool(event_series.rule == "biweekly_odd")
+        recurrence.first_week_of_month = bool(event_series.rule == "first")
+        recurrence.second_week_of_month = bool(event_series.rule == "second")
+        recurrence.third_week_of_month = bool(event_series.rule == "third")
+        recurrence.last_week_of_month = bool(event_series.rule == "last")
+        recurrence.start = df(
             datetime.combine(event_series.start_date, event_series.start_time)
         )
-        interval.ends = df(datetime.combine(event_series.expiry, event_series.end_time))
+        recurrence.end = df(
+            datetime.combine(event_series.expiry, event_series.end_time)
+        )
 
-        interval.save()
-        return interval
+        recurrence.save()
+        return recurrence
 
 
 def ensure_location_exists(old_event):
@@ -239,7 +243,7 @@ def import_image(old_event, new_event, old_folder, from_event_series=False):
 def import_event_series(series, import_base_dir):
     global event_series_map
     event = import_event(series, import_base_dir, from_event_series=True)
-    create_interval(series, event)
+    create_recurrence(series, event)
     event_series_map[series.id] = event
 
 

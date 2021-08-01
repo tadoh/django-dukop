@@ -62,8 +62,8 @@ class EventAdmin(admin.ModelAdmin):
     event_image.short_description = "Photo"
 
 
-@admin.register(models.EventInterval)
-class EventInvervalAdmin(admin.ModelAdmin):
+@admin.register(models.EventRecurrence)
+class EventRecurrenceAdmin(admin.ModelAdmin):
 
     list_display = ("event", "end")
     list_filter = ("end",)

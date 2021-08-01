@@ -351,24 +351,24 @@ class EventTime(models.Model):
     modified = models.DateTimeField(auto_now=True)
     is_cancelled = models.BooleanField(default=False)
 
-    interval = models.ForeignKey(
-        "EventInterval",
+    recurrence = models.ForeignKey(
+        "EventRecurrence",
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        verbose_name=_("interval"),
-        help_text=_("Belonging to a recurring interval"),
+        verbose_name=_("recurrence"),
+        help_text=_("Belonging to a recurring recurrence"),
         related_name="times",
     )
     #: This can be switched to False and if the EventTime belongs to an
-    #: EventInterval, it will not be maintained automatically anymore.
+    #: EventRecurrence, it will not be maintained automatically anymore.
     #: This allows for individual changes.
-    interval_auto = models.BooleanField(
+    recurrence_auto = models.BooleanField(
         default=False,
         verbose_name=_("automatic recurrence"),
         help_text=_(
-            "If true, this interval is currently maintained automatically and "
-            "has not been rescheduled. If the interval is edited, it may be "
+            "If true, this recurrence is currently maintained automatically and "
+            "has not been rescheduled. If the recurrence is edited, it may be "
             "changed automatically"
         ),
     )
@@ -465,7 +465,7 @@ class EventLink(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
 
-class EventInterval(models.Model):
+class EventRecurrence(models.Model):
     """
     Inspired by RRULE for iCal format:
 
@@ -473,13 +473,16 @@ class EventInterval(models.Model):
     """
 
     #: A series is based on an event and an anchored EventTime, which is then
-    #: repeated in the interval. This means that we have the flexibility to
-    #: have several intervals for the same event.
-    event = models.ForeignKey(Event, related_name="intervals", on_delete=models.CASCADE)
+    #: repeated in the recurrence. This means that we have the flexibility to
+    #: have several recurrences for the same event.
+    event = models.ForeignKey(
+        Event, related_name="recurrences", on_delete=models.CASCADE
+    )
 
     #: In order to duplicate an event, we need to start with the first time slot
     #: which is then duplicated. Afterwards, it might be edited separately, so
-    #: this field is only useful for populating an EventInterval the first time.
+    #: this field is only useful for populating an EventRecurrence the first time.
+    #: For weekly events, the anchor decides the weekday.
     event_time_anchor = models.ForeignKey(
         EventTime,
         blank=True,
@@ -488,7 +491,7 @@ class EventInterval(models.Model):
     )
 
     # Notice how these recurrences intersect. The really hard part occurs when
-    # an interval changes it recurrence. You can't say if an existing "every_week"
+    # an recurrence changes it recurrence. You can't say if an existing "every_week"
     # recurrence is supposed to be the same as a new set of "last_week_of_month".
     every_week = models.BooleanField(default=False)
     biweekly_even = models.BooleanField(default=False)
@@ -498,7 +501,7 @@ class EventInterval(models.Model):
     third_week_of_month = models.BooleanField(default=False)
     last_week_of_month = models.BooleanField(default=False)
 
-    #: The end time of an interval gives us an upper bound so occurences arent't
+    #: The end time of an recurrence gives us an upper bound so occurences arent't
     #: created for eternity. If none is supplied, we use a system-default
     #: relative to ``now()``.
     end = models.DateTimeField(
@@ -514,7 +517,26 @@ class EventInterval(models.Model):
         """A generator that yields new EventTime objects (unsaved)"""
         assert self.event_time_anchor, "Needs a start time or an anchor"
 
-        yield self.event_time_anchor
+        def update_or_add_to_recurrence(
+            event_time_start=None, event_time_end=None, event_time=None
+        ):
+            """
+            Updates an existing event_time in series, but if none exists, we
+            create a new object.
+            """
+            assert event_time_start or event_time
+            if event_time_start:
+                if event_time_start.date() in existing_times:
+                    event_time = existing_times[event_time_start.date()]
+                else:
+                    event_time = EventTime(event=self.event)
+                    event_time.start = event_time_start
+                    event_time.end = event_time_end
+            event_time.recurrence = self
+            event_time.recurrence_auto = True
+            return event_time
+
+        yield update_or_add_to_recurrence(event_time=self.event_time_anchor)
 
         end = self.end or (self.event_time_anchor.start + timedelta(days=maximum))
 
@@ -523,23 +545,37 @@ class EventInterval(models.Model):
         else:
             duration = None
 
+        if self.biweekly_even or self.biweekly_odd:
+            for event_time_start, event_time_end in self._biweekly_generator(
+                end, duration, even_not_odd=self.biweekly_even
+            ):
+                yield update_or_add_to_recurrence(event_time_start, event_time_end)
+
         if self.every_week:
             for event_time_start, event_time_end in self._every_week_generator(
                 end, duration
             ):
-                if event_time_start.date() in existing_times:
-                    event_time = existing_times[event_time_start.date()]
-                else:
-                    event_time = EventTime(event=self.event)
-                event_time.start = event_time_start
-                event_time.end = event_time_end
-                event_time.interval = self
-                event_time.interval_auto = True
-                yield event_time
+                yield update_or_add_to_recurrence(event_time_start, event_time_end)
 
     def _every_week_generator(self, end, duration):
         interval = timedelta(days=7)
         current_start = self.event_time_anchor.start + interval
+        while current_start < end:
+            current_end = current_start + duration if duration else None
+            yield current_start, current_end
+            current_start += interval
+
+    def _biweekly_generator(self, end, duration, even_not_odd=True):
+        current_start = self.event_time_anchor.start
+        __, week, __ = current_start.date().isocalendar()
+        interval = timedelta(days=14)
+
+        # We account for a case where the anchor date is in fact NOT the same
+        # even/odd week number of the series.
+        if week % 2 != (0 if even_not_odd else 1):
+            current_start += timedelta(days=7)
+        else:
+            current_start += interval
         while current_start < end:
             current_end = current_start + duration if duration else None
             yield current_start, current_end
@@ -552,14 +588,15 @@ class EventInterval(models.Model):
 
         Stupid examples of things that are annoying:
 
-        - An interval that occurs both
+        - Editing the weekday of a recurrence, what to do with existing EventTimes!?
+        - Editing the recurrence frequency
 
         Creates the necessary EventTime objects for an Event.
         That is to say: Given a "main" or "prototype" event, populate a series
         of copied EventTime for some maximum, respecting
         """
         existing_times = {
-            et.start.date(): et for et in self.times.filter(interval_auto=True)
+            et.start.date(): et for et in self.times.filter(recurrence_auto=True)
         }
         for event_time in self.event_time_generator(maximum, existing_times):
             event_time.save()
