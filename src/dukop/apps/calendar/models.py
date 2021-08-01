@@ -1,3 +1,4 @@
+import calendar
 import os
 import random
 import string
@@ -593,6 +594,14 @@ class EventRecurrence(models.Model):
                     yield self.update_or_add_to_recurrence(
                         existing_times, event_time_start, event_time_end
                     )
+            if self.last_week_of_month:
+                for (
+                    event_time_start,
+                    event_time_end,
+                ) in self._last_day_of_month_generator(end, duration):
+                    yield self.update_or_add_to_recurrence(
+                        existing_times, event_time_start, event_time_end
+                    )
 
     def update_or_add_to_recurrence(
         self,
@@ -666,6 +675,33 @@ class EventRecurrence(models.Model):
             offset += 7 * offset_weeks
             current_start = first_day_in_month.replace(
                 day=1 + offset,
+            )
+            current_end = current_start + duration if duration else None
+            if current_start >= end:
+                break
+            yield current_start, current_end
+
+    def _last_day_of_month_generator(self, end, duration):
+        current_start = self.event_time_anchor.start
+        target_weekday = current_start.weekday()
+        while True:
+            if current_start.month == 12:
+                next_month = 1
+                next_year = current_start.year + 1
+            else:
+                next_month = current_start.month + 1
+                next_year = current_start.year
+            # The weekday index is different in the "calendar" package so disregard
+            __, last_day = calendar.monthrange(next_year, next_month)
+            current_start = current_start.replace(
+                year=next_year, month=next_month, day=last_day
+            )
+            last_day_weekday = current_start.weekday()
+            diff = target_weekday - last_day_weekday
+            if diff > 0:
+                diff = -7 + diff
+            current_start = current_start.replace(
+                day=last_day + diff,
             )
             current_end = current_start + duration if duration else None
             if current_start >= end:
