@@ -1,4 +1,5 @@
 import calendar
+from _datetime import timedelta
 
 import pytest
 from dukop.apps.calendar import models
@@ -16,6 +17,7 @@ def test_create_weekly_recurrence(single_event):  # noqa
     """
     Create and test weekly recurrence
     """
+    original_weekday = single_event.times.first().start.weekday()
     recurrence = models.EventRecurrence.objects.create(
         event=single_event,
         event_time_anchor=single_event.times.first(),
@@ -25,6 +27,11 @@ def test_create_weekly_recurrence(single_event):  # noqa
     # Because the first event is now(), we will always fit 53 events in 365 days
     expected_count = 365 // 7 + 1
     assert recurrence.times.all().count() == expected_count
+
+    for event_time in recurrence.times.all():
+        print(event_time)
+        assert event_time.start.weekday() == original_weekday
+
     recurrence.sync()
     assert recurrence.times.all().count() == expected_count
 
@@ -40,11 +47,12 @@ def test_create_biweekly_odd_recurrence(single_event):  # noqa
         biweekly_odd=True,
     )
     recurrence.sync()
-    assert recurrence.times.all().first() == single_event.times.all().first()
+    assert recurrence.times.first() == single_event.times.first()
+
+    expected_count = 365 // 14 + 1
     if single_event.times.first().start.date().isocalendar()[1] % 2 == 0:
-        expected_count = 365 // 14 + 1
-    else:
-        expected_count = 365 // 14
+        expected_count += 1
+
     assert recurrence.times.all().count() == expected_count
     recurrence.sync()
     assert recurrence.times.all().count() == expected_count
@@ -61,11 +69,12 @@ def test_create_biweekly_even_recurrence(single_event):  # noqa
         biweekly_even=True,
     )
     recurrence.sync()
-    assert recurrence.times.all().first() == single_event.times.all().first()
+    assert recurrence.times.first() == single_event.times.first()
+
+    expected_count = 365 // 14 + 1
     if single_event.times.first().start.date().isocalendar()[1] % 2 == 0:
-        expected_count = 365 // 14 + 1
-    else:
-        expected_count = 365 // 14
+        expected_count += 1
+
     assert recurrence.times.all().count() == expected_count
     recurrence.sync()
     assert recurrence.times.all().count() == expected_count
@@ -85,18 +94,17 @@ def test_create_first_week_of_month_recurrence(single_event):  # noqa
     )
     recurrence.sync()
 
-    # How many events fit in 365 days depends on how many days we are into the
-    # current month
-    expected_count = 13 if anchor_event_time.start.day > 7 else 12
     assert recurrence.times.all().first() == anchor_event_time
     for event_time in recurrence.times.all():
         print(event_time)
         assert event_time.start.weekday() == original_weekday
         if event_time != anchor_event_time:
             assert event_time.start.day < 8
-    assert recurrence.times.all().count() == expected_count
+
+    expected_counts = [12, 13]
+    assert recurrence.times.all().count() in expected_counts
     recurrence.sync()
-    assert recurrence.times.all().count() == expected_count
+    assert recurrence.times.all().count() in expected_counts
 
 
 @pytest.mark.django_db()
@@ -113,16 +121,16 @@ def test_create_second_week_of_month_recurrence(single_event):  # noqa
     )
     recurrence.sync()
 
-    expected_count = 13 if anchor_event_time.start.day > 14 else 12
     assert recurrence.times.all().first() == anchor_event_time
     for event_time in recurrence.times.all():
-        print(event_time)
         assert event_time.start.weekday() == original_weekday
         if event_time != anchor_event_time:
             assert event_time.start.day >= 8 < 15
-    assert recurrence.times.all().count() == expected_count
+
+    expected_counts = [12, 13]
+    assert recurrence.times.all().count() in expected_counts
     recurrence.sync()
-    assert recurrence.times.all().count() == expected_count
+    assert recurrence.times.all().count() in expected_counts
 
 
 @pytest.mark.django_db()
@@ -139,16 +147,17 @@ def test_create_third_week_of_month_recurrence(single_event):  # noqa
     )
     recurrence.sync()
 
-    expected_count = 13 if anchor_event_time.start.day > 21 else 12
     assert recurrence.times.all().first() == anchor_event_time
     for event_time in recurrence.times.all():
         print(event_time)
         assert event_time.start.weekday() == original_weekday
         if event_time != anchor_event_time:
             assert event_time.start.day >= 14 < 22
-    assert recurrence.times.all().count() == expected_count
+
+    expected_counts = [12, 13]
+    assert recurrence.times.all().count() in expected_counts
     recurrence.sync()
-    assert recurrence.times.all().count() == expected_count
+    assert recurrence.times.all().count() in expected_counts
 
 
 @pytest.mark.django_db()
@@ -165,7 +174,6 @@ def test_last_day_of_month_recurrence(single_event):  # noqa
     )
     recurrence.sync()
 
-    expected_count = 12
     assert recurrence.times.all().first() == anchor_event_time
     for event_time in recurrence.times.all():
         print(event_time)
@@ -175,6 +183,35 @@ def test_last_day_of_month_recurrence(single_event):  # noqa
                 event_time.start.year, event_time.start.month
             )
             assert event_time.start.day > last_day - 7
-    assert recurrence.times.all().count() == expected_count
+
+    expected_counts = [12, 13]
+    assert recurrence.times.all().count() in expected_counts
     recurrence.sync()
+    assert recurrence.times.all().count() in expected_counts
+
+
+@pytest.mark.django_db()
+def test_edit_weekly_recurrence(single_event):  # noqa
+    """
+    Create and test weekly recurrence
+    """
+    recurrence = models.EventRecurrence.objects.create(
+        event=single_event,
+        event_time_anchor=single_event.times.first(),
+        every_week=True,
+    )
+    recurrence.sync()
+    # Because the first event is now(), we will always fit 53 events in 365 days
+    expected_count = 365 // 7 + 1
     assert recurrence.times.all().count() == expected_count
+
+    new_anchor_start_time = recurrence.event_time_anchor.start + timedelta(days=1)
+    # Push the anchor event 1 day and save
+    recurrence.event_time_anchor.start = new_anchor_start_time
+    recurrence.event_time_anchor.end += timedelta(days=1)
+    recurrence.event_time_anchor.save()
+    recurrence.sync()
+
+    for i, event_time in enumerate(recurrence.times.all()):
+        print(event_time)
+        assert event_time.start == new_anchor_start_time + timedelta(days=7 * i)

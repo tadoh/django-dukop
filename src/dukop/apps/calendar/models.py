@@ -531,8 +531,15 @@ class EventRecurrence(models.Model):
         existing_times = {
             et.start.date(): et for et in self.times.filter(recurrence_auto=True)
         }
+        updated_times = []
         for event_time in self.event_time_generator(maximum, existing_times):
             event_time.save()
+            updated_times.append(event_time)
+
+        # Delete everything that existed before but is not part of this generated series
+        for et in existing_times.values():
+            if et not in updated_times:
+                et.delete()
 
     def event_time_generator(self, maximum, existing_times):  # noqa: max-complexity: 13
         """A generator that yields new EventTime objects (unsaved)"""
