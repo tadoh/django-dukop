@@ -79,7 +79,8 @@ class EventCreate(CreateView):
         self.links_form = forms.EventLinkFormSet(prefix="links")
         return self.render_to_response(self.get_context_data())
 
-    @ratelimit(key="ip", rate="5/h", method="POST")
+    @method_decorator(ratelimit(key="ip", rate="10/d", method="POST"))
+    @method_decorator(ratelimit(key="ip", rate="5/h", method="POST"))
     def post(self, request, *args, **kwargs):
         """
         Handle POST requests: instantiate a form instance with the passed

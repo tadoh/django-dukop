@@ -6,6 +6,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.shortcuts import resolve_url
 from django.urls.base import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.utils.http import is_safe_url
 from django.utils.translation import gettext as _
 from django.views.generic.base import RedirectView
@@ -42,9 +43,16 @@ class LoginView(FormView, SuccessURLAllowedHostsMixin):
     form_class = forms.EmailLogin
     redirect_field_name = "next"
 
-    @ratelimit(key="ip", rate="5/h", method="POST")
-    def post(self, request, *args, **kwargs):
-        return FormView.post(self, request, *args, **kwargs)
+    @method_decorator(
+        ratelimit(
+            group="dukop_noauth", key="ip", rate="10/d", method="POST", block=True
+        )
+    )
+    @method_decorator(
+        ratelimit(group="dukop_noauth", key="ip", rate="5/h", method="POST", block=True)
+    )
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         c = FormView.get_context_data(self, **kwargs)
@@ -75,9 +83,16 @@ class LoginPasswordView(FormView, SuccessURLAllowedHostsMixin):
     form_class = forms.PasswordLogin
     redirect_field_name = "next"
 
-    @ratelimit(key="ip", rate="5/h", method="POST")
-    def post(self, request, *args, **kwargs):
-        return FormView.post(self, request, *args, **kwargs)
+    @method_decorator(
+        ratelimit(
+            group="dukop_noauth", key="ip", rate="10/d", method="POST", block=True
+        )
+    )
+    @method_decorator(
+        ratelimit(group="dukop_noauth", key="ip", rate="5/h", method="POST", block=True)
+    )
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         login(self.request, form.user_cache, backend=None)
@@ -116,9 +131,16 @@ class LoginTokenView(FormView, SuccessURLAllowedHostsMixin):
     form_class = forms.TokenLogin
     redirect_field_name = "next"
 
-    @ratelimit(key="ip", rate="5/h", method="POST")
-    def post(self, request, *args, **kwargs):
-        return FormView.post(self, request, *args, **kwargs)
+    @method_decorator(
+        ratelimit(
+            group="dukop_noauth", key="ip", rate="10/d", method="POST", block=True
+        )
+    )
+    @method_decorator(
+        ratelimit(group="dukop_noauth", key="ip", rate="5/h", method="POST", block=True)
+    )
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = FormView.get_form_kwargs(self)
@@ -161,9 +183,16 @@ class SignupView(FormView):
     form_class = forms.SignupForm
     redirect_field_name = "next"
 
-    @ratelimit(key="ip", rate="5/h", method="POST")
-    def post(self, request, *args, **kwargs):
-        return FormView.post(self, request, *args, **kwargs)
+    @method_decorator(
+        ratelimit(
+            group="dukop_noauth", key="ip", rate="10/d", method="POST", block=True
+        )
+    )
+    @method_decorator(
+        ratelimit(group="dukop_noauth", key="ip", rate="5/h", method="POST", block=True)
+    )
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         c = FormView.get_context_data(self, **kwargs)
