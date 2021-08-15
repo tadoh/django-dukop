@@ -50,8 +50,8 @@ def test_create_biweekly_odd_recurrence(single_event):  # noqa
     assert recurrence.times.first() == single_event.times.first()
 
     expected_count = 365 // 14 + 1
-    if single_event.times.first().start.date().isocalendar()[1] % 2 == 0:
-        expected_count += 1
+    # if single_event.times.first().start.date().isocalendar()[1] % 2 == 0:
+    #    expected_count += 1
 
     assert recurrence.times.all().count() == expected_count
     recurrence.sync()
@@ -72,8 +72,8 @@ def test_create_biweekly_even_recurrence(single_event):  # noqa
     assert recurrence.times.first() == single_event.times.first()
 
     expected_count = 365 // 14 + 1
-    if single_event.times.first().start.date().isocalendar()[1] % 2 == 0:
-        expected_count += 1
+    # if single_event.times.first().start.date().isocalendar()[1] % 2 == 0:
+    #    expected_count += 1
 
     assert recurrence.times.all().count() == expected_count
     recurrence.sync()
