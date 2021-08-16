@@ -68,7 +68,7 @@ def df(value):
     )
 
 
-def create_recurrence(event_series, new_event):
+def create_recurrence(event_series, new_event, anchor_time):
     """
     Creates an EventRecurrence from old EventSeries object
     """
@@ -80,7 +80,7 @@ def create_recurrence(event_series, new_event):
         recurrence = new_event.recurrences.all().first() or EventRecurrence(
             event=new_event
         )
-
+        recurrence.event_time_anchor = anchor_time
         recurrence.weekday = Weekday.objects.get(number=weekday_numbers[days[0]])
         recurrence.every_week = bool(event_series.rule == "weekly")
         recurrence.biweekly_even = bool(event_series.rule == "biweekly_even")
@@ -97,6 +97,7 @@ def create_recurrence(event_series, new_event):
         )
 
         recurrence.save()
+        recurrence.sync()
         return recurrence
 
 
@@ -195,6 +196,23 @@ def create_event_time(old_event, attach_to_event):
     )
 
 
+def create_event_anchor_time(old_event_series, attach_to_event):
+    """
+    TODO: Check if it's already created?
+    """
+    assert old_event_series.start_time and old_event_series.end_time
+    start = datetime.combine(old_event_series.start_date, old_event_series.start_time)
+    end = datetime.combine(old_event_series.start_date, old_event_series.end_time)
+    return EventTime.objects.create(
+        event=attach_to_event,
+        start=df(start),
+        end=df(end),
+        created=df(old_event_series.created_at),
+        modified=df(old_event_series.updated_at),
+        is_cancelled=bool(old_event_series.cancelled),
+    )
+
+
 not_found_images = 0
 
 
@@ -243,7 +261,9 @@ def import_image(old_event, new_event, old_folder, from_event_series=False):
 def import_event_series(series, import_base_dir):
     global event_series_map
     event = import_event(series, import_base_dir, from_event_series=True)
-    create_recurrence(series, event)
+    anchor_time = create_event_anchor_time(series, event)
+    # TODO: Why are some cancelled / non-existing series being imported?
+    create_recurrence(series, event, anchor_time)
     event_series_map[series.id] = event
 
 

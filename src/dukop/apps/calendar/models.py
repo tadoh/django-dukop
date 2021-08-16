@@ -543,7 +543,7 @@ class EventRecurrence(models.Model):
 
     def event_time_generator(self, maximum, existing_times):  # noqa: max-complexity: 13
         """A generator that yields new EventTime objects (unsaved)"""
-        assert self.event_time_anchor, "Needs a start time or an anchor"
+        assert self.event_time_anchor, "Needs event_time_anchor (the first occurrence)"
 
         # Yield the anchor EventTime object through the update_or_add_to_recurrence
         # method, thus ensuring its validity for this recurrence.
@@ -554,7 +554,9 @@ class EventRecurrence(models.Model):
         # The end of the recurrence, either as given by an explicit user-defined
         # end datetime or as a number of days relative to the start of the
         # recurrence.
-        end = self.end or (self.event_time_anchor.start + timedelta(days=maximum))
+        system_wide_maximum = self.event_time_anchor.start + timedelta(days=maximum)
+        end = self.end or system_wide_maximum
+        end = min(end, system_wide_maximum)
 
         # We store the duration of the anchor event in order to create dynamic
         # end times of each EventTime in the recurrence.
