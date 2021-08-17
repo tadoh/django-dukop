@@ -68,3 +68,4 @@ class EventRecurrenceAdmin(admin.ModelAdmin):
     raw_id_fields = ("event", "event_time_anchor")
     list_display = ("event", "end")
     list_filter = ("end",)
+    search_fields = ("event__name",)

@@ -17,12 +17,13 @@
     <div class="card__text">
         <div class="card__header">
           <div class="card__date">
-            {% for time in event.times.future %}
+            {% for time in event.times.future|slice:10 %}
                 {% if time.start %}
                 {{ time.start|dukop_interval:time.end }}
                 {% else %}
                 -
                 {% endif %}
+                {% if not forloop.last %}<br>{% endif %}
             {% empty %}
                 {% for time in event.times.all %}
                     {% if time.start %}

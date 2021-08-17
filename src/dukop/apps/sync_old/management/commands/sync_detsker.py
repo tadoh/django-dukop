@@ -97,7 +97,7 @@ def create_recurrence(event_series, new_event, anchor_time):
         )
 
         recurrence.save()
-        recurrence.sync()
+        recurrence.sync(create_old_times=True)
         return recurrence
 
 
@@ -261,6 +261,7 @@ def import_image(old_event, new_event, old_folder, from_event_series=False):
 def import_event_series(series, import_base_dir):
     global event_series_map
     event = import_event(series, import_base_dir, from_event_series=True)
+    event.is_cancelled = series.cancelled
     anchor_time = create_event_anchor_time(series, event)
     # TODO: Why are some cancelled / non-existing series being imported?
     create_recurrence(series, event, anchor_time)
