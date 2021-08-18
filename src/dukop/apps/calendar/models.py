@@ -1,16 +1,19 @@
+import calendar
 import os
 import random
 import string
 import uuid
 from builtins import staticmethod
+from datetime import timedelta
 from functools import lru_cache
 
 from django.contrib.sites.models import Site
 from django.core.cache import cache
 from django.db import models
+from django.db import transaction
 from django.db.models import Q
 from django.urls.base import reverse
-from django.utils.functional import cached_property
+from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from dukop.apps.calendar.utils import display_datetime
@@ -117,14 +120,17 @@ class Sphere(models.Model):
                 name="Auto-created sphere", slug="auto", default=True
             )
 
-    @cached_property
     @staticmethod
     def get_default_cached():
         """
         This can be cached in-memory insofar that we don't do any more funky
         stuff with the Spheres, like related querysets etc.
         """
-        return Sphere.get_default()
+        if hasattr(Sphere, "_cached_default"):
+            return Sphere._cached_default
+        else:
+            Sphere._cached_default = Sphere.get_default()
+            return Sphere._cached_default
 
     @staticmethod
     def get_all_cached():
@@ -346,12 +352,24 @@ class EventTime(models.Model):
     modified = models.DateTimeField(auto_now=True)
     is_cancelled = models.BooleanField(default=False)
 
-    interval_auto = models.BooleanField(
+    recurrence = models.ForeignKey(
+        "EventRecurrence",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name=_("recurrence"),
+        help_text=_("Belonging to a recurring recurrence"),
+        related_name="times",
+    )
+    #: This can be switched to False and if the EventTime belongs to an
+    #: EventRecurrence, it will not be maintained automatically anymore.
+    #: This allows for individual changes.
+    recurrence_auto = models.BooleanField(
         default=False,
         verbose_name=_("automatic recurrence"),
         help_text=_(
-            "If true, this interval is currently maintained automatically and "
-            "has not been rescheduled. If the interval is edited, it may be "
+            "If true, this recurrence is currently maintained automatically and "
+            "has not been rescheduled. If the recurrence is edited, it may be "
             "changed automatically"
         ),
     )
@@ -448,17 +466,34 @@ class EventLink(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
 
-class EventInterval(models.Model):
+class EventRecurrence(models.Model):
     """
     Inspired by RRULE for iCal format:
 
     https://www.kanzaki.com/docs/ical/rrule.html
     """
 
-    event = models.ForeignKey(Event, related_name="intervals", on_delete=models.CASCADE)
+    #: A series is based on an event and an anchored EventTime, which is then
+    #: repeated in the recurrence. This means that we have the flexibility to
+    #: have several recurrences for the same event.
+    event = models.ForeignKey(
+        Event, related_name="recurrences", on_delete=models.CASCADE
+    )
 
-    weekday = models.ForeignKey("Weekday", on_delete=models.CASCADE)
+    #: In order to duplicate an event, we need to start with the first time slot
+    #: which is then duplicated. Afterwards, it might be edited separately, so
+    #: this field is only useful for populating an EventRecurrence the first time.
+    #: For weekly events, the anchor decides the weekday.
+    event_time_anchor = models.ForeignKey(
+        EventTime,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
 
+    # Notice how these recurrences intersect. The really hard part occurs when
+    # an recurrence changes it recurrence. You can't say if an existing "every_week"
+    # recurrence is supposed to be the same as a new set of "last_week_of_month".
     every_week = models.BooleanField(default=False)
     biweekly_even = models.BooleanField(default=False)
     biweekly_odd = models.BooleanField(default=False)
@@ -467,11 +502,231 @@ class EventInterval(models.Model):
     third_week_of_month = models.BooleanField(default=False)
     last_week_of_month = models.BooleanField(default=False)
 
-    starts = models.DateTimeField(null=True, blank=True)
-    ends = models.DateTimeField(null=True, blank=True)
+    #: The end time of an recurrence gives us an upper bound so occurences arent't
+    #: created for eternity. If none is supplied, we use a system-default
+    #: relative to ``now()``.
+    end = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name=_("End of series"),
+    )
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+
+    @method_decorator(transaction.atomic)
+    def sync(self, maximum=365, create_old_times=False):
+        """
+        This is in a transaction.
+
+        Stupid examples of things that are annoying:
+
+        - Editing the weekday of a recurrence, what to do with existing EventTimes!?
+        - Editing the recurrence frequency
+
+        Creates the necessary EventTime objects for an Event.
+        That is to say: Given a "main" or "prototype" event, populate a series
+        of copied EventTime for some maximum, respecting
+        """
+        if create_old_times:
+            start = self.event_time_anchor.start
+        else:
+            start = max(utils.get_now(), self.event_time_anchor.start)
+
+        existing_times = {
+            et.start.date(): et
+            for et in self.times.filter(
+                recurrence_auto=True, start__date__gte=start.date()
+            )
+        }
+        updated_times = []
+        for event_time in self.event_time_generator(start, maximum, existing_times):
+            event_time.save()
+            updated_times.append(event_time)
+
+        # Delete everything that existed before but is not part of this generated series
+        for et in existing_times.values():
+            if et not in updated_times:
+                et.delete()
+
+    def event_time_generator(  # noqa: max-complexity: 16
+        self, start, maximum, existing_times
+    ):
+        """A generator that yields new EventTime objects (unsaved)"""
+        assert self.event_time_anchor, "Needs event_time_anchor (the first occurrence)"
+
+        # Yield the anchor EventTime object through the update_or_add_to_recurrence
+        # method, thus ensuring its validity for this recurrence.
+        if start.date() <= self.event_time_anchor.start.date():
+            yield self.update_or_add_to_recurrence(
+                existing_times, event_time=self.event_time_anchor
+            )
+
+        # The end of the recurrence, either as given by an explicit user-defined
+        # end datetime or as a number of days relative to the start of the
+        # recurrence.
+        system_wide_maximum = start + timedelta(days=maximum)
+        end = self.end or system_wide_maximum
+        end = min(end, system_wide_maximum)
+
+        # We store the duration of the anchor event in order to create dynamic
+        # end times of each EventTime in the recurrence.
+        if self.event_time_anchor.end:
+            duration = self.event_time_anchor.end - self.event_time_anchor.start
+        else:
+            duration = None
+
+        if self.every_week:
+            for event_time_start, event_time_end in self._every_week_generator(
+                start, end, duration
+            ):
+                yield self.update_or_add_to_recurrence(
+                    existing_times, event_time_start, event_time_end
+                )
+
+        else:
+            if self.biweekly_even or self.biweekly_odd:
+                for event_time_start, event_time_end in self._biweekly_generator(
+                    start, end, duration, even_not_odd=self.biweekly_even
+                ):
+                    yield self.update_or_add_to_recurrence(
+                        existing_times, event_time_start, event_time_end
+                    )
+
+            if self.first_week_of_month:
+                for event_time_start, event_time_end in self._monthly_generator(
+                    start, end, duration, offset_weeks=0
+                ):
+                    yield self.update_or_add_to_recurrence(
+                        existing_times, event_time_start, event_time_end
+                    )
+            if self.second_week_of_month:
+                for event_time_start, event_time_end in self._monthly_generator(
+                    start, end, duration, offset_weeks=1
+                ):
+                    yield self.update_or_add_to_recurrence(
+                        existing_times, event_time_start, event_time_end
+                    )
+            if self.third_week_of_month:
+                for event_time_start, event_time_end in self._monthly_generator(
+                    start, end, duration, offset_weeks=2
+                ):
+                    yield self.update_or_add_to_recurrence(
+                        existing_times, event_time_start, event_time_end
+                    )
+            if self.last_week_of_month:
+                for (
+                    event_time_start,
+                    event_time_end,
+                ) in self._last_day_of_month_generator(start, end, duration):
+                    yield self.update_or_add_to_recurrence(
+                        existing_times, event_time_start, event_time_end
+                    )
+
+    def update_or_add_to_recurrence(
+        self,
+        existing_times,
+        event_time_start=None,
+        event_time_end=None,
+        event_time=None,
+    ):
+        """
+        Updates an existing event_time in series, but if none exists, we
+        create a new object.
+        """
+        assert event_time_start or event_time
+        if event_time_start:
+            if event_time_start.date() in existing_times:
+                event_time = existing_times[event_time_start.date()]
+            else:
+                event_time = EventTime(event=self.event)
+                event_time.start = event_time_start
+                event_time.end = event_time_end
+        event_time.recurrence = self
+        event_time.recurrence_auto = True
+        return event_time
+
+    def _every_week_generator(self, start, end, duration):
+        interval = timedelta(days=7)
+        current_start = start + interval
+        while current_start < end:
+            current_end = current_start + duration if duration else None
+            yield current_start, current_end
+            current_start += interval
+
+    def _biweekly_generator(self, start, end, duration, even_not_odd=True):
+        current_start = start
+        __, week, __ = current_start.date().isocalendar()
+        interval = timedelta(days=14)
+
+        # We account for a case where the anchor date is in fact NOT the same
+        # even/odd week number of the series.
+        if week % 2 != (0 if even_not_odd else 1):
+            current_start += timedelta(days=7)
+        else:
+            current_start += interval
+        while current_start < end:
+            current_end = current_start + duration if duration else None
+            yield current_start, current_end
+            current_start += interval
+
+    def _monthly_generator(self, start, end, duration, offset_weeks=0):
+        """
+        :param: offset_weeks: The number of weeks from the beginning, 0=first week
+        """
+        current_start = start
+        while True:
+            if current_start.month == 12:
+                first_day_in_month = current_start.replace(
+                    year=current_start.year + 1,
+                    month=1,
+                    day=1,
+                )
+            else:
+                first_day_in_month = current_start.replace(
+                    month=current_start.month + 1,
+                    day=1,
+                )
+            offset = (
+                self.event_time_anchor.start.weekday() - first_day_in_month.weekday()
+            )
+            if offset < 0:
+                offset += 7
+            offset += 7 * offset_weeks
+            current_start = first_day_in_month.replace(
+                day=1 + offset,
+            )
+            current_end = current_start + duration if duration else None
+            if current_start >= end:
+                break
+            yield current_start, current_end
+
+    def _last_day_of_month_generator(self, start, end, duration):
+        current_start = start
+        target_weekday = current_start.weekday()
+        while True:
+            if current_start.month == 12:
+                next_month = 1
+                next_year = current_start.year + 1
+            else:
+                next_month = current_start.month + 1
+                next_year = current_start.year
+            # The weekday index is different in the "calendar" package so disregard
+            __, last_day = calendar.monthrange(next_year, next_month)
+            current_start = current_start.replace(
+                year=next_year, month=next_month, day=last_day
+            )
+            last_day_weekday = current_start.weekday()
+            diff = target_weekday - last_day_weekday
+            if diff > 0:
+                diff = -7 + diff
+            current_start = current_start.replace(
+                day=last_day + diff,
+            )
+            current_end = current_start + duration if duration else None
+            if current_start >= end:
+                break
+            yield current_start, current_end
 
 
 class Weekday(models.Model):

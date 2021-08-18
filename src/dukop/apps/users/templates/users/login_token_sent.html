@@ -8,6 +8,12 @@
 
 <h1>{% trans "Check your inbox" %}</h1>
 
-<p>{% blocktrans %}Click the link sent to {{ email_token }} and enter the token on the link that is found in the email.{% endblocktrans %}</p>
+<p>
+    {% blocktrans trimmed %}
+        If your email is registered, you will have received a one-time login by
+        email now. Click the link sent to {{ email_token }} and enter the token,
+        using the link that is found in the email.
+    {% endblocktrans %}
+</p>
 
 {% endblock %}

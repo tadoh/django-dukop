@@ -23,8 +23,8 @@ from django.template.defaultfilters import truncatewords
 from django.utils import timezone
 from dukop.apps.calendar.models import Event
 from dukop.apps.calendar.models import EventImage
-from dukop.apps.calendar.models import EventInterval
 from dukop.apps.calendar.models import EventLink
+from dukop.apps.calendar.models import EventRecurrence
 from dukop.apps.calendar.models import EventTime
 from dukop.apps.calendar.models import OldEventSync
 from dukop.apps.calendar.models import Sphere
@@ -49,7 +49,7 @@ weekday_numbers = {
 }
 
 
-# Map between old EventSeries and new Interval
+# Map between old EventSeries and new recurrence
 event_series_map = {}
 
 
@@ -68,32 +68,37 @@ def df(value):
     )
 
 
-def create_interval(event_series, new_event):
+def create_recurrence(event_series, new_event, anchor_time):
     """
-    Creates an Interval from old EventSeries object
+    Creates an EventRecurrence from old EventSeries object
     """
     if event_series:
         days = event_series.days.split(",")
         if len(days) > 1:
             print("WARNING: Several weekdays in an EventSeries")
 
-        interval = new_event.intervals.all().first() or EventInterval(event=new_event)
-
-        interval.weekday = Weekday.objects.get(number=weekday_numbers[days[0]])
-        interval.every_week = bool(event_series.rule == "weekly")
-        interval.biweekly_even = bool(event_series.rule == "biweekly_even")
-        interval.biweekly_odd = bool(event_series.rule == "biweekly_odd")
-        interval.first_week_of_month = bool(event_series.rule == "first")
-        interval.second_week_of_month = bool(event_series.rule == "second")
-        interval.third_week_of_month = bool(event_series.rule == "third")
-        interval.last_week_of_month = bool(event_series.rule == "last")
-        interval.starts = df(
+        recurrence = new_event.recurrences.all().first() or EventRecurrence(
+            event=new_event
+        )
+        recurrence.event_time_anchor = anchor_time
+        recurrence.weekday = Weekday.objects.get(number=weekday_numbers[days[0]])
+        recurrence.every_week = bool(event_series.rule == "weekly")
+        recurrence.biweekly_even = bool(event_series.rule == "biweekly_even")
+        recurrence.biweekly_odd = bool(event_series.rule == "biweekly_odd")
+        recurrence.first_week_of_month = bool(event_series.rule == "first")
+        recurrence.second_week_of_month = bool(event_series.rule == "second")
+        recurrence.third_week_of_month = bool(event_series.rule == "third")
+        recurrence.last_week_of_month = bool(event_series.rule == "last")
+        recurrence.start = df(
             datetime.combine(event_series.start_date, event_series.start_time)
         )
-        interval.ends = df(datetime.combine(event_series.expiry, event_series.end_time))
+        recurrence.end = df(
+            datetime.combine(event_series.expiry, event_series.end_time)
+        )
 
-        interval.save()
-        return interval
+        recurrence.save()
+        recurrence.sync(create_old_times=True)
+        return recurrence
 
 
 def ensure_location_exists(old_event):
@@ -191,6 +196,23 @@ def create_event_time(old_event, attach_to_event):
     )
 
 
+def create_event_anchor_time(old_event_series, attach_to_event):
+    """
+    TODO: Check if it's already created?
+    """
+    assert old_event_series.start_time and old_event_series.end_time
+    start = datetime.combine(old_event_series.start_date, old_event_series.start_time)
+    end = datetime.combine(old_event_series.start_date, old_event_series.end_time)
+    return EventTime.objects.create(
+        event=attach_to_event,
+        start=df(start),
+        end=df(end),
+        created=df(old_event_series.created_at),
+        modified=df(old_event_series.updated_at),
+        is_cancelled=bool(old_event_series.cancelled),
+    )
+
+
 not_found_images = 0
 
 
@@ -239,7 +261,10 @@ def import_image(old_event, new_event, old_folder, from_event_series=False):
 def import_event_series(series, import_base_dir):
     global event_series_map
     event = import_event(series, import_base_dir, from_event_series=True)
-    create_interval(series, event)
+    event.is_cancelled = series.cancelled
+    anchor_time = create_event_anchor_time(series, event)
+    # TODO: Why are some cancelled / non-existing series being imported?
+    create_recurrence(series, event, anchor_time)
     event_series_map[series.id] = event
 
 

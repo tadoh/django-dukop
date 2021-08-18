@@ -39,3 +39,6 @@ if settings.DEBUG:
         + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
         + urlpatterns
     )
+
+
+handler403 = "dukop.views.handler403"

@@ -1,6 +1,7 @@
 
 thumbnail_kvstore*
 dump*
+dukop.backup.gz
 
 ### Backup ###
 *.bak

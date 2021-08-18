@@ -13,6 +13,7 @@ class SphereAdmin(admin.ModelAdmin):
 
 class EventTimeInline(admin.TabularInline):
     model = models.EventTime
+    raw_id_fields = ("recurrence",)
 
 
 class EventImageInlineAdmin(admin.TabularInline):
@@ -62,8 +63,9 @@ class EventAdmin(admin.ModelAdmin):
     event_image.short_description = "Photo"
 
 
-@admin.register(models.EventInterval)
-class EventInvervalAdmin(admin.ModelAdmin):
-
-    list_display = ("event", "starts", "ends")
-    list_filter = ("starts", "ends")
+@admin.register(models.EventRecurrence)
+class EventRecurrenceAdmin(admin.ModelAdmin):
+    raw_id_fields = ("event", "event_time_anchor")
+    list_display = ("event", "end")
+    list_filter = ("end",)
+    search_fields = ("event__name",)
