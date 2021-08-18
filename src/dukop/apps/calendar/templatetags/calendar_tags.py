@@ -126,3 +126,20 @@ def feed_link(feed_url, **kwargs):
     current_site = Site.objects.get_current()
     domain = current_site.domain
     return "https://{}{}".format(domain, reverse(feed_url, kwargs=kwargs))
+
+
+@register.filter
+def url_alias(url):
+    """
+    Turns for instance "https://mastodon.org/blah/blah" into "mastodon.org"
+    """
+
+    try:
+        __, domain_path = url.split("://")
+        domain = domain_path.split("/")[0]
+        domain = domain.strip("www.")
+        if domain == "facebook.com":
+            domain = "facebook.com (which tracks you)"
+        return domain
+    except IndexError:
+        return "Invalid URL"

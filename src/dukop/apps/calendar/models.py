@@ -465,6 +465,9 @@ class EventLink(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ("priority", "link")
+
 
 class EventRecurrence(models.Model):
     """

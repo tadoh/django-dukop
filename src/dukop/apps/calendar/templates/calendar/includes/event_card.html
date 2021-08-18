@@ -54,6 +54,14 @@
             {% else %}
             {{ event.short_description|linebreaks }}
             {% endif %}
+
+            {% if event.links %}
+                <h5>{% trans "Event links" %}</h5>
+                {% for link in event.links.all %}
+                <p><a href="{{ link.link }}" target="_blank">{{ link.link|url_alias }}</a></p>
+                {% endfor %}
+            {% endif %}
+
         {% else %}
         <div class="card__more__cut">
         {{ event_time.event.short_description|truncatechars:100 }}
@@ -73,6 +81,7 @@
         {% endif %}
 
         {% if not event_hide_share %}
+        <h5>{% trans "Sharing" %}</h5>
         <p>
             <a href="{{ event.share_link }}">
                 {% trans "Share link" %}
