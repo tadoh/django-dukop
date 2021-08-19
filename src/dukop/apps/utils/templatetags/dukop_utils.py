@@ -22,7 +22,7 @@ def dukop_render_field(field, extra_class=""):
 
 
 @register.filter()
-def dukop_message_tag(message):
+def message_css_class(message):
     """Takes a message object from django.contrib.message and returns
     a bootstrap danger/warning/info/success/default CSS class"""
     lvl = message.level
