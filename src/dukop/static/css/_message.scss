@@ -6,9 +6,34 @@
     border: 1px solid #CCC;
     background: #FFF;
     font-weight: bold;
+    margin-bottom: 15px;
 }
 
 .message-error
 {
     background: #FCC;
+}
+
+.card-messages {
+    background: #222;
+    color: #fff;
+    .alert {
+        color: #fff;
+        font-weight: bold;
+    }
+    .alert-danger {
+        color: #fcc;
+    }
+    .alert-warning {
+        color: #ffc;
+    }
+    .alert-success {
+        color: #cfc;
+    }
+    .alert-info {
+        color: #fff;
+    }
+    .close {
+        float: right;
+    }
 }
