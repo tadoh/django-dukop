@@ -42,3 +42,6 @@ if settings.DEBUG:
 
 
 handler403 = "dukop.views.handler403"
+
+handler404 = "dukop.views.handler404"
+handler500 = "dukop.views.handler500"

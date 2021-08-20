@@ -10,6 +10,8 @@ INTERNAL_IPS = ["localhost", "127.0.0.1", "[::1]"]
 # https://docs.djangoproject.com/en/2.1/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
 
+ADMINS = [("x", "lala@localhost")]
+
 INSTALLED_APPS += ("debug_toolbar",)  # noqa
 
 COMPRESS_ENABLED = False
