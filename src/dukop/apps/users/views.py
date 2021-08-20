@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import SuccessURLAllowedHostsMixin
@@ -52,6 +53,8 @@ class LoginView(FormView, SuccessURLAllowedHostsMixin):
         ratelimit(group="dukop_noauth", key="ip", rate="5/h", method="POST", block=True)
     )
     def dispatch(self, request, *args, **kwargs):
+        if request.GET.get("next", "") and request.method == "GET":
+            messages.info(request, _("Please log in before proceeding"))
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
