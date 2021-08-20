@@ -11,8 +11,8 @@ def handler403(request, exception=None):
 
 
 def handler404(request, exception):
-    return render(request, "404.html", {})
+    return render(request, "404.html", {}, status=404)
 
 
 def handler500(request, exception=None):
-    return render(request, "500.html", {})
+    return render(request, "500.html", {}, status=500)
