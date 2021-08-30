@@ -61,6 +61,7 @@ class LoginView(FormView, SuccessURLAllowedHostsMixin):
         c = FormView.get_context_data(self, **kwargs)
         c["next"] = self.request.GET.get("next", "")
         c["password_form"] = forms.PasswordLogin()
+        c["signup_form"] = forms.SignupForm()
         return c
 
     def form_valid(self, form):
