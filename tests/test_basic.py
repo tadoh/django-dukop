@@ -6,6 +6,8 @@ from django.core.management import call_command
 def test_landing_page(client):
     response = client.get("/en/")
     assert response.status_code == 200
+    response = client.get("/", follow=True)
+    assert response.status_code == 200
 
 
 @pytest.mark.django_db(transaction=True)

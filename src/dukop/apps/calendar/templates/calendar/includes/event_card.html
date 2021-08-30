@@ -55,7 +55,7 @@
             {{ event.short_description|linebreaks }}
             {% endif %}
 
-            {% if event.links %}
+            {% if event.links.all %}
                 <h5>{% trans "Event links" %}</h5>
                 {% for link in event.links.all %}
                 <p><a href="{{ link.link }}" target="_blank">{{ link.link|url_alias }}</a></p>
