@@ -8,7 +8,7 @@
 
 <h1>{% trans "Log in" %}</h1>
 
-<p>{% trans "You will only have a password if you choose to have one after signing up. Don't have an account yet?" %} <a href="{% url "users:signup" %}?next={{ next }}">{% trans "Sign up here" %} &gt;</a></p>
+<p>{% trans "You will only have a password if you choose to have one after signing up." %}</p>
 
 <form method="post" action="{% url 'users:login' %}">
 {% csrf_token %}
@@ -20,10 +20,22 @@
 </form>
 
 
-<h2>{% trans "Log in with password" %}</h2>
+<h1>{% trans "Log in with password" %}</h1>
 
 <form method="post" action="{% url 'users:login_password' %}">
 {% dukop_form password_form %}
+
+<input type="submit" value="{% trans "Log in" %}">
+<input type="hidden" name="next" value="{{ next }}">
+
+</form>
+
+<h1>{% trans "Don't have a login?" %}</h1>
+
+<p>{% trans "You need to register in order to login. You need access to the provided email address to verify and use 1-time logins afterwards." %}
+
+<form method="post" action="{% url 'users:signup' %}?next={{ next }}">
+{% dukop_form signup_form %}
 
 <input type="submit" value="{% trans "Log in" %}">
 <input type="hidden" name="next" value="{{ next }}">
