@@ -412,7 +412,7 @@ msgstr "se og dele det"
 
 #: src/dukop/apps/calendar/templates/calendar/event/list.html:6
 msgid "Event list"
-msgstr "Begivenheds liste"
+msgstr "Begivenheder"
 
 #: src/dukop/apps/calendar/templates/calendar/event/list.html:13
 msgid "All events from"
