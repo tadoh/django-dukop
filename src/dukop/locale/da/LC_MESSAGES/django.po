@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-30 19:33+0200\n"
+"POT-Creation-Date: 2021-09-07 00:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -216,33 +216,26 @@ msgid "Leave blank and nothing will be shown to readers"
 msgstr "lad den være blank og intet vil bliv vist"
 
 #: src/dukop/apps/calendar/models.py:360
-#, fuzzy
-#| msgid "automatic recurrence"
 msgid "recurrence"
-msgstr "automatisk gentagelse"
+msgstr "gentagelse"
 
 #: src/dukop/apps/calendar/models.py:361
 msgid "Belonging to a recurring recurrence"
-msgstr ""
+msgstr "Hører til en gentagelse"
 
 #: src/dukop/apps/calendar/models.py:369
 msgid "automatic recurrence"
 msgstr "automatisk gentagelse"
 
 #: src/dukop/apps/calendar/models.py:371
-#, fuzzy
-#| msgid ""
-#| "If true, this interval is currently maintained automatically and has not "
-#| "been rescheduled. If the interval is edited, it may be changed "
-#| "automatically"
 msgid ""
 "If true, this recurrence is currently maintained automatically and has not "
 "been rescheduled. If the recurrence is edited, it may be changed "
 "automatically"
 msgstr ""
-"Hvis korrekt, dette interval er i øjeblikket bibeholdt automatisk og har "
-"ikke blevet omlagt. Hvis intervallet er ændret, vil det muligvis ændres "
-"blive ændret automatisk"
+"Hvis markeret, bliver denne gentagelse bibeholdt automatisk og er ikke "
+"blevet manuelt ændret. Hvis gentagelsen er ændret, vil dette tidspunkt+dao "
+"ændres automatisk"
 
 #: src/dukop/apps/calendar/models.py:380
 msgid "Event time"
@@ -459,15 +452,18 @@ msgstr "Feed URLs kan findes i bunden af alle sider og kalender visninger"
 msgid ""
 "By subscribing to feeds, you will see DukOp events directly in your calendar "
 "as a layer that can be switched on and off."
-msgstr "Ved at tilmelde dig et feed kommer du til at se DukOp begivenheder direkte i din egen kalender."
+msgstr ""
+"Ved at tilmelde dig et feed kommer du til at se DukOp begivenheder direkte i "
+"din egen kalender."
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:30
 msgid ""
 "Both new events will automatically be pulled in, but changes to existing "
 "events will also be visible -- for instance date, time, description and "
 "location."
-msgstr "Nye begivenhder vil automatisk blive tilføjet og ændringer til" 
-"allerede eksiterende begivender vil også automatisk blive opdateret."
+msgstr ""
+"Nye begivenhder vil automatisk blive tilføjet og ændringer til allerede "
+"eksiterende begivender vil også automatisk blive opdateret."
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:37
 msgid "Choosing what to subscribe to"
@@ -477,8 +473,9 @@ msgstr "Vælg hvad du vil tilmelde dig"
 msgid ""
 "DukOp consists of different Spheres, Venues and Groups. You will be able to "
 "subscribe to any of these, precisely how you want."
-msgstr "DukOp indeholder forskellige sfæres, steder og grupper. Du kan"
-"tilmelde til alle disse, præcis på den måde du selv ønsker. 
+msgstr ""
+"DukOp indeholder forskellige sfæres, steder og grupper. Du kan tilmelde til "
+"alle disse, præcis på den måde du selv ønsker. "
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:46
 msgid "Sphere feeds"
@@ -492,8 +489,9 @@ msgstr "Hvor ofte skal der opdateres"
 msgid ""
 "We recommend that you just pull in contents a few times daily. There is no "
 "need to load your own device or our servers more than this."
-msgstr "Vi anbefaler at du kun opdatere få gange pr dag. der er ingen"
-"grund til at overbelaste din enhed eller vores servere mere end dette."
+msgstr ""
+"Vi anbefaler at du kun opdatere få gange pr dag. der er ingengrund til at "
+"overbelaste din enhed eller vores servere mere end dette."
 
 #: src/dukop/apps/calendar/templates/calendar/includes/event_card.html:35
 msgid "No scheduled times"
@@ -850,8 +848,6 @@ msgid "Not sent, something wrong with the mail server."
 msgstr "Emailen blev ikke sendt, noget gik galt med mailserveren"
 
 #: src/dukop/apps/users/email.py:54
-#, fuzzy
-#| msgid "Your new account for DukOp"
 msgid "Your new account for Dukop"
 msgstr "Din nye DukOp konto"
 
@@ -960,22 +956,22 @@ msgstr "Log ind igen"
 #: src/dukop/apps/users/templates/users/login.html:5
 #: src/dukop/apps/users/templates/users/login.html:9
 #: src/dukop/apps/users/templates/users/login.html:28
+#: src/dukop/apps/users/templates/users/login.html:40
 #: src/dukop/apps/users/templates/users/password_reset_complete.html:11
 #: src/dukop/templates/base.html:47
 msgid "Log in"
-msgstr "log ind"
+msgstr "Log ind"
 
 #: src/dukop/apps/users/templates/users/login.html:11
+#, fuzzy
+#| msgid ""
+#| "You will only have a password if you choose to have one after signing up. "
+#| "Don't have an account yet?"
 msgid ""
-"You will only have a password if you choose to have one after signing up. "
-"Don't have an account yet?"
+"You will only have a password if you choose to have one after signing up."
 msgstr ""
 "Du vil kun have et kodeord, hvis du vælger det efter du har tilmeldt dig.Har "
 "du ikke en bruger endnu?"
-
-#: src/dukop/apps/users/templates/users/login.html:11
-msgid "Sign up here"
-msgstr "Opret bruger her"
 
 #: src/dukop/apps/users/templates/users/login.html:18
 msgid "Send a 1-time login"
@@ -984,6 +980,16 @@ msgstr "Send et engangs login"
 #: src/dukop/apps/users/templates/users/login.html:23
 msgid "Log in with password"
 msgstr "Log ind med kodeord"
+
+#: src/dukop/apps/users/templates/users/login.html:33
+msgid "Don't have a login?"
+msgstr ""
+
+#: src/dukop/apps/users/templates/users/login.html:35
+msgid ""
+"You need to register in order to login. You need access to the provided "
+"email address to verify and use 1-time logins afterwards."
+msgstr ""
 
 #: src/dukop/apps/users/templates/users/login_password.html:7
 msgid "Login with a password"
@@ -1007,23 +1013,21 @@ msgstr "Få en en ny token"
 
 #: src/dukop/apps/users/templates/users/login_token_sent.html:5
 #: src/dukop/apps/users/templates/users/login_token_sent.html:9
-#: src/dukop/apps/users/views.py:75 src/dukop/apps/users/views.py:214
-#: src/dukop/apps/users/views.py:224
+#: src/dukop/apps/users/views.py:76 src/dukop/apps/users/views.py:215
+#: src/dukop/apps/users/views.py:225
 msgid "Check your inbox"
 msgstr "Tjek din mail inbox"
 
 #: src/dukop/apps/users/templates/users/login_token_sent.html:12
-#, fuzzy, python-format
-#| msgid ""
-#| "Click the link sent to %(email_token)s and enter the token on the link "
-#| "that is found in the email."
+#, python-format
 msgid ""
 "If your email is registered, you will have received a one-time login by "
 "email now. Click the link sent to %(email_token)s and enter the token, using "
 "the link that is found in the email."
 msgstr ""
-"Click the link sent to %(email_token)s and enter the token on the link that "
-"is found in the email."
+"Hvis din email er registreret, har du modtaget en engangs-kode på din email "
+"nu. Klik på linket sendt til %(email_token)s on indtast koden, ved at "
+"anvende linket i emailen."
 
 #: src/dukop/apps/users/templates/users/mail/admin_event_created.txt:3
 #, python-format
@@ -1272,7 +1276,7 @@ msgstr ""
 
 #: src/dukop/templates/500.html:4
 msgid "500 - Server error"
-msgstr ""
+msgstr "500 - Serverfejl"
 
 #: src/dukop/templates/500.html:6
 msgid ""
@@ -1308,25 +1312,27 @@ msgstr "Kontakt os"
 
 #: src/dukop/templates/base.html:100
 msgid "Activate sphere"
-msgstr ""
+msgstr "Aktivér sfærer"
 
 #: src/dukop/templates/base.html:101
 msgid ""
 "Duk Op is available in the followin mixes or spheres. By changing the active "
 "sphere, you'll get a different view of the site:"
 msgstr ""
+"Duk Op er tilgængeligt i følgende udgaver eller 'sfærer'. Ved at skifte og "
+"aktivere en anden sfærer, får du en anden udgave af sitet:"
 
 #: src/dukop/templates/base.html:110
-#, fuzzy
-#| msgid "description"
 msgid "Calendar subscription"
-msgstr "beskrivelse"
+msgstr "Kalender abonnement"
 
 #: src/dukop/templates/base.html:112
 msgid ""
 "You can subscribe to DukOp in for instance Google, iCal, Thunderbird and "
 "more. Copy this URL into your calendar's Import function (iCAL/ICS format)"
 msgstr ""
+"Duk kan abonnere på Duk Op i f.eks. Google, iCal, Thunderbird or mere. "
+"Kopiér følgende URL ind i din kalenders import-funktion (iCAL/ICS format)"
 
 #: src/dukop/templates/base.html:118
 msgid "Latest news"
@@ -1335,3 +1341,6 @@ msgstr "Seneste nyt"
 #: src/dukop/templates/base.html:133
 msgid "No news is good news?"
 msgstr "Ingen nyheder"
+
+#~ msgid "Sign up here"
+#~ msgstr "Opret bruger her"
