@@ -28,26 +28,26 @@ msgstr "gang(e)"
 
 #: src/dukop/apps/calendar/feeds.py:39
 msgid "DukOp calendar for {}"
-msgstr ""
+msgstr "DukOp kalender for {}"
 
 #: src/dukop/apps/calendar/feeds.py:41
 msgid "DukOp future events"
-msgstr ""
+msgstr "Fremtidige begivenheder på DukOp"
 
 #: src/dukop/apps/calendar/feeds.py:56
 msgid ""
 "\n"
 "\n"
 "More details: {}"
-msgstr ""
+msgstr "Flere detaljer: {}"
 
 #: src/dukop/apps/calendar/feeds.py:136
 msgid "DukOp's next 30 events"
-msgstr ""
+msgstr "DukOp's næste 30 begivenheder"
 
 #: src/dukop/apps/calendar/feeds.py:142
 msgid "RSS feed of the latest events on DukOp"
-msgstr ""
+msgstr "RSS feed for de seneste begivenhder på DukOP"
 
 #: src/dukop/apps/calendar/forms.py:14
 msgid "Relevance"
@@ -270,7 +270,7 @@ msgstr "0=først, 1=anden etc."
 
 #: src/dukop/apps/calendar/models.py:514
 msgid "End of series"
-msgstr ""
+msgstr "Slutningen af serien"
 
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:4
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:14
@@ -287,7 +287,7 @@ msgstr ""
 
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:16
 msgid "Creating your first event?"
-msgstr "Opret dit første event"
+msgstr "Opret din første begivenhed"
 
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:17
 msgid "Please read our"
@@ -411,39 +411,37 @@ msgid "view and share it"
 msgstr "se og dele det"
 
 #: src/dukop/apps/calendar/templates/calendar/event/list.html:6
-#, fuzzy
-#| msgid "Event time"
 msgid "Event list"
-msgstr "Begivenhedens tidspunkt"
+msgstr "Begivenheder"
 
 #: src/dukop/apps/calendar/templates/calendar/event/list.html:13
 msgid "All events from"
-msgstr ""
+msgstr "Alle begivenhder fra"
 
 #: src/dukop/apps/calendar/templates/calendar/event/list.html:15
 msgid "to"
-msgstr ""
+msgstr "til"
 
 #: src/dukop/apps/calendar/templates/calendar/event/list.html:21
 msgid "Previous week"
-msgstr ""
+msgstr "Sidste uge"
 
 #: src/dukop/apps/calendar/templates/calendar/event/list.html:24
 msgid "Next week"
-msgstr ""
+msgstr "Næste uge"
 
 #: src/dukop/apps/calendar/templates/calendar/event/list.html:53
 msgid "Nothing to see in this period."
-msgstr ""
+msgstr "Intet at vise i denne periode"
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/future.html:5
 msgid "When:"
-msgstr ""
+msgstr "Når:"
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:4
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:8
 msgid "Subscribing to feeds"
-msgstr ""
+msgstr "Tilmeld dig til feeds"
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:11
 msgid ""
@@ -455,68 +453,63 @@ msgstr ""
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:19
 msgid ""
 "Feed URLs are found at the bottom of all pages and in calendar listings."
-msgstr ""
+msgstr "Feed URLs kan findes i bunden af alle sider og kalender visninger"
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:23
 msgid ""
 "By subscribing to feeds, you will see DukOp events directly in your calendar "
 "as a layer that can be switched on and off."
-msgstr ""
+msgstr "Ved at tilmelde dig et feed kommer du til at se DukOp begivenheder direkte i din egen kalender."
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:30
 msgid ""
 "Both new events will automatically be pulled in, but changes to existing "
 "events will also be visible -- for instance date, time, description and "
 "location."
-msgstr ""
+msgstr "Nye begivenhder vil automatisk blive tilføjet og ændringer til" 
+"allerede eksiterende begivender vil også automatisk blive opdateret."
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:37
 msgid "Choosing what to subscribe to"
-msgstr ""
+msgstr "Vælg hvad du vil tilmelde dig"
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:40
 msgid ""
 "DukOp consists of different Spheres, Venues and Groups. You will be able to "
 "subscribe to any of these, precisely how you want."
-msgstr ""
+msgstr "DukOp indeholder forskellige sfæres, steder og grupper. Du kan"
+"tilmelde til alle disse, præcis på den måde du selv ønsker. 
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:46
-#, fuzzy
-#| msgid "Spheres"
 msgid "Sphere feeds"
-msgstr "Sfærer"
+msgstr "Sfærer feeds"
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:64
-#, fuzzy
-#| msgid "Event update"
 msgid "How often to update"
-msgstr "Opdatering fra begivenhed"
+msgstr "Hvor ofte skal der opdateres"
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:67
 msgid ""
 "We recommend that you just pull in contents a few times daily. There is no "
 "need to load your own device or our servers more than this."
-msgstr ""
+msgstr "Vi anbefaler at du kun opdatere få gange pr dag. der er ingen"
+"grund til at overbelaste din enhed eller vores servere mere end dette."
 
 #: src/dukop/apps/calendar/templates/calendar/includes/event_card.html:35
 msgid "No scheduled times"
 msgstr "Ikke planlagte tider"
 
 #: src/dukop/apps/calendar/templates/calendar/includes/event_card.html:59
-#, fuzzy
-#| msgid "Event time"
 msgid "Event links"
-msgstr "Begivenhedens tidspunkt"
+msgstr "Begivenheden link"
 
 #: src/dukop/apps/calendar/templates/calendar/includes/event_card.html:77
 msgid "Event detail page"
 msgstr "begivenhedens detaljeside"
 
 #: src/dukop/apps/calendar/templates/calendar/includes/event_card.html:84
-#, fuzzy
-#| msgid "Share link"
 msgid "Sharing"
-msgstr "Del link"
+msgstr "Deling"
 
 #: src/dukop/apps/calendar/templates/calendar/includes/event_card.html:87
 msgid "Share link"
@@ -524,35 +517,31 @@ msgstr "Del link"
 
 #: src/dukop/apps/calendar/templates/calendar/includes/pagination.html:7
 msgid "Page:"
-msgstr ""
+msgstr "Side:"
 
 #: src/dukop/apps/calendar/templates/calendar/includes/pagination.html:20
 msgid "Previous"
-msgstr ""
+msgstr "Forrige"
 
 #: src/dukop/apps/calendar/templates/calendar/includes/pagination.html:30
 msgid "Next"
-msgstr ""
+msgstr "Næste"
 
 #: src/dukop/apps/calendar/templates/calendar/index.html:6
 msgid "Start"
 msgstr "Start"
 
 #: src/dukop/apps/calendar/templates/calendar/index.html:18
-#, fuzzy
-#| msgid "Event time"
 msgid "Events mixed for"
-msgstr "Begivenhedens tidspunkt"
+msgstr "Begivenheder blandet fra"
 
 #: src/dukop/apps/calendar/templates/calendar/index.html:35
 msgid "No events found in this period."
 msgstr ""
 
 #: src/dukop/apps/calendar/templates/calendar/index.html:43
-#, fuzzy
-#| msgid "Also happening"
 msgid "Happening"
-msgstr "Sker også"
+msgstr "Sker"
 
 #: src/dukop/apps/calendar/templates/calendar/index.html:43
 msgid "today"
