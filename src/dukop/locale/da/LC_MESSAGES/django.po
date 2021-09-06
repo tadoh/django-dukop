@@ -436,7 +436,7 @@ msgstr "Intet at vise i denne periode"
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/future.html:5
 msgid "When:"
-msgstr "Når"
+msgstr "Når:"
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:4
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:8
