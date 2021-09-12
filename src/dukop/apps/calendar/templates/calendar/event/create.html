@@ -50,7 +50,10 @@
 
       </table>
       <h2>{% trans "Date and times" %}</h2>
-      {% trans "Most events just had a single start and finish time. But if your event spans several days, you can add additional start and finish times." %}
+      <p>
+        {% trans "Most events just had a single start and finish time. But if your event spans several days, you can add additional start and finish times." %}
+        {% trans "If this event recurs on a regular basis, you can indicate this further down this page." %}
+      </p>
       {{ times.management_form }}
       {% if times.non_form_errors %}
       <div class="message message__error">
@@ -94,8 +97,53 @@
 
       </table>
 
+      <h2>{% trans "Automatic recurrence" %}</h2>
+      <p>
+        {% trans "If you want your event to recur automatically with an interval, you can set it here instead of adding individual timeslots manually." %}
+      </p>
+      {{ recurrences.management_form }}
+      <table>
+        {% for recurrence in recurrences %}
+        <tr class="formset--element {% if not recurrence.errors and not forloop.first %}hide{% endif %}">
+          <th>{% trans "Interval" %} {{ forloop.counter }}:</th>
+          <td>
+            <div>
+                <div>
+                {{ recurrence.interval_type.label_tag }}<br>
+                {{ recurrence.interval_type }}
+                </div>
+                {% if recurrence.interval_type.errors %}
+                    {{ recurrence.interval_type.errors }}
+                {% endif %}
+
+                <div>
+                {{ recurrence.end.label_tag }}<br>
+                {{ recurrence.end }}
+                </div>
+                {% if recurrence.end.errors %}
+                    {{ recurrence.end.errors }}
+                {% endif %}
+
+                {% if not forloop.last %}
+                <button type="button" class="formset-add-link">
+                    {% trans "Add recurrence" %}
+                </button>
+                {% endif %}
+                {% if not forloop.first %}
+                <button type="button" class="formset-remove-link">
+                    {% trans "Remove recurrence" %}
+                </button>
+                {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+
+      </table>
       <h2>{% trans "Images" %}</h2>
-      {% trans "We really recommend that you add an illustration. Don't let your Facebook event look better than your Duk Op event!" %}
+      <p>
+        {% trans "We really recommend that you add an illustration. Don't let your Facebook event look better than your Duk Op event!" %}
+      </p>
       {{ images.management_form }}
       <table>
         {% for image in images %}
@@ -104,7 +152,6 @@
           <td>
             <div>
                 <div>
-                    {{ image.image.label_tag }}<br>
                     {{ image.image }}
                 </div>
                 {% if image.image.errors %}
@@ -132,7 +179,9 @@
       </table>
 
       <h2>{% trans "Links" %}</h2>
-      {% trans "We really recommend that you add an illustration. Don't let your Facebook event look better than your Duk Op event!" %}
+      <p>
+        {% trans "We really recommend that you add an illustration. Don't let your Facebook event look better than your Duk Op event!" %}
+      </p>
       {{ links.management_form }}
       <table>
         {% for link in links %}

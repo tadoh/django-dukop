@@ -77,6 +77,7 @@ class EventCreate(CreateView):
         self.images_form = forms.EventImageFormSet(prefix="images")
         self.times_form = forms.EventTimeFormSet(prefix="times")
         self.links_form = forms.EventLinkFormSet(prefix="links")
+        self.recurrences_form = forms.EventRecurrenceFormSet(prefix="recurrences")
         return self.render_to_response(self.get_context_data())
 
     @method_decorator(ratelimit(key="ip", rate="10/d", method="POST"))
@@ -92,19 +93,23 @@ class EventCreate(CreateView):
         )
         self.times_form = forms.EventTimeFormSet(data=request.POST, prefix="times")
         self.links_form = forms.EventLinkFormSet(data=request.POST, prefix="links")
+        self.recurrences_form = forms.EventRecurrenceFormSet(
+            data=request.POST, prefix="links"
+        )
         form = self.get_form()
         if (
             form.is_valid()
             and self.images_form.is_valid()
             and self.times_form.is_valid()
             and self.links_form.is_valid()
+            and self.recurrences_form.is_valid()
         ):
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
 
     @transaction.atomic()
-    def form_valid(self, form):
+    def form_valid(self, form):  # noqa: max-complexity=13
         self.object = form.save()
         event = self.object
 
@@ -135,6 +140,16 @@ class EventCreate(CreateView):
                     link.event = event
                     link.save()
 
+        for form in self.recurrences_form:
+            if form.is_valid() and form.has_changed():
+                if form.cleaned_data.get("DELETE") and form.instance.pk:
+                    pass
+                else:
+                    recurrence = form.save(commit=False)
+                    recurrence.event = event
+                    recurrence.event_time_anchor = event.times.all().first()
+                    recurrence.save()
+
         return redirect("calendar:event_create_success", pk=event.pk)
 
     def form_invalid(self, form):
@@ -146,6 +161,7 @@ class EventCreate(CreateView):
         c["times"] = self.times_form
         c["images"] = self.images_form
         c["links"] = self.links_form
+        c["recurrences"] = self.recurrences_form
         c["forms_had_errors"] = getattr(self, "forms_had_errors", False)
         return c
 

@@ -494,6 +494,17 @@ class EventRecurrence(models.Model):
         on_delete=models.SET_NULL,
     )
 
+    #: List of types of recurrences that users can choose.
+    RECURRENCE_TYPES = [
+        ("every_week", _("Weekly")),
+        ("biweekly_even", _("Even weeks")),
+        ("biweekly_odd", _("Odd weeks")),
+        ("first_week_of_month", _("First week of month")),
+        ("second_week_of_month", _("Second week of month")),
+        ("third_week_of_month", _("Third week of month")),
+        ("last_week_of_month", _("Last week of month")),
+    ]
+
     # Notice how these recurrences intersect. The really hard part occurs when
     # an recurrence changes it recurrence. You can't say if an existing "every_week"
     # recurrence is supposed to be the same as a new set of "last_week_of_month".
