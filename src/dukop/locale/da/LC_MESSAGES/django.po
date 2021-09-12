@@ -1253,7 +1253,7 @@ msgstr "500 - Serverfejl"
 msgid ""
 "You experienced something that should not happen. We will investigate it. "
 "Please do contact us if it seems very bad."
-msgstr Du har oplevet noget som ikke skulle kunne ske. Vi vil undersøge det. Kontakt os meget gerne, hvis du oplever dette. "
+msgstr "Du har oplevet noget som ikke skulle kunne ske. Vi vil undersøge det. Kontakt os meget gerne, hvis du oplever dette. "
 
 #: src/dukop/templates/base.html:44
 msgid "Log out"
