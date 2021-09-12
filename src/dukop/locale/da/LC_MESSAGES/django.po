@@ -2,6 +2,10 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-07 00:23+0200\n"
@@ -31,8 +35,14 @@ msgid "DukOp future events"
 msgstr "Fremtidige begivenheder på DukOp"
 
 #: src/dukop/apps/calendar/feeds.py:56
-msgid "More details: {}"
-msgstr "Flere detaljer: {}"
+msgid ""
+"\n"
+"\n"
+"More details: {}"
+msgstr ""
+"\n"
+"\n"
+"Flere detaljer: {}"
 
 #: src/dukop/apps/calendar/feeds.py:136
 msgid "DukOp's next 30 events"
