@@ -94,7 +94,7 @@ class EventCreate(CreateView):
         self.times_form = forms.EventTimeFormSet(data=request.POST, prefix="times")
         self.links_form = forms.EventLinkFormSet(data=request.POST, prefix="links")
         self.recurrences_form = forms.EventRecurrenceFormSet(
-            data=request.POST, prefix="links"
+            data=request.POST, prefix="recurrences"
         )
         form = self.get_form()
         if (
@@ -149,6 +149,7 @@ class EventCreate(CreateView):
                     recurrence.event = event
                     recurrence.event_time_anchor = event.times.all().first()
                     recurrence.save()
+                    recurrence.sync()
 
         return redirect("calendar:event_create_success", pk=event.pk)
 
@@ -164,6 +165,11 @@ class EventCreate(CreateView):
         c["recurrences"] = self.recurrences_form
         c["forms_had_errors"] = getattr(self, "forms_had_errors", False)
         return c
+
+    def get_initial(self):
+        initial = super().initial
+        initial["spheres"] = models.Sphere.objects.filter(id=self.request.sphere.id)
+        return initial
 
 
 class EventListView(ListView):

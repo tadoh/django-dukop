@@ -81,14 +81,16 @@
                     {{ time.end.errors }}
                 {% endif %}
                 {% if not forloop.last %}
+                <div class="formset-add-remove-buttons">
                 <button type="button" class="formset-add-link">
-                    {% trans "Add timeslot" %}
+                    {% trans "Add one more..." %}
                 </button>
                 {% endif %}
                 {% if not forloop.first %}
                 <button type="button" class="formset-remove-link">
                     {% trans "Remove timeslot" %}
                 </button>
+                </div>
                 {% endif %}
             </div>
           </td>
@@ -125,14 +127,16 @@
                 {% endif %}
 
                 {% if not forloop.last %}
+                <div class="formset-add-remove-buttons">
                 <button type="button" class="formset-add-link">
-                    {% trans "Add recurrence" %}
+                    {% trans "Add one more..." %}
                 </button>
                 {% endif %}
                 {% if not forloop.first %}
                 <button type="button" class="formset-remove-link">
                     {% trans "Remove recurrence" %}
                 </button>
+                </div>
                 {% endif %}
             </div>
           </td>
@@ -161,16 +165,20 @@
                     {{ image.is_cover.label_tag }}
                     {{ image.is_cover }}
                 </div>
+
                 {% if not forloop.last %}
+                <div class="formset-add-remove-buttons">
                 <button type="button" class="formset-add-link">
-                    {% trans "Add image" %}
+                    {% trans "Add one more..." %}
                 </button>
                 {% endif %}
                 {% if not forloop.first %}
                 <button type="button" class="formset-remove-link">
                     {% trans "Remove image" %}
                 </button>
+                </div>
                 {% endif %}
+
             </div>
           </td>
         </tr>
@@ -190,15 +198,18 @@
           <td>
             <div>
                 <div>{{ link.link }}</div>
+
                 {% if not forloop.last %}
+                <div class="formset-add-remove-buttons">
                 <button type="button" class="formset-add-link">
-                    {% trans "Add link" %}
+                    {% trans "Add one more..." %}
                 </button>
                 {% endif %}
                 {% if not forloop.first %}
                 <button type="button" class="formset-remove-link">
                     {% trans "Remove link" %}
                 </button>
+                </div>
                 {% endif %}
             </div>
           </td>

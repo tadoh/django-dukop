@@ -77,10 +77,17 @@ class EventRecurrenceForm(forms.ModelForm):
 
     interval_type = forms.ChoiceField(
         choices=[("", "----")] + models.EventRecurrence.RECURRENCE_TYPES,
-        required=False,
+        required=True,
     )
 
     end = forms.SplitDateTimeField(widget=SplitDateTimeWidget(), required=False)
+
+    def save(self, commit=True):
+        recurrence = super().save(commit=commit)
+        for field_name, __ in models.EventRecurrence.RECURRENCE_TYPES:
+            setattr(recurrence, field_name, False)
+        setattr(recurrence, self.cleaned_data["interval_type"], True)
+        return recurrence
 
     class Meta:
         model = models.EventRecurrence
