@@ -2,10 +2,6 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
-msgid ""
-msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-09-07 00:23+0200\n"
@@ -35,10 +31,7 @@ msgid "DukOp future events"
 msgstr "Fremtidige begivenheder på DukOp"
 
 #: src/dukop/apps/calendar/feeds.py:56
-msgid ""
-"\n"
-"\n"
-"More details: {}"
+msgid "More details: {}"
 msgstr "Flere detaljer: {}"
 
 #: src/dukop/apps/calendar/feeds.py:136
@@ -123,11 +116,9 @@ msgid "name"
 msgstr "navn"
 
 #: src/dukop/apps/calendar/models.py:201
-msgid ""
-"A special short version of the event description, leave blank to auto-"
+msgid "A special short version of the event description, leave blank to auto-"
 "generate. Text-only, no Markdown."
-msgstr ""
-"En kort version af event beskrivelsen. lad den være blank for at den bliver "
+msgstr "En kort version af event beskrivelsen. lad den være blank for at den bliver "
 "autogenereret. Kun ren tekst. "
 
 #: src/dukop/apps/calendar/models.py:206 src/dukop/apps/calendar/models.py:403
@@ -136,11 +127,9 @@ msgid "description"
 msgstr "beskrivelse"
 
 #: src/dukop/apps/calendar/models.py:208
-msgid ""
-"Enter details, which will be displayed on the event's own page. You can use "
+msgid "Enter details, which will be displayed on the event's own page. You can use "
 "Markdown."
-msgstr ""
-"Skriv detaljer som vil blive vist på begivenhedens egen side. Formatering af "
+msgstr "Skriv detaljer som vil blive vist på begivenhedens egen side. Formatering af "
 "teksten er mulig."
 
 #: src/dukop/apps/calendar/models.py:216
@@ -148,10 +137,8 @@ msgid "The part of a URL that is displayed in dukop.dk/event/<slug>/"
 msgstr "Den del af af URL der bliver vist på dukop.dk/sphere/<slug>/"
 
 #: src/dukop/apps/calendar/models.py:226
-msgid ""
-"A group may host an event and be displayed as the author of the event text."
-msgstr ""
-"En gruppe kan eje en begivenhed og blive vist som forfattere til en event "
+msgid "A group may host an event and be displayed as the author of the event text."
+msgstr "En gruppe kan eje en begivenhed og blive vist som forfattere til en event "
 "tekst."
 
 #: src/dukop/apps/calendar/models.py:237
@@ -228,12 +215,10 @@ msgid "automatic recurrence"
 msgstr "automatisk gentagelse"
 
 #: src/dukop/apps/calendar/models.py:371
-msgid ""
-"If true, this recurrence is currently maintained automatically and has not "
+msgid "If true, this recurrence is currently maintained automatically and has not "
 "been rescheduled. If the recurrence is edited, it may be changed "
 "automatically"
-msgstr ""
-"Hvis markeret, bliver denne gentagelse bibeholdt automatisk og er ikke "
+msgstr "Hvis markeret, bliver denne gentagelse bibeholdt automatisk og er ikke "
 "blevet manuelt ændret. Hvis gentagelsen er ændret, vil dette tidspunkt+dao "
 "ændres automatisk"
 
@@ -250,11 +235,9 @@ msgid "image"
 msgstr "billede"
 
 #: src/dukop/apps/calendar/models.py:420
-msgid ""
-"Allowed formats: JPEG, PNG, GIF. Please upload high resolution (>1000 pixels "
+msgid "Allowed formats: JPEG, PNG, GIF. Please upload high resolution (>1000 pixels "
 "wide)."
-msgstr ""
-"Tilladte formater: JPEG; PNG; GIF. Upload gerne i høj opløsning.(>1000 "
+msgstr "Tilladte formater: JPEG; PNG; GIF. Upload gerne i høj opløsning.(>1000 "
 "pixels bred). "
 
 #: src/dukop/apps/calendar/models.py:425 src/dukop/apps/calendar/models.py:463
@@ -272,11 +255,9 @@ msgid "Create event"
 msgstr "Opret begivenhed"
 
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:11
-msgid ""
-"There were errors. Please check below. If you submited images, you have to "
+msgid "There were errors. Please check below. If you submited images, you have to "
 "re-select them."
-msgstr ""
-"Der var en fejl. Tjek nedenfor. Du skal muligvis genvælge dine billeder"
+msgstr "Der var en fejl. Tjek nedenfor. Du skal muligvis genvælge dine billeder"
 
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:16
 msgid "Creating your first event?"
@@ -318,11 +299,9 @@ msgid "Links"
 msgstr "Links"
 
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:31
-msgid ""
-"After creating the event, it's possible to edit it. You can also create an "
+msgid "After creating the event, it's possible to edit it. You can also create an "
 "event and publish it later."
-msgstr ""
-"Det er muligt at redigere en begivenhed, efter du har oprettet det, du kan "
+msgstr "Det er muligt at redigere en begivenhed, efter du har oprettet det, du kan "
 "også oprette en begivenhed og offentlige gøre det senere"
 
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:52
@@ -330,11 +309,9 @@ msgid "Date and times"
 msgstr "Dato og tid"
 
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:53
-msgid ""
-"Most events just had a single start and finish time. But if your event spans "
+msgid "Most events just had a single start and finish time. But if your event spans "
 "several days, you can add additional start and finish times."
-msgstr ""
-"De fleste begivenheder har blot et start og slut tidspunt. Men kan du "
+msgstr "De fleste begivenheder har blot et start og slut tidspunt. Men kan du "
 "tilføje flere, hvis din begivenhed strækker sig over flere dage."
 
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:63
@@ -351,11 +328,9 @@ msgstr "Fjern tidsvindue"
 
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:98
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:135
-msgid ""
-"We really recommend that you add an illustration. Don't let your Facebook "
+msgid "We really recommend that you add an illustration. Don't let your Facebook "
 "event look better than your Duk Op event!"
-msgstr ""
-"Tilføj meget gerne et billede - lad ikke din facebook event, se bedre ud end "
+msgstr "Tilføj meget gerne et billede - lad ikke din facebook event, se bedre ud end "
 "din Duk Op begivenhed!"
 
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:103
@@ -437,15 +412,15 @@ msgid "Subscribing to feeds"
 msgstr "Tilmeld dig til feeds"
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:11
-msgid ""
-"You can automatically stay updated with events in DukOp by subscribing to "
+msgid "You can automatically stay updated with events in DukOp by subscribing to "
 "\"feeds\". These are data sources that can be added to your calendar by copy-"
 "pasting their URL into the Import function of your calendar."
-msgstr ""
+msgstr "Du kan holde dig automatisk opdateret om events på DukOp ved tilmelde dig "
+"\"feeds\". De er datakilder som kan blive tilføjet til dine digitale kalender, ved at copy-"
+"paste" deres URL ind i import funktion i kalender."
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:19
-msgid ""
-"Feed URLs are found at the bottom of all pages and in calendar listings."
+msgid "Feed URLs are found at the bottom of all pages and in calendar listings."
 msgstr "Feed URLs kan findes i bunden af alle sider og kalender visninger"
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:23
@@ -841,11 +816,11 @@ msgstr ""
 
 #: src/dukop/apps/users/email.py:41
 msgid "Email successfully sent to {}"
-msgstr "Email blev sendt til"
+msgstr "Email blev sendt til {}"
 
 #: src/dukop/apps/users/email.py:47
 msgid "Not sent, something wrong with the mail server."
-msgstr "Emailen blev ikke sendt, noget gik galt med mailserveren"
+msgstr "Emailen blev ikke sendt, noget gik galt med mailserveren."
 
 #: src/dukop/apps/users/email.py:54
 msgid "Your new account for Dukop"
@@ -930,11 +905,9 @@ msgid "Do not allow others to add events to this group"
 msgstr "Tillad ikke at andre kan tilføje begivenheder til denne gruppe"
 
 #: src/dukop/apps/users/models.py:120
-msgid ""
-"Enter details, which will be displayed on the group's own page. You can use "
+msgid "Enter details, which will be displayed on the group's own page. You can use "
 "Markdown."
-msgstr ""
-"Skriv detaljer som vil blive vist på gruppens egen side. Du kan bruge "
+msgstr "Skriv detaljer som vil blive vist på gruppens egen side. Du kan bruge "
 "formatering. "
 
 #: src/dukop/apps/users/models.py:153
@@ -983,13 +956,12 @@ msgstr "Log ind med kodeord"
 
 #: src/dukop/apps/users/templates/users/login.html:33
 msgid "Don't have a login?"
-msgstr ""
+msgstr "Har du ikke et login?"
 
 #: src/dukop/apps/users/templates/users/login.html:35
-msgid ""
-"You need to register in order to login. You need access to the provided "
+msgid "You need to register in order to login. You need access to the provided "
 "email address to verify and use 1-time logins afterwards."
-msgstr ""
+msgstr "Du skal registere for at kunne logge in. Du skal bruge en email, som du har adgang til for senere at kunne verficere og bruge et 1-gangs loing bagefter."
 
 #: src/dukop/apps/users/templates/users/login_password.html:7
 msgid "Login with a password"
@@ -1031,8 +1003,7 @@ msgstr ""
 
 #: src/dukop/apps/users/templates/users/mail/admin_event_created.txt:3
 #, python-format
-msgid ""
-"A new event has been created!\n"
+msgid "A new event has been created!\n"
 "\n"
 "Title: %(name)s\n"
 "Published: %(published)s\n"
@@ -1250,7 +1221,7 @@ msgstr ""
 
 #: src/dukop/apps/users/views.py:57
 msgid "Please log in before proceeding"
-msgstr ""
+msgstr "Vær venlig at logge ind før du fortsætter"
 
 #: src/dukop/settings/base.py:106
 msgid "English"
@@ -1262,17 +1233,17 @@ msgstr "Dansk"
 
 #: src/dukop/templates/404.html:4
 msgid "404 - File not found"
-msgstr ""
+msgstr "404 - File not found"
 
 #: src/dukop/templates/404.html:6
 msgid "You might have clicked an event that expired or got completely deleted."
-msgstr ""
+msgstr "Du måske klikket på et link til et event, som er udløbet eller blevet slettet"
 
 #: src/dukop/templates/404.html:8
 msgid ""
 "In September 2021, we changed our website, so if you have followed an old "
 "URL, that can also be the issue"
-msgstr ""
+msgstr "I september 2021 fik vi et nyt website, så måske du har fulgt en gammel URL. Måske eventet findes her på siden. Gå til forsiden og tjek efter, ved at klikke på logoet oven for. "
 
 #: src/dukop/templates/500.html:4
 msgid "500 - Server error"
@@ -1282,7 +1253,7 @@ msgstr "500 - Serverfejl"
 msgid ""
 "You experienced something that should not happen. We will investigate it. "
 "Please do contact us if it seems very bad."
-msgstr ""
+msgstr Du har oplevet noget som ikke skulle kunne ske. Vi vil undersøge det. Kontakt os meget gerne, hvis du oplever dette. "
 
 #: src/dukop/templates/base.html:44
 msgid "Log out"
