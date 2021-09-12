@@ -417,7 +417,7 @@ msgid "You can automatically stay updated with events in DukOp by subscribing to
 "pasting their URL into the Import function of your calendar."
 msgstr "Du kan holde dig automatisk opdateret om events på DukOp ved tilmelde dig "
 "\"feeds\". De er datakilder som kan blive tilføjet til dine digitale kalender, ved at copy-"
-"paste" deres URL ind i import funktion i kalender."
+"paste deres URL ind i import funktion i kalender."
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:19
 msgid "Feed URLs are found at the bottom of all pages and in calendar listings."
