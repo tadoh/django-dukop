@@ -7,6 +7,7 @@ from . import models
 class GroupAdmin(admin.ModelAdmin):
     list_display = ("name", "event_count")
     list_filter = ("is_restricted",)
+    search_fields = ("name",)
 
     def event_count(self, instance):
         return instance.events.all().count()
