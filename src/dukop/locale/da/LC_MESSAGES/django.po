@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-13 20:47+0200\n"
+"POT-Creation-Date: 2021-09-13 20:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,12 +27,12 @@ msgid "time(s)"
 msgstr "gang(e)"
 
 #: src/dukop/apps/calendar/feeds.py:39
-msgid "DukOp calendar for {}"
-msgstr "DukOp kalender for {}"
+msgid "Duk Op calendar for {}"
+msgstr "Duk Op kalender for {}"
 
 #: src/dukop/apps/calendar/feeds.py:41
-msgid "DukOp future events"
-msgstr "Fremtidige begivenheder på DukOp"
+msgid "Duk Op future events"
+msgstr "Fremtidige begivenheder på Duk Op"
 
 #: src/dukop/apps/calendar/feeds.py:56
 msgid ""
@@ -45,12 +45,12 @@ msgstr ""
 "Flere detaljer: {}"
 
 #: src/dukop/apps/calendar/feeds.py:136
-msgid "DukOp's next 30 events"
-msgstr "DukOp's næste 30 begivenheder"
+msgid "Duk Op's next 30 events"
+msgstr "Duk Op næste 30 begivenheder"
 
 #: src/dukop/apps/calendar/feeds.py:142
-msgid "RSS feed of the latest events on DukOp"
-msgstr "RSS feed for de seneste begivenhder på DukOP"
+msgid "RSS feed of the latest events on Duk Op"
+msgstr "RSS feed for de seneste begivenhder på Duk Op"
 
 #: src/dukop/apps/calendar/forms.py:15
 msgid "Relevance"
@@ -62,11 +62,11 @@ msgstr "Vælg hvilken version af kalederen dette er relevent for"
 
 #: src/dukop/apps/calendar/forms.py:24
 msgid "Existing venue"
-msgstr ""
+msgstr "Eksisterende lokation"
 
 #: src/dukop/apps/calendar/forms.py:26
 msgid "Choose venues from an existing list, otherwise create a new one below"
-msgstr ""
+msgstr "Vælg en lokation fra eksisterende liste, ellers så opret et nyt sted nedenfor"
 
 #: src/dukop/apps/calendar/forms.py:44
 msgid ""
@@ -502,11 +502,11 @@ msgstr "Tilmeld dig til feeds"
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:11
 msgid ""
-"You can automatically stay updated with events in DukOp by subscribing to "
+"You can automatically stay updated with events in Duk Op by subscribing to "
 "\"feeds\". These are data sources that can be added to your calendar by copy-"
 "pasting their URL into the Import function of your calendar."
 msgstr ""
-"Du kan holde dig automatisk opdateret om events på DukOp ved tilmelde dig "
+"Du kan holde dig automatisk opdateret om events på Duk Op ved tilmelde dig "
 "\"feeds\". De er datakilder som kan blive tilføjet til dine digitale "
 "kalender, ved at copy-paste deres URL ind i import funktion i kalender."
 
@@ -517,10 +517,10 @@ msgstr "Feed URLs kan findes i bunden af alle sider og kalender visninger"
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:23
 msgid ""
-"By subscribing to feeds, you will see DukOp events directly in your calendar "
-"as a layer that can be switched on and off."
+"By subscribing to feeds, you will see Duk Op events directly in your "
+"calendar as a layer that can be switched on and off."
 msgstr ""
-"Ved at tilmelde dig et feed kommer du til at se DukOp begivenheder direkte i "
+"Ved at tilmelde dig et feed kommer du til at se Duk Op begivenheder direkte i "
 "din egen kalender."
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:30
@@ -538,10 +538,10 @@ msgstr "Vælg hvad du vil tilmelde dig"
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:40
 msgid ""
-"DukOp consists of different Spheres, Venues and Groups. You will be able to "
+"Duk Op consists of different Spheres, Venues and Groups. You will be able to "
 "subscribe to any of these, precisely how you want."
 msgstr ""
-"DukOp indeholder forskellige sfæres, steder og grupper. Du kan tilmelde til "
+"Duk Op indeholder forskellige sfæres, steder og grupper. Du kan tilmelde til "
 "alle disse, præcis på den måde du selv ønsker. "
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:46
@@ -620,12 +620,12 @@ msgstr "Det sker ikke ikke en skid i dag"
 
 #: src/dukop/apps/calendar/templates/calendar/index.html:102
 msgid "Browse more events..."
-msgstr ""
+msgstr "Vis flere begivenheder..."
 
 #: src/dukop/apps/calendar/utils.py:30
 #, python-brace-format
 msgid "{date} at {time}"
-msgstr "{date} kl. {tid}"
+msgstr "{date} kl. {time}"
 
 #: src/dukop/apps/calendar/utils.py:43
 #, python-brace-format
@@ -1268,7 +1268,7 @@ msgstr "Tak fordi du bruger vores side!"
 #: src/dukop/apps/users/templates/users/password_reset_email.html:12
 #, python-format
 msgid "The %(site_name)s team"
-msgstr "%(site_name) holdet"
+msgstr "%(site_name)s holdet"
 
 #: src/dukop/apps/users/templates/users/password_reset_form.html:4
 #: src/dukop/apps/users/templates/users/password_reset_form.html:8
@@ -1407,7 +1407,7 @@ msgstr "Kalender abonnement"
 
 #: src/dukop/templates/base.html:112
 msgid ""
-"You can subscribe to DukOp in for instance Google, iCal, Thunderbird and "
+"You can subscribe to Duk Op in for instance Google, iCal, Thunderbird and "
 "more. Copy this URL into your calendar's Import function (iCAL/ICS format)"
 msgstr ""
 "Duk kan abonnere på Duk Op i f.eks. Google, iCal, Thunderbird or mere. "
@@ -1420,24 +1420,3 @@ msgstr "Seneste nyt"
 #: src/dukop/templates/base.html:133
 msgid "No news is good news?"
 msgstr "Ingen nyheder"
-
-#~ msgid "Add timeslot"
-#~ msgstr "Tilføj tidsvindue"
-
-#~ msgid "Add image"
-#~ msgstr "Tilføj billede"
-
-#~ msgid "Add link"
-#~ msgstr "tilføl link"
-
-#~ msgid "Your new account for Dukop"
-#~ msgstr "Din nye DukOp konto"
-
-#~ msgid "Hello here is an account on Dukop"
-#~ msgstr "Her er en DukOp konto"
-
-#~ msgid "A new event has been created"
-#~ msgstr "En ny begivenhed er blevet oprettet"
-
-#~ msgid "Sign up here"
-#~ msgstr "Opret bruger her"
