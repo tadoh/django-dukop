@@ -36,9 +36,9 @@ class EventFeed(ICalFeed):
 
     def title(self, obj):
         if obj:
-            return _("DukOp calendar for {}".format(obj.name))
+            return _("Duk Op calendar for {}".format(obj.name))
         else:
-            return _("DukOp future events")
+            return _("Duk Op future events")
 
     def items(self, obj):
         event_times = models.EventTime.objects.all()
@@ -133,13 +133,13 @@ class RssFeed(Feed):
         return images
 
     def title(self):
-        return _("DukOp's next 30 events")
+        return _("Duk Op's next 30 events")
 
     def description(self, obj):
         """
         obj: Needs to be a Sphere object
         """
-        return _("RSS feed of the latest events on DukOp")
+        return _("RSS feed of the latest events on Duk Op")
 
     def items(self, obj):
         event_times = models.EventTime.objects.all()
