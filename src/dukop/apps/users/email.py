@@ -51,7 +51,7 @@ class BaseEmail(EmailMessage):
 class UserConfirm(BaseEmail):
 
     template = "users/mail/new_account_token_login.txt"
-    default_subject = _("Your new account for Dukop")
+    default_subject = _("Duk Op: New account")
 
     def __init__(self, *args, **kwargs):
         self.next = kwargs.pop("next", None)
@@ -66,7 +66,7 @@ class UserConfirm(BaseEmail):
 class UserToken(BaseEmail):
 
     template = "users/mail/token_login.txt"
-    default_subject = _("Hello here is an account on Dukop")
+    default_subject = _("Duk Op: 1-time login")
 
     def __init__(self, *args, **kwargs):
         self.next = kwargs.pop("next", None)
@@ -81,7 +81,7 @@ class UserToken(BaseEmail):
 class AdminEventCreated(BaseEmail):
 
     template = "users/mail/admin_event_created.txt"
-    default_subject = _("A new event has been created")
+    default_subject = _("Duk Op: New event")
 
     def __init__(self, *args, **kwargs):
         super().__init__(None, *args, **kwargs)
