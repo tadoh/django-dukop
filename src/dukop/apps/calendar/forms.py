@@ -1,6 +1,7 @@
 from django import forms
 from django.forms.formsets import formset_factory
 from django.utils.translation import gettext_lazy as _
+from dukop.apps.users.models import Group
 
 from . import models
 from .widgets import SplitDateTimeWidget
@@ -13,6 +14,17 @@ class EventForm(forms.ModelForm):
         queryset=models.Sphere.objects.all(),
         label=_("Relevance"),
         help_text=_("Select which versions of the calendar this is relevant for."),
+    )
+
+    host = forms.ModelChoiceField(
+        queryset=Group.objects.filter(deactivated=False, is_restricted=False)
+        .filter(events__published=True)
+        .distinct(),
+        required=False,
+        label=_("Existing venue"),
+        help_text=_(
+            "Choose venues from an existing list, otherwise create a new one below"
+        ),
     )
 
     class Meta:

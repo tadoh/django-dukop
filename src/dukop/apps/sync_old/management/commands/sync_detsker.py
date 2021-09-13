@@ -122,7 +122,6 @@ def create_group(old_event):
         city=old_event.location.town,
         description=old_event.location.description,
         link1=old_event.location.link,
-        is_restricted=True,
     )[0]
 
 
@@ -277,6 +276,9 @@ def import_event(event, import_base_dir, from_event_series=False):
 
     # Create a Group from the old Location
     group = create_group(event)
+
+    # Patch up some earlier bad sync'ing by setting this to False here.
+    group.is_restricted = False
 
     created = False
 
