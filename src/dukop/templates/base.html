@@ -9,7 +9,7 @@
 
     <meta property="og:url" content="https://www.dukop.dk/">
     <meta property="og:title" content="Duk dig ikke - Duk Op!">
-    <meta property="og:description" content="DukOp er vores fælles guide til, hvad der sker i København og omegn, hvad enten du leder efter demonstrationer, koncerter, fester, møder, folkekøkkener, havedage, workshops, kunst- og filmfremvisninger, mv..">
+    <meta property="og:description" content="Duk Op er vores fælles guide til, hvad der sker i København og omegn, hvad enten du leder efter demonstrationer, koncerter, fester, møder, folkekøkkener, havedage, workshops, kunst- og filmfremvisninger, mv..">
     <meta property="og:image" content="{% static 'img/social_media.jpg' %}">
     <meta property="og:site_name" content="Duk Op">
     <meta property="og:locale" content="da_DK">
@@ -17,7 +17,7 @@
     {% compress css %}
         <link rel="stylesheet" type="text/x-scss" href="{% static 'css/application.scss' %}">
     {% endcompress %}
-    <link rel="alternate" type="application/rss+xml" title="Upcoming 30 events on DukOp" href="{% feed_link 'calendar:feed_rss' %}" />
+    <link rel="alternate" type="application/rss+xml" title="Upcoming 30 events on Duk Op" href="{% feed_link 'calendar:feed_rss' %}" />
 
 </head>
 <body>
@@ -109,7 +109,7 @@
                     <div class="footer__news">
                         <h2 class="title title--footer">{% trans "Calendar subscription" %}</h2>
                         <p>
-                        {% trans "You can subscribe to DukOp in for instance Google, iCal, Thunderbird and more. Copy this URL into your calendar's Import function (iCAL/ICS format)" %}:<br>
+                        {% trans "You can subscribe to Duk Op in for instance Google, iCal, Thunderbird and more. Copy this URL into your calendar's Import function (iCAL/ICS format)" %}:<br>
                         <input type="text" value="{% feed_link 'calendar:feed_ical' %}" class="share-text-input feed-link-input">
                         </p>
                         <p>
