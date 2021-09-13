@@ -106,7 +106,7 @@ class Group(models.Model):
         max_length=255,
         verbose_name=_("name"),
     )
-    members = models.ManyToManyField(User, related_name="dukop_groups")
+    members = models.ManyToManyField(User, related_name="dukop_groups", blank=True)
 
     is_restricted = models.BooleanField(
         default=False,
