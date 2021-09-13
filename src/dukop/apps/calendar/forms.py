@@ -85,6 +85,27 @@ class EventLinkForm(forms.ModelForm):
         fields = ("link",)
 
 
+class EventRecurrenceForm(forms.ModelForm):
+
+    interval_type = forms.ChoiceField(
+        choices=[("", "----")] + models.EventRecurrence.RECURRENCE_TYPES,
+        required=True,
+    )
+
+    end = forms.SplitDateTimeField(widget=SplitDateTimeWidget(), required=False)
+
+    def save(self, commit=True):
+        recurrence = super().save(commit=commit)
+        for field_name, __ in models.EventRecurrence.RECURRENCE_TYPES:
+            setattr(recurrence, field_name, False)
+        setattr(recurrence, self.cleaned_data["interval_type"], True)
+        return recurrence
+
+    class Meta:
+        model = models.EventRecurrence
+        fields = ("end",)
+
+
 EventTimeFormSet = formset_factory(
     EventTimeForm,
     extra=5,
@@ -93,3 +114,4 @@ EventTimeFormSet = formset_factory(
 )
 EventImageFormSet = formset_factory(EventImageForm, extra=5, max_num=5)
 EventLinkFormSet = formset_factory(EventLinkForm, extra=5, max_num=5)
+EventRecurrenceFormSet = formset_factory(EventRecurrenceForm, extra=2, max_num=2)

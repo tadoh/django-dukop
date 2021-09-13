@@ -24,6 +24,11 @@ class EventLinkInlineAdmin(admin.TabularInline):
     model = models.EventLink
 
 
+class EventRecurrenceInlineAdmin(admin.TabularInline):
+    model = models.EventRecurrence
+    raw_id_fields = ("event_time_anchor",)
+
+
 @admin.register(models.Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = (
@@ -34,7 +39,13 @@ class EventAdmin(admin.ModelAdmin):
         "event_image",
     )
     list_filter = ("featured", "published", "is_cancelled", "times__start")
-    inlines = [EventTimeInline, EventImageInlineAdmin, EventLinkInlineAdmin]
+    raw_id_fields = ("host",)
+    inlines = [
+        EventTimeInline,
+        EventRecurrenceInlineAdmin,
+        EventImageInlineAdmin,
+        EventLinkInlineAdmin,
+    ]
     search_fields = (
         "name",
         "venue_name",
