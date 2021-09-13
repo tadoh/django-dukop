@@ -220,7 +220,7 @@ class Event(models.Model):
         "users.Group",
         null=True,
         blank=True,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         related_name="events",
         help_text=_(
             "A group may host an event and be displayed as the author of the event text."

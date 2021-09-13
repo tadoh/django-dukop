@@ -113,6 +113,11 @@ class Group(models.Model):
         help_text=_("Do not allow others to add events to this group"),
     )
 
+    deactivated = models.BooleanField(
+        default=False,
+        help_text=_("Do not show this group"),
+    )
+
     description = models.TextField(
         blank=True,
         verbose_name=_("description"),
@@ -151,6 +156,7 @@ class Group(models.Model):
 
     class Meta:
         verbose_name = _("Group")
+        ordering = ("name",)
 
     def __str__(self) -> str:
         """Use a useful string representation."""
