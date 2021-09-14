@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-13 20:52+0200\n"
+"POT-Creation-Date: 2021-09-15 00:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,7 +66,8 @@ msgstr "Eksisterende lokation"
 
 #: src/dukop/apps/calendar/forms.py:26
 msgid "Choose venues from an existing list, otherwise create a new one below"
-msgstr "Vælg en lokation fra eksisterende liste, ellers så opret et nyt sted nedenfor"
+msgstr ""
+"Vælg en lokation fra eksisterende liste, ellers så opret et nyt sted nedenfor"
 
 #: src/dukop/apps/calendar/forms.py:44
 msgid ""
@@ -520,8 +521,8 @@ msgid ""
 "By subscribing to feeds, you will see Duk Op events directly in your "
 "calendar as a layer that can be switched on and off."
 msgstr ""
-"Ved at tilmelde dig et feed kommer du til at se Duk Op begivenheder direkte i "
-"din egen kalender."
+"Ved at tilmelde dig et feed kommer du til at se Duk Op begivenheder direkte "
+"i din egen kalender."
 
 #: src/dukop/apps/calendar/templates/calendar/feeds/instructions.html:30
 msgid ""
