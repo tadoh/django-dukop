@@ -8,6 +8,21 @@ $(document).ready(function() {
 });
 
 
+$(document).ready(function () {
+
+    // Re-enable buttons, since on history.back() and such, the buttons will
+    // appear already disabled, which is undesirable in case of a failure
+    // during submission
+    $('.event__form button[type=submit]').attr("disabled", false);
+
+    $('.event__form').submit(function(){
+        $('.event__form button[type=submit]').attr("disabled", true);
+        $('.event__form button[type=submit]').text(gettext("Please wait..."));
+    });
+
+});
+
+
 // https://stackoverflow.com/a/54574537/405682
 var isSubmitting = false;
 
