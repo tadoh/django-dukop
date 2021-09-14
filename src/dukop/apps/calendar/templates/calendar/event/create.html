@@ -234,6 +234,7 @@
 
 
 {% addtoblock "js" %}
+    <script type="text/javascript" src="{% url "calendar:javascript-catalog" %}"></script>
     <script type="text/javascript" src="{% static 'calendar/js/create_event.js' %}"></script>
 {% endaddtoblock %}
 

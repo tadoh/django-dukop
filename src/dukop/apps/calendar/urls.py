@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.urls import path
 from django.urls import register_converter
+from django.views.i18n import JavaScriptCatalog
 
 from . import feeds
 from . import views
@@ -52,5 +53,10 @@ urlpatterns = [
         "sphere/<int:sphere_id>/events/",
         views.EventListView.as_view(),
         name="event_list",
+    ),
+    path(
+        "jsi18n/",
+        JavaScriptCatalog.as_view(packages=["dukop.apps.calendar"]),
+        name="javascript-catalog",
     ),
 ]

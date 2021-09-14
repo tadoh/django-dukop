@@ -110,7 +110,8 @@ EventTimeFormSet = formset_factory(
     EventTimeForm,
     extra=5,
     max_num=5,
-    validate_min=1,
+    min_num=1,
+    validate_min=True,
 )
 EventImageFormSet = formset_factory(EventImageForm, extra=5, max_num=5)
 EventLinkFormSet = formset_factory(EventLinkForm, extra=5, max_num=5)

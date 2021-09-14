@@ -9,9 +9,14 @@
     margin-bottom: 15px;
 }
 
-.message-error
+.message__error
 {
     background: #FCC;
+}
+
+ul.errorlist
+{
+    margin: 5px 0;
 }
 
 .card-messages {
