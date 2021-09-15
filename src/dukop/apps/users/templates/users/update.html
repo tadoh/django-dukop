@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load dukop_utils %}
+
+{% block dukop_title %}{% trans "Profile and events" %}{% endblock %}
+
+{% block content %}
+
+<h1>{% trans "Profile and events" %}</h1>
+
+<form method="post" action="{% url 'users:update' %}">
+{% csrf_token %}
+
+{% dukop_form form %}
+
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-8">
+        <input type="submit" value="{% trans "Update profile" %}">
+    </div>
+</div>
+
+</form>
+
+
+<h1>{% trans "Your events" %}</h1>
+
+<p>{% trans "Select an event from the list to update it." %}</p>
+
+{% endblock %}

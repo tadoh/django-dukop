@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import SuccessURLAllowedHostsMixin
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect
@@ -13,6 +14,7 @@ from django.utils.translation import gettext as _
 from django.views.generic.base import RedirectView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
+from django.views.generic.edit import UpdateView
 from ratelimit.decorators import ratelimit
 
 from . import email
@@ -244,3 +246,16 @@ class SignupConfirmRedirectView(RedirectView):
             redirect("users:confirmed")  # TODO
 
         redirect("users:confirm_nope")  # TODO
+
+
+class UserUpdate(UpdateView):
+
+    template_name = "users/update.html"
+    fields = ("nick",)
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        return models.User.objects.get(id=self.request.user.id)

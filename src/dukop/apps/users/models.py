@@ -45,7 +45,15 @@ class User(PermissionsMixin, AbstractBaseUser):
 
     objects = UserManager()
 
-    nick = models.CharField(max_length=60, null=True, blank=True)
+    nick = models.CharField(
+        max_length=60,
+        null=True,
+        blank=True,
+        verbose_name=_("Nickname"),
+        help_text=_(
+            "This name is displayed at events that you host or to other members of groups that you are in."
+        ),
+    )
     email = models.EmailField(
         unique=True,
         verbose_name=_("email"),
