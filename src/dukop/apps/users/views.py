@@ -251,11 +251,17 @@ class SignupConfirmRedirectView(RedirectView):
 class UserUpdate(UpdateView):
 
     template_name = "users/update.html"
-    fields = ("nick",)
+    form_class = forms.UpdateForm
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
-        return models.User.objects.get(id=self.request.user.id)
+        self.user = models.User.objects.get(id=self.request.user.id)
+        return self.user
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.user
+        return kwargs

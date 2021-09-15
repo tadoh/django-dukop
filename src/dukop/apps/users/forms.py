@@ -2,6 +2,7 @@ import random
 
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.translation import gettext_lazy as _
 
@@ -96,3 +97,9 @@ class SignupForm(forms.Form):
         ):
             return self.cleaned_data["no_bots"].lower()
         raise forms.ValidationError("Nah, you seem like a bot")
+
+
+class UpdateForm(SetPasswordForm, forms.ModelForm):
+    class Meta:
+        model = models.User
+        fields = ("nick",)
