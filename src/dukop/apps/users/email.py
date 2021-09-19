@@ -36,7 +36,7 @@ class BaseEmail(EmailMessage):
     def get_body(self):
         return loader.render_to_string(self.template, self.get_context_data())
 
-    def send_with_feedback(self, success_msg=None):
+    def send_with_feedback(self, success_msg=None, no_message=False):
         if not success_msg:
             success_msg = _("Email successfully sent to {}".format(", ".join(self.to)))
         try:

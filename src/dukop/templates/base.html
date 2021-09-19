@@ -41,7 +41,9 @@
 
                         {% if user.is_authenticated %}
                             <a class="header__link" href="{% url "calendar:event_create" %}">{% trans "Create event" %}</a>
-                            <a class="header__link" href="{% url "users:logout" %}">{% trans "Log out" %}</a>
+                            <a class="header__link header__link__small" href="{% url "calendar:event_dashboard" %}">{% trans "My events" %}</a>
+                            <a class="header__link header__link__small" href="{% url "users:update" %}">{% trans "Profile" %}</a>
+                            <a class="header__link header__link__small" href="{% url "users:logout" %}">{% trans "Log out" %}</a>
                         {% else %}
                             <a class="header__link" href="{% url "calendar:event_create" %}">{% trans "Create event" %}</a>
                             <a class="header__link" href="{% url "users:login" %}">{% trans "Log in" %}</a>

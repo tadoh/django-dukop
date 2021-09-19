@@ -1,0 +1,24 @@
+.card {
+    .table {
+        background: rgba(177, 196, 181,.2);
+        box-shadow: none;
+        border: 1px solid rgba(177, 196, 181,.5);;
+        border-collapse: collapse;
+
+        tr:nth-child(odd) td {
+          background-color: rgba(177, 196, 181,.2)
+        }
+        thead {
+          padding: 10px;
+          border-bottom: 1px solid #ddd;
+        }
+
+        td, th
+        {
+            border: 1px solid rgba(177, 196, 181,.5);
+            text-align: left;
+            padding: 5px 5px;
+        }
+
+    }
+}

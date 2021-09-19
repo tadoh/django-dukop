@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load dukop_utils %}
+
+{% block dukop_title %}{% trans "Profile and events" %}{% endblock %}
+
+{% block content %}
+
+<h1>{% trans "Your profile" %}</h1>
+
+<p>{% trans "Currently, you cannot change your email address. This function will arrive soon, together with much much more." %}</p>
+
+<form method="post" action="{% url 'users:update' %}">
+{% csrf_token %}
+
+{% dukop_form form %}
+
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-8">
+        <input type="submit" value="{% trans "Update profile" %}">
+    </div>
+</div>
+
+</form>
+
+{% endblock %}

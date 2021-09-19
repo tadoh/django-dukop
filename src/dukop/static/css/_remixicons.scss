@@ -1,0 +1,29 @@
+/*
+    this is our version of https://github.com/Remix-Design/remixicon
+    it's licensed under Apache
+
+    We just create one class per icon that we use, that way saving a lot of
+    bandwidth. All icons are already in the repo, so just add another class
+    as needed.
+*/
+
+$base-url: "/static/img/remixicons";
+
+.icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background-size: cover;
+    &__check-circle{
+        background-image: url($base-url + "/check-circle.svg");
+    }
+    &__circle{
+        background-image: url($base-url + "/circle.svg");
+    }
+    &__tool{
+        background-image: url($base-url + "/tool.svg");
+    }
+    &__x-circle{
+        background-image: url($base-url + "/x-circle.svg");
+    }
+}

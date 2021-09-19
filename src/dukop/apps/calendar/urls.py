@@ -26,6 +26,7 @@ app_name = "calendar"
 urlpatterns = [
     path("", views.index, name="index"),
     path("events/", views.EventListView.as_view(), name="event_list"),
+    path("events/dashboard/", views.EventDashboard.as_view(), name="event_dashboard"),
     path("event/<int:pk>/", views.EventDetailView.as_view(), name="event_detail"),
     path("event/create", views.EventCreate.as_view(), name="event_create"),
     path(

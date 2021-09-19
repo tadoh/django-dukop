@@ -2,3 +2,17 @@
 {
     margin-bottom: 10px;
 }
+
+input:not([type=checkbox]):not([type=radio]), select {
+    display: inline-block;
+    width: 90%;
+    padding: 5px;
+    font-size: 1.2em;
+    max-width: 300px;
+}
+textarea {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 1.5em;
+}

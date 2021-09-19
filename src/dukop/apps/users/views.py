@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import SuccessURLAllowedHostsMixin
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect
@@ -13,6 +14,7 @@ from django.utils.translation import gettext as _
 from django.views.generic.base import RedirectView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
+from django.views.generic.edit import UpdateView
 from ratelimit.decorators import ratelimit
 
 from . import email
@@ -65,6 +67,7 @@ class LoginView(FormView, SuccessURLAllowedHostsMixin):
         return c
 
     def form_valid(self, form):
+        messages.success(self.request, "Check your inbox")
         try:
             user = models.User.objects.get(email=form.cleaned_data["email"])
             user.set_token()
@@ -73,7 +76,8 @@ class LoginView(FormView, SuccessURLAllowedHostsMixin):
                 user=user,
                 next=self.request.POST.get(self.redirect_field_name, ""),
             )
-            mail.send_with_feedback(success_msg=_("Check your inbox"))
+            # Suppress output, users cannot know whether this went well or not
+            mail.send_with_feedback(no_message=True)
         except models.User.DoesNotExist:
             # The email did not exist, but we are not going to do anything differently because of this.
             pass
@@ -244,3 +248,22 @@ class SignupConfirmRedirectView(RedirectView):
             redirect("users:confirmed")  # TODO
 
         redirect("users:confirm_nope")  # TODO
+
+
+class UserUpdate(UpdateView):
+
+    template_name = "users/update.html"
+    form_class = forms.UpdateForm
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        self.user = models.User.objects.get(id=self.request.user.id)
+        return self.user
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.user
+        return kwargs

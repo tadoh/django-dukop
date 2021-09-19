@@ -36,19 +36,6 @@
   td {
     padding: 5px 0;
   }
-  input:not([type=checkbox]):not([type=radio]), select {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    font-size: 1.5em;
-    max-width: 300px;
-  }
-  textarea {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    font-size: 1.5em;
-  }
   input#id_name {
     max-width: none;
   }
