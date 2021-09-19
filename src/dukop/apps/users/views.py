@@ -67,6 +67,7 @@ class LoginView(FormView, SuccessURLAllowedHostsMixin):
         return c
 
     def form_valid(self, form):
+        messages.success(self.request, "Check your inbox")
         try:
             user = models.User.objects.get(email=form.cleaned_data["email"])
             user.set_token()
@@ -75,7 +76,8 @@ class LoginView(FormView, SuccessURLAllowedHostsMixin):
                 user=user,
                 next=self.request.POST.get(self.redirect_field_name, ""),
             )
-            mail.send_with_feedback(success_msg=_("Check your inbox"))
+            # Suppress output, users cannot know whether this went well or not
+            mail.send_with_feedback(no_message=True)
         except models.User.DoesNotExist:
             # The email did not exist, but we are not going to do anything differently because of this.
             pass

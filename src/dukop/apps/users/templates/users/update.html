@@ -6,7 +6,9 @@
 
 {% block content %}
 
-<h1>{% trans "Profile and events" %}</h1>
+<h1>{% trans "Your profile" %}</h1>
+
+<p>{% trans "Currently, you cannot change your email address. This function will arrive soon, together with much much more." %}</p>
 
 <form method="post" action="{% url 'users:update' %}">
 {% csrf_token %}
@@ -21,10 +23,5 @@
 </div>
 
 </form>
-
-
-<h1>{% trans "Your events" %}</h1>
-
-<p>{% trans "Select an event from the list to update it." %}</p>
 
 {% endblock %}

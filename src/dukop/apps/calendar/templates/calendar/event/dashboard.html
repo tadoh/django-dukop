@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load i18n sekizai_tags static %}
+{% load calendar_tags sorl_thumbnail %}
+{% load l10n %}
+
+{% block dukop_title %}{% trans "Event list" %}{% endblock %}
+
+
+{% block content %}
+
+  <h1>
+    {% trans "Your events" %}
+  </h1>
+
+  <p>
+    {% trans "Below is the list of events that you have created or which a group you're in has created." %}
+  </p>
+
+  <table class="table">
+
+    <thead>
+      <tr>
+        <th>{% trans "Name" %}</th>
+        <th>{% trans "Image" %}</th>
+        <th>{% trans "Dates" %}</th>
+        <th>{% trans "Venue" %}</th>
+        <th>{% trans "Published" %}</th>
+        <th>{% trans "" %}</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for event in events %}
+      <tr>
+        <td><a href="">{{ event.name }}</a></td>
+        <td>
+        </td>
+        <td>
+            {% for time in event.times.all %}
+                {% if time.start %}
+                {{ time.start|dukop_interval:time.end }}
+                {% else %}
+                -
+                {% endif %}
+            {% empty %}
+                {% trans "No scheduled times" %}
+            {% endfor %}
+        </td>
+        <td>{{ event.venue|default:"Unspecified" }}</td>
+        <td>
+            {% if event.published %}
+                <div class="icon icon__check-circle"></div>
+            {% else %}
+                <div class="icon icon__circle"></div>
+            {% endif %}
+
+        </td>
+        <td>
+            <a href="" title="Edit">Edit <div class="icon icon__tool"></div></a>
+            <a href="" title="Delete">Delete <div class="icon icon__x-circle"></div></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+
+  <tbody>
+  </table>
+
+{% endblock %}

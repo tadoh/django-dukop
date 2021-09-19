@@ -100,6 +100,11 @@ class SignupForm(forms.Form):
 
 
 class UpdateForm(SetPasswordForm, forms.ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(user, *args, **kwargs)
+        self.fields["new_password1"].required = False
+        self.fields["new_password2"].required = False
+
     class Meta:
         model = models.User
         fields = ("nick",)

@@ -112,7 +112,8 @@ class EventCreate(CreateView):
     def form_valid(self, form):  # noqa: max-complexity=13
         self.object = form.save()
         event = self.object
-
+        event.owner_user = self.request.user
+        event.save()
         for form in self.images_form:
             if form.is_valid() and form.cleaned_data.get("image"):
                 if form.cleaned_data.get("DELETE") and form.instance.pk:
@@ -230,6 +231,30 @@ class EventListView(ListView):
         c["pivot_date_previous"] = self.pivot_date - timedelta(days=7)
         c["sphere"] = self.sphere
         return c
+
+
+class EventDashboard(ListView):
+    """
+    This lists all Event objects -- BUT! Notice that the listing is happening
+    via the EventTime relation. We are only ever interested in listing events
+    from their occurrence in time, past present or future. The essential feature
+    of the list is to be chronological.
+    """
+
+    template_name = "calendar/event/dashboard.html"
+    model = models.Event
+    context_object_name = "events"
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        qs = DetailView.get_queryset(self)
+        qs = qs.filter(
+            Q(owner_user=self.request.user) | Q(owner_group__members=self.request.user)
+        ).distinct()
+        return qs
 
 
 def set_sphere_session(request, pk):
