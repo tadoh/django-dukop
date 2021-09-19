@@ -60,6 +60,12 @@
             <a href="" title="Delete">Delete <div class="icon icon__x-circle"></div></a>
         </td>
       </tr>
+      {% empty %}
+
+      <tr>
+        <td colspan="100"><em>{% trans "No events found" %}</em></td>
+      </tr>
+
       {% endfor %}
     </tbody>
 
