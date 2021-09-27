@@ -47,6 +47,7 @@
         <tr class="formset--element {% if not time.errors and not forloop.first %}hide{% endif %}">
           <th>{% trans "Time slot" %} {{ forloop.counter }}:</th>
           <td>
+            {{ time.id }}
             <div>
                 <div>
                     {{ time.start.label_tag }} *Required<br>
@@ -86,11 +87,17 @@
         {% trans "If you want your event to recur automatically with an interval, you can set it here instead of adding individual timeslots manually." %}
       </p>
       {{ recurrences.management_form }}
+      {% if recurrences.non_form_errors %}
+      <div class="message message__error">
+        {{ recurrences.non_form_errors }}
+      </div>
+      {% endif %}
       <table>
         {% for recurrence in recurrences %}
         <tr class="formset--element {% if not recurrence.errors and not forloop.first %}hide{% endif %}">
           <th>{% trans "Interval" %} {{ forloop.counter }}:</th>
           <td>
+            {{ recurrence.id }}
             <div>
                 <div>
                 {{ recurrence.interval_type.label_tag }}<br>
@@ -131,11 +138,17 @@
         {% trans "We really recommend that you add an illustration. Don't let your Facebook event look better than your Duk Op event!" %}
       </p>
       {{ images.management_form }}
+      {% if images.non_form_errors %}
+      <div class="message message__error">
+        {{ images.non_form_errors }}
+      </div>
+      {% endif %}
       <table>
         {% for image in images %}
         <tr class="formset--element {% if not image.errors and not forloop.first %}hide{% endif %}">
           <th>{% trans "Image" %} {{ forloop.counter }}:</th>
           <td>
+            {{ image.id }}
             <div>
                 <div>
                     {{ image.image }}
@@ -147,6 +160,9 @@
                     {{ image.is_cover.label_tag }}
                     {{ image.is_cover }}
                 </div>
+                {% if image.is_cover.errors %}
+                    {{ image.is_cover.errors }}
+                {% endif %}
 
                 {% if not forloop.last %}
                 <div class="formset-add-remove-buttons">
@@ -173,13 +189,22 @@
         {% trans "We really recommend that you add an illustration. Don't let your Facebook event look better than your Duk Op event!" %}
       </p>
       {{ links.management_form }}
+      {% if links.non_form_errors %}
+      <div class="message message__error">
+        {{ links.non_form_errors }}
+      </div>
+      {% endif %}
       <table>
         {% for link in links %}
         <tr class="formset--element {% if not link.errors and not forloop.first %}hide{% endif %}">
           <th>{% trans "Link" %} {{ forloop.counter }}:</th>
           <td>
+            {{ link.id }}
             <div>
                 <div>{{ link.link }}</div>
+                {% if link.link.errors %}
+                    {{ link.link.errors }}
+                {% endif %}
 
                 {% if not forloop.last %}
                 <div class="formset-add-remove-buttons">

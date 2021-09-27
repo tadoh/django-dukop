@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
@@ -9,6 +10,7 @@ from django.shortcuts import render
 from django.urls.base import reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
+from django.utils.translation import gettext as _
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
@@ -68,11 +70,9 @@ class EventProcessFormMixin:
         self.images_form = forms.EventImageFormSet(
             prefix="images", instance=self.object
         )
-        self.times_form = forms.EventTimeFormSet(prefix="times", instance=self.object)
-        self.links_form = forms.EventLinkFormSet(prefix="links", instance=self.object)
-        self.recurrences_form = forms.EventRecurrenceFormSet(
-            prefix="recurrences", instance=self.object
-        )
+        self.times_form = forms.EventTimeFormSet(instance=self.object)
+        self.links_form = forms.EventLinkFormSet(instance=self.object)
+        self.recurrences_form = forms.EventRecurrenceFormSet(instance=self.object)
         return self.render_to_response(self.get_context_data())
 
     @method_decorator(ratelimit(key="ip", rate="10/d", method="POST"))
@@ -85,17 +85,16 @@ class EventProcessFormMixin:
         self.images_form = forms.EventImageFormSet(
             data=request.POST,
             files=request.FILES,
-            prefix="images",
             instance=self.object,
         )
         self.times_form = forms.EventTimeFormSet(
-            data=request.POST, prefix="times", instance=self.object
+            data=request.POST, instance=self.object
         )
         self.links_form = forms.EventLinkFormSet(
-            data=request.POST, prefix="links", instance=self.object
+            data=request.POST, instance=self.object
         )
         self.recurrences_form = forms.EventRecurrenceFormSet(
-            data=request.POST, prefix="recurrences", instance=self.object
+            data=request.POST, instance=self.object
         )
         form = self.get_form()
         if (
@@ -113,7 +112,8 @@ class EventProcessFormMixin:
     def form_valid(self, form):  # noqa: max-complexity=13
         self.object = form.save()
         event = self.object
-        event.owner_user = self.request.user
+        if not event.owner_user:
+            event.owner_user = self.request.user
         event.save()
         for form in self.images_form:
             if form.is_valid() and form.cleaned_data.get("image"):
@@ -153,7 +153,7 @@ class EventProcessFormMixin:
                     recurrence.save()
                     recurrence.sync()
 
-        return redirect("calendar:event_create_success", pk=event.pk)
+        return self.get_success_url()
 
     def form_invalid(self, form):
         self.forms_had_errors = True
@@ -180,6 +180,9 @@ class EventCreateView(EventProcessFormMixin, CreateView):
     model = models.Event
     form_class = forms.EventForm
 
+    def get_success_url(self):
+        return redirect("calendar:event_create_success", pk=self.object.pk)
+
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         self.object = None
@@ -196,6 +199,13 @@ class EventUpdateView(EventProcessFormMixin, UpdateView):
     def dispatch(self, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(*args, **kwargs)
+
+    def get_success_url(self):
+        messages.success(
+            self.request,
+            _("Event '{event_name}' was updated").format(event_name=self.object.name),
+        )
+        return redirect("calendar:event_dashboard")
 
     def get_queryset(self):
         qs = DetailView.get_queryset(self)

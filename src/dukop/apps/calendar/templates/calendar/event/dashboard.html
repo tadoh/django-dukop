@@ -46,7 +46,7 @@
                 {% trans "No scheduled times" %}
             {% endfor %}
         </td>
-        <td>{{ event.venue|default:"Unspecified" }}</td>
+        <td>{{ event.venue }}</td>
         <td>
             {% if event.published %}
                 <div class="icon icon__check-circle"></div>
