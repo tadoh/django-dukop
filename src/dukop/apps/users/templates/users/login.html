@@ -6,9 +6,9 @@
 
 {% block content %}
 
-<h1>{% trans "Log in" %}</h1>
+<h1>{% trans "Returning user login" context "meant about an existing user, a user that already has an account" %}</h1>
 
-<p>{% trans "You will only have a password if you choose to have one after signing up." %}</p>
+<p>{% trans "If you already registered an email (below), enter it here and we will send you a 1-time pass via email." %}</p>
 
 <form method="post" action="{% url 'users:login' %}">
 {% csrf_token %}
@@ -26,11 +26,12 @@
 <input type="hidden" name="next" value="{{ next }}">
 </form>
 
+<h1>{% trans "New user registration" %}</h1>
 
-<h1>{% trans "Log in with password" %}</h1>
+<p>{% trans "You need to register in order to login. You need access to the provided email address to verify and use 1-time logins afterwards." %}
 
-<form method="post" action="{% url 'users:login_password' %}">
-{% dukop_form password_form %}
+<form method="post" action="{% url 'users:signup' %}?next={{ next }}">
+{% dukop_form signup_form %}
 
 <div class="row">
     <div class="col-md-4"></div>
@@ -42,12 +43,13 @@
 
 </form>
 
-<h1>{% trans "Don't have a login?" %}</h1>
 
-<p>{% trans "You need to register in order to login. You need access to the provided email address to verify and use 1-time logins afterwards." %}
+<h1>{% trans "Log in with password" %}</h1>
 
-<form method="post" action="{% url 'users:signup' %}?next={{ next }}">
-{% dukop_form signup_form %}
+<p>{% trans "You can log in with a password if you have defined one. Otherwise, use the 1-time login above." %}</p>
+
+<form method="post" action="{% url 'users:login_password' %}">
+{% dukop_form password_form %}
 
 <div class="row">
     <div class="col-md-4"></div>
