@@ -12,6 +12,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
+from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from ratelimit.decorators import ratelimit
 
@@ -61,23 +62,17 @@ class EventCreateSuccess(EventDetailView):
     template_name = "calendar/event/create_success.html"
 
 
-class EventCreate(CreateView):
-
-    template_name = "calendar/event/create.html"
-    model = models.Event
-    form_class = forms.EventForm
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-
+class EventProcessFormMixin:
     def get(self, request, *args, **kwargs):
         """Handle GET requests: instantiate a blank version of the form."""
-        self.object = None
-        self.images_form = forms.EventImageFormSet(prefix="images")
-        self.times_form = forms.EventTimeFormSet(prefix="times")
-        self.links_form = forms.EventLinkFormSet(prefix="links")
-        self.recurrences_form = forms.EventRecurrenceFormSet(prefix="recurrences")
+        self.images_form = forms.EventImageFormSet(
+            prefix="images", instance=self.object
+        )
+        self.times_form = forms.EventTimeFormSet(prefix="times", instance=self.object)
+        self.links_form = forms.EventLinkFormSet(prefix="links", instance=self.object)
+        self.recurrences_form = forms.EventRecurrenceFormSet(
+            prefix="recurrences", instance=self.object
+        )
         return self.render_to_response(self.get_context_data())
 
     @method_decorator(ratelimit(key="ip", rate="10/d", method="POST"))
@@ -87,14 +82,20 @@ class EventCreate(CreateView):
         Handle POST requests: instantiate a form instance with the passed
         POST variables and then check if it's valid.
         """
-        self.object = None
         self.images_form = forms.EventImageFormSet(
-            data=request.POST, files=request.FILES, prefix="images"
+            data=request.POST,
+            files=request.FILES,
+            prefix="images",
+            instance=self.object,
         )
-        self.times_form = forms.EventTimeFormSet(data=request.POST, prefix="times")
-        self.links_form = forms.EventLinkFormSet(data=request.POST, prefix="links")
+        self.times_form = forms.EventTimeFormSet(
+            data=request.POST, prefix="times", instance=self.object
+        )
+        self.links_form = forms.EventLinkFormSet(
+            data=request.POST, prefix="links", instance=self.object
+        )
         self.recurrences_form = forms.EventRecurrenceFormSet(
-            data=request.POST, prefix="recurrences"
+            data=request.POST, prefix="recurrences", instance=self.object
         )
         form = self.get_form()
         if (
@@ -156,10 +157,10 @@ class EventCreate(CreateView):
 
     def form_invalid(self, form):
         self.forms_had_errors = True
-        return CreateView.form_invalid(self, form)
+        return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
-        c = CreateView.get_context_data(self, **kwargs)
+        c = super().get_context_data(**kwargs)
         c["times"] = self.times_form
         c["images"] = self.images_form
         c["links"] = self.links_form
@@ -171,6 +172,37 @@ class EventCreate(CreateView):
         initial = super().initial
         initial["spheres"] = models.Sphere.objects.filter(id=self.request.sphere.id)
         return initial
+
+
+class EventCreateView(EventProcessFormMixin, CreateView):
+
+    template_name = "calendar/event/create.html"
+    model = models.Event
+    form_class = forms.EventForm
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        self.object = None
+        return super().dispatch(*args, **kwargs)
+
+
+class EventUpdateView(EventProcessFormMixin, UpdateView):
+
+    template_name = "calendar/event/update.html"
+    model = models.Event
+    form_class = forms.EventForm
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(*args, **kwargs)
+
+    def get_queryset(self):
+        qs = DetailView.get_queryset(self)
+        qs = qs.filter(
+            Q(owner_user=self.request.user) | Q(owner_group__members=self.request.user)
+        ).distinct()
+        return qs
 
 
 class EventListView(ListView):

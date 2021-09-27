@@ -1,5 +1,5 @@
 from django import forms
-from django.forms.formsets import formset_factory
+from django.forms.models import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
 from dukop.apps.users.models import Group
 
@@ -106,13 +106,21 @@ class EventRecurrenceForm(forms.ModelForm):
         fields = ("end",)
 
 
-EventTimeFormSet = formset_factory(
+EventTimeFormSet = inlineformset_factory(
+    models.Event,
+    models.EventTime,
     EventTimeForm,
     extra=5,
     max_num=5,
     min_num=1,
     validate_min=True,
 )
-EventImageFormSet = formset_factory(EventImageForm, extra=5, max_num=5)
-EventLinkFormSet = formset_factory(EventLinkForm, extra=5, max_num=5)
-EventRecurrenceFormSet = formset_factory(EventRecurrenceForm, extra=2, max_num=2)
+EventImageFormSet = inlineformset_factory(
+    models.Event, models.EventImage, EventImageForm, extra=5, max_num=5
+)
+EventLinkFormSet = inlineformset_factory(
+    models.Event, models.EventLink, EventLinkForm, extra=5, max_num=5
+)
+EventRecurrenceFormSet = inlineformset_factory(
+    models.Event, models.EventRecurrence, EventRecurrenceForm, extra=2, max_num=2
+)
