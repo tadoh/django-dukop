@@ -46,7 +46,7 @@
                 {% trans "No scheduled times" %}
             {% endfor %}
         </td>
-        <td>{{ event.venue|default:"Unspecified" }}</td>
+        <td>{{ event.venue }}</td>
         <td>
             {% if event.published %}
                 <div class="icon icon__check-circle"></div>
@@ -56,10 +56,16 @@
 
         </td>
         <td>
-            <a href="" title="Edit">Edit <div class="icon icon__tool"></div></a>
+            <a href="{% url "calendar:event_update" pk=event.pk %}" title="Edit">Edit <div class="icon icon__tool"></div></a>
             <a href="" title="Delete">Delete <div class="icon icon__x-circle"></div></a>
         </td>
       </tr>
+      {% empty %}
+
+      <tr>
+        <td colspan="100"><em>{% trans "No events found" %}</em></td>
+      </tr>
+
       {% endfor %}
     </tbody>
 

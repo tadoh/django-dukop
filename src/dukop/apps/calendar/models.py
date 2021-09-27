@@ -326,6 +326,14 @@ class Event(models.Model):
             return self.owner_user.get_display_name()
         return _("Unspecified host")
 
+    @property
+    def venue(self):
+        if self.host:
+            return self.host.name
+        elif self.venue_name:
+            return self.venue_name
+        return _("Unspecified")
+
 
 class EventTime(models.Model):
     """
