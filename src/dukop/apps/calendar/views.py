@@ -117,41 +117,29 @@ class EventProcessFormMixin:
         event.save()
         for form in self.images_form:
             if form.is_valid() and form.cleaned_data.get("image"):
-                if form.cleaned_data.get("DELETE") and form.instance.pk:
-                    pass
-                else:
-                    image = form.save(commit=False)
-                    image.event = event
-                    image.save()
+                form.save()
+                for obj in form.deleted_objects:
+                    obj.delete()
 
         for form in self.times_form:
             if form.is_valid() and form.has_changed():
-                if form.cleaned_data.get("DELETE") and form.instance.pk:
-                    pass
-                else:
-                    times = form.save(commit=False)
-                    times.event = event
-                    times.save()
+                form.save()
 
         for form in self.links_form:
             if form.is_valid() and form.has_changed():
-                if form.cleaned_data.get("DELETE") and form.instance.pk:
-                    pass
-                else:
-                    link = form.save(commit=False)
-                    link.event = event
-                    link.save()
+                form.save()
+                for obj in form.deleted_objects:
+                    obj.delete()
 
         for form in self.recurrences_form:
             if form.is_valid() and form.has_changed():
-                if form.cleaned_data.get("DELETE") and form.instance.pk:
-                    pass
-                else:
-                    recurrence = form.save(commit=False)
-                    recurrence.event = event
-                    recurrence.event_time_anchor = event.times.all().first()
-                    recurrence.save()
-                    recurrence.sync()
+                recurrence = form.save(commit=False)
+                recurrence.event = event
+                recurrence.event_time_anchor = event.times.all().first()
+                recurrence.save()
+                recurrence.sync()
+                for obj in form.deleted_objects:
+                    obj.delete()
 
         return self.get_success_url()
 

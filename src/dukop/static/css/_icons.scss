@@ -13,12 +13,20 @@ $base-url: "/static/img/remixicons";
     width: 24px;
     height: 24px;
     display: inline-block;
+    vertical-align: middle;
+    margin: 2px;
     background-size: cover;
+    &__cancel{
+        background-image: url($base-url + "/cloud-drizzle.svg");
+    }
     &__check-circle{
         background-image: url($base-url + "/check-circle.svg");
     }
     &__circle{
         background-image: url($base-url + "/circle.svg");
+    }
+    &__delete{
+        background-image: url($base-url + "/delete.svg");
     }
     &__tool{
         background-image: url($base-url + "/tool.svg");
@@ -26,4 +34,9 @@ $base-url: "/static/img/remixicons";
     &__x-circle{
         background-image: url($base-url + "/x-circle.svg");
     }
+}
+
+.button .icon {
+    margin-left: 5px;
+    margin-right: 0;
 }

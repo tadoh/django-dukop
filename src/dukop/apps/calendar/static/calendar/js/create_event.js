@@ -4,6 +4,7 @@ $(document).ready(function() {
     });
     $('.formset-remove-link').click(function() {
         $(this).parents(".formset--element").first().hide('fast');
+        $(this).parents(".formset--element").find("input[name=*DELETE]").prop('checked', true);
     });
 });
 

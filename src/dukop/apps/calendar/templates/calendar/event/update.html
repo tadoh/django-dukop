@@ -13,6 +13,8 @@
   {% endif %}
   <h1 class="card__title">{% trans "Update:" %} {{ event.name }}</h1>
 
+    <p>{% trans "On this page, you can update everything about your event. Even the date. Or cancel it." %}</p>
+
     <form action="" method="POST" class="event__form" enctype="multipart/form-data">
       {% csrf_token %}
       <h2>{% trans "Basic details" %}</h2>
@@ -26,6 +28,9 @@
           <td>
             {{ field }}
             {% if field.help_text %}{{ field.help_text }}{% endif %}
+            {% if field.errors %}
+                {{ field.errors }}
+            {% endif %}
           </td>
         </tr>
         {% endfor %}
@@ -42,147 +47,175 @@
         {{ times.non_form_errors }}
       </div>
       {% endif %}
+
+    {% for time in times %}
+
+    <div class="formset--element {% if not time.errors and not forloop.first %}hide{% endif %}">
+
+    {{ time.id }}
       <table>
-        {% for time in times %}
-        <tr class="formset--element {% if not time.errors and not forloop.first %}hide{% endif %}">
-          <th>{% trans "Time slot" %} {{ forloop.counter }}:</th>
+        <tr>
+          <th>{{ time.start.label_tag }} *Required</th>
           <td>
-            {{ time.id }}
-            <div>
-                <div>
-                    {{ time.start.label_tag }} *Required<br>
-                    {{ time.start }}
-                </div>
-                {% if time.start.errors %}
-                    {{ time.start.errors }}
-                {% endif %}
-                <div>
-                    {{ time.end.label_tag }}<br>
-                    {{ time.end }}
-                </div>
+            {{ time.start }}
+            {% if time.start.errors %}
+                {{ time.start.errors }}
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+            <th>{{ time.end.label_tag }}</th>
+            <td>
+                {{ time.end }}
                 {% if time.end.errors %}
                     {{ time.end.errors }}
                 {% endif %}
-                {% if not forloop.last %}
-                <div class="formset-add-remove-buttons">
-                <button type="button" class="formset-add-link">
-                    {% trans "Add one more..." %}
-                </button>
-                {% endif %}
-                {% if not forloop.first %}
-                <button type="button" class="formset-remove-link">
-                    {% trans "Remove timeslot" %}
-                </button>
-                </div>
-                {% endif %}
-            </div>
-          </td>
+            </td>
         </tr>
-        {% endfor %}
+        {% if time.instance.pk %}
+        <tr>
+            <th>{{ time.DELETE.label_tag }}</th>
+            <td>{{ time.DELETE}}</td>
+        </tr>
+        {% endif %}
 
-      </table>
+    </table>
 
-      <h2>{% trans "Automatic recurrence" %}</h2>
+    <div class="formset-add-remove-buttons">
+    {% if not forloop.last %}
+    <button type="button" class="formset-add-link">
+        {% trans "Add one more..." %}
+    </button>
+    {% endif %}
+    {% if not forloop.first %}
+    <button type="button" class="formset-remove-link">
+        {% trans "Remove timeslot" %}
+    </button>
+    {% endif %}
+    </div>
+
+    </div>
+
+    {% endfor %}
+
+      <h2>{% trans "Repeat event" %}</h2>
       <p>
         {% trans "If you want your event to recur automatically with an interval, you can set it here instead of adding individual timeslots manually." %}
       </p>
       {{ recurrences.management_form }}
+
       {% if recurrences.non_form_errors %}
       <div class="message message__error">
         {{ recurrences.non_form_errors }}
       </div>
       {% endif %}
+
+      {% for recurrence in recurrences %}
+      {{ recurrence.id }}
+      <div class="formset--element {% if not recurrence.errors and not forloop.first %}hide{% endif %}">
       <table>
-        {% for recurrence in recurrences %}
-        <tr class="formset--element {% if not recurrence.errors and not forloop.first %}hide{% endif %}">
-          <th>{% trans "Interval" %} {{ forloop.counter }}:</th>
+        <tr>
+          <th>{{ recurrence.interval_type.label_tag }}</th>
           <td>
-            {{ recurrence.id }}
-            <div>
-                <div>
-                {{ recurrence.interval_type.label_tag }}<br>
-                {{ recurrence.interval_type }}
-                </div>
-                {% if recurrence.interval_type.errors %}
-                    {{ recurrence.interval_type.errors }}
-                {% endif %}
-
-                <div>
-                {{ recurrence.end.label_tag }}<br>
-                {{ recurrence.end }}
-                </div>
-                {% if recurrence.end.errors %}
-                    {{ recurrence.end.errors }}
-                {% endif %}
-
-                {% if not forloop.last %}
-                <div class="formset-add-remove-buttons">
-                <button type="button" class="formset-add-link">
-                    {% trans "Add one more..." %}
-                </button>
-                {% endif %}
-                {% if not forloop.first %}
-                <button type="button" class="formset-remove-link">
-                    {% trans "Remove recurrence" %}
-                </button>
-                </div>
-                {% endif %}
-            </div>
+            {{ recurrence.interval_type }}
+            {% if recurrence.interval_type.errors %}
+                {{ recurrence.interval_type.errors }}
+            {% endif %}
           </td>
         </tr>
-        {% endfor %}
-
+        <tr>
+          <th>{{ recurrence.end.label_tag }}</th>
+          <td>
+            {{ recurrence.end }}
+            {% if recurrence.end.errors %}
+                {{ recurrence.end.errors }}
+            {% endif %}
+          </td>
+        {% if recurrence.instance.pk %}
+        <tr>
+            <th>{{ recurrence.DELETE.label_tag }}</th>
+            <td>{{ recurrence.DELETE}}</td>
+        </tr>
+        {% endif %}
       </table>
+
+        <div class="formset-add-remove-buttons">
+        {% if not forloop.last %}
+        <button type="button" class="formset-add-link">
+            {% trans "Add one more..." %}
+        </button>
+        {% endif %}
+        {% if not forloop.first %}
+        <button type="button" class="formset-remove-link">
+            {% trans "Remove timeslot" %}
+        </button>
+        {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+
+
+
       <h2>{% trans "Images" %}</h2>
       <p>
         {% trans "We really recommend that you add an illustration. Don't let your Facebook event look better than your Duk Op event!" %}
       </p>
+
       {{ images.management_form }}
+
       {% if images.non_form_errors %}
       <div class="message message__error">
         {{ images.non_form_errors }}
       </div>
       {% endif %}
+
+      {% for image in images %}
+      {{ image.id }}
+      <div class="formset--element {% if not image.errors and not forloop.first %}hide{% endif %}">
       <table>
-        {% for image in images %}
-        <tr class="formset--element {% if not image.errors and not forloop.first %}hide{% endif %}">
+        <tr>
           <th>{% trans "Image" %} {{ forloop.counter }}:</th>
           <td>
-            {{ image.id }}
-            <div>
-                <div>
-                    {{ image.image }}
-                </div>
+            {{ image.image }}
                 {% if image.image.errors %}
                     {{ image.image.errors }}
                 {% endif %}
-                <div>
-                    {{ image.is_cover.label_tag }}
-                    {{ image.is_cover }}
-                </div>
+          </td>
+        </tr>
+        <tr>
+          <th>{{ image.is_cover.label_tag }}</th>
+          <td>
+            {{ image.is_cover }}
                 {% if image.is_cover.errors %}
                     {{ image.is_cover.errors }}
                 {% endif %}
-
-                {% if not forloop.last %}
-                <div class="formset-add-remove-buttons">
-                <button type="button" class="formset-add-link">
-                    {% trans "Add one more..." %}
-                </button>
-                {% endif %}
-                {% if not forloop.first %}
-                <button type="button" class="formset-remove-link">
-                    {% trans "Remove image" %}
-                </button>
-                </div>
-                {% endif %}
-
-            </div>
           </td>
         </tr>
-        {% endfor %}
+        {% if recurrence.instance.pk %}
+        <tr>
+            <th>{{ recurrence.DELETE.label_tag }}</th>
+            <td>{{ recurrence.DELETE}}</td>
+        </tr>
+        {% endif %}
 
       </table>
+
+        <div class="formset-add-remove-buttons">
+        {% if not forloop.last %}
+        <button type="button" class="formset-add-link">
+            {% trans "Add one more..." %}
+        </button>
+        {% endif %}
+        {% if not forloop.first %}
+        <button type="button" class="formset-remove-link">
+            {% trans "Remove timeslot" %}
+        </button>
+        {% endif %}
+        </div>
+
+      </div>
+    {% endfor %}
+
 
       <h2>{% trans "Links" %}</h2>
       <p>

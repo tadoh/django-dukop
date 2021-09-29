@@ -1,6 +1,7 @@
 // Styling for message boxes for alerts, errors etc.
 
-.message
+.message,
+ul.errorlist
 {
     padding: 10px;
     border: 1px solid #CCC;
@@ -9,7 +10,8 @@
     margin-bottom: 15px;
 }
 
-.message__error
+.message__error,
+ul.errorlist
 {
     background: #FCC;
 }
@@ -17,6 +19,11 @@
 ul.errorlist
 {
     margin: 5px 0;
+    list-style: none;
+    li {
+        padding: 0;
+        margin: 5px 0;
+    }
 }
 
 .card-messages {
