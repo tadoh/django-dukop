@@ -267,7 +267,9 @@ def import_event_series(series, import_base_dir):
     event_series_map[series.id] = event
 
 
-def import_event(event, import_base_dir, from_event_series=False):
+def import_event(  # noqa: max-complexity=12
+    event, import_base_dir, from_event_series=False
+):
     """
     Imports an Event or EventSeries
     """
@@ -278,7 +280,8 @@ def import_event(event, import_base_dir, from_event_series=False):
     group = create_group(event)
 
     # Patch up some earlier bad sync'ing by setting this to False here.
-    group.is_restricted = False
+    if group:
+        group.is_restricted = False
 
     created = False
 

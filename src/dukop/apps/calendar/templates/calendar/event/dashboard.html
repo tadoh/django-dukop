@@ -34,6 +34,13 @@
       <tr>
         <td><a href="">{{ event.name }}</a></td>
         <td>
+        {% with event.images.first as feature_image %}
+            {% if feature_image.image %}
+                {% thumbnail feature_image.image "80x80" crop="fill" as event_thumbnail %}
+                    <img src="{{ event_thumbnail.url }}" alt="{{ event.name }}">
+                {% endthumbnail %}
+            {% endif %}
+        {% endwith %}
         </td>
         <td>
             {% for time in event.times.all %}
@@ -47,7 +54,7 @@
             {% endfor %}
         </td>
         <td>{{ event.venue }}</td>
-        <td>
+        <td class="center">
             {% if event.published %}
                 <div class="icon icon__check-circle"></div>
             {% else %}
@@ -55,9 +62,10 @@
             {% endif %}
 
         </td>
-        <td>
-            <a href="{% url "calendar:event_update" pk=event.pk %}" title="Edit">Edit <div class="icon icon__tool"></div></a>
-            <a href="" title="Delete">Delete <div class="icon icon__x-circle"></div></a>
+        <td class="right nowrap">
+            <a href="{% url "calendar:event_update" pk=event.pk %}" title="Edit" class="button">{% trans "Update" %} <div class="icon icon__tool"></div></a><br>
+            <a href="" title="Cancel" class="button">{% trans "Cancel" %} <div class="icon icon__cancel"></div></a><br>
+            <a href="" title="Delete" class="button">{% trans "Delete" %} <div class="icon icon__delete"></div></a>
         </td>
       </tr>
       {% empty %}

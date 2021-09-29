@@ -1,0 +1,15 @@
+.button,
+.button:active,
+.button:visited {
+    display: inline-block;
+    vertical-align: middle;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    margin: 3px;
+    background: rgba(177, 196, 181,.2);
+    padding: 4px 15px;
+    border-radius: 5px;
+    border: 1px solid rgba(177, 196, 181,.5);
+    text-decoration: none;
+}
