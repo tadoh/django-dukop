@@ -143,3 +143,8 @@ def url_alias(url):
         return domain
     except IndexError:
         return "Invalid URL"
+
+
+@register.filter
+def event_can_edit(event, user):
+    return event.can_edit(user)

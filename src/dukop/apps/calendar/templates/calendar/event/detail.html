@@ -7,6 +7,6 @@
 
 {% block content_wrapper %}
 <div class="card card--static">
-    {% include "calendar/includes/event_card.html" %}
+    {% include "calendar/includes/event_card.html" with show_user_panel=True %}
 </div>
 {% endblock %}

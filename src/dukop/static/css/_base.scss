@@ -45,19 +45,15 @@ img {
   height: auto;
 }
 
-.card__text
-{
-    p, ul, ol, pre {
-        max-width: 600px;
-    }
+p, ul, ol, pre {
+    max-width: 600px;
+}
 
-    ol, ul {
-        margin: 0 0 1em 0;
-    }
-    form {
-        margin: 0 0 1em 0;
-    }
-
+ol, ul {
+    margin: 0 0 1em 0;
+}
+form {
+    margin: 0 0 1em 0;
 }
 
 textarea {
