@@ -334,6 +334,13 @@ class Event(models.Model):
             return self.venue_name
         return _("Unspecified")
 
+    def can_edit(self, user):
+        if user.is_superuser:
+            return True
+        if self.owner_user == user:
+            return True
+        return False
+
 
 class EventTime(models.Model):
     """

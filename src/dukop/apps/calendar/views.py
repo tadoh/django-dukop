@@ -200,9 +200,11 @@ class EventUpdateView(EventProcessFormMixin, UpdateView):
 
     def get_queryset(self):
         qs = DetailView.get_queryset(self)
-        qs = qs.filter(
-            Q(owner_user=self.request.user) | Q(owner_group__members=self.request.user)
-        ).distinct()
+        if not self.request.user.is_superuser:
+            qs = qs.filter(
+                Q(owner_user=self.request.user)
+                | Q(owner_group__members=self.request.user)
+            ).distinct()
         return qs
 
     def get_times_form_class(self):
