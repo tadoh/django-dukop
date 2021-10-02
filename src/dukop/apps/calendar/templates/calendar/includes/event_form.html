@@ -1,0 +1,242 @@
+{% load i18n thumbnail %}
+
+<form action="" method="POST" class="event__form" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <table>
+
+      {% for field in form %}
+      <tr class="{{ field.name }}">
+        <th>
+          {{ field.label_tag}}
+        </th>
+        <td>
+          {{ field }}
+          {% if field.help_text %}{{ field.help_text }}{% endif %}
+          {% if field.errors %}
+              {{ field.errors }}
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+
+    </table>
+
+    <h2>{% trans "Date and times" %}</h2>
+    <p>
+      {% trans "Most events just had a single start and finish time. But if your event spans several days, you can add additional start and finish times." %}
+      {% trans "If this event recurs on a regular basis, you can indicate this further down this page." %}
+    </p>
+
+    {{ times.management_form }}
+
+    {% if times.non_form_errors %}
+      {{ times.non_form_errors }}
+    {% endif %}
+
+    {% for time in times %}
+
+    <div class="formset--element {% if not time.errors and not forloop.first %}hide{% endif %}">
+
+    {{ time.id }}
+    <table>
+      {% for field in time.visible_fields %}
+      <tr class="{{ field.name }}">
+        <th>
+          {{ field.label_tag}}
+        </th>
+        <td>
+          {{ field }}
+          {% if field.help_text %}{{ field.help_text }}{% endif %}
+          {% if field.errors %}
+              {{ field.errors }}
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+
+    </table>
+
+    <div class="formset-add-remove-buttons">
+        {% if not forloop.last %}
+        <button type="button" class="formset-add-link">
+          {% trans "Add one more..." %}
+        </button>
+        {% endif %}
+        {% if not forloop.first %}
+        <button type="button" class="formset-remove-link">
+          {% trans "Remove timeslot" %}
+        </button>
+        {% endif %}
+    </div>
+
+    </div>
+
+    {% endfor %}
+
+    <h2>{% trans "Repeat event" %}</h2>
+    <p>
+      {% trans "If you want your event to recur automatically with an interval, you can set it here instead of adding individual timeslots manually." %}
+    </p>
+    {{ recurrences.management_form }}
+
+    {% if recurrences.non_form_errors %}
+      {{ recurrences.non_form_errors }}
+    {% endif %}
+
+    {% for recurrence in recurrences %}
+    {{ recurrence.id }}
+    <div class="formset--element {% if not recurrence.errors and not forloop.first %}hide{% endif %}">
+    <table>
+      <tr>
+        <th>{{ recurrence.interval_type.label_tag }}</th>
+        <td>
+          {{ recurrence.interval_type }}
+          {% if recurrence.interval_type.errors %}
+              {{ recurrence.interval_type.errors }}
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <th>{{ recurrence.end.label_tag }}</th>
+        <td>
+          {{ recurrence.end }}
+          {% if recurrence.end.errors %}
+              {{ recurrence.end.errors }}
+          {% endif %}
+        </td>
+      {% if recurrence.instance.pk %}
+      <tr>
+          <th>{{ recurrence.DELETE.label_tag }}</th>
+          <td>{{ recurrence.DELETE}}</td>
+      </tr>
+      {% endif %}
+    </table>
+
+      <div class="formset-add-remove-buttons">
+      {% if not forloop.last %}
+      <button type="button" class="formset-add-link">
+          {% trans "Add one more..." %}
+      </button>
+      {% endif %}
+      {% if not forloop.first %}
+      <button type="button" class="formset-remove-link">
+          {% trans "Remove timeslot" %}
+      </button>
+      {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+
+
+
+    <h2>{% trans "Images" %}</h2>
+    <p>
+      {% trans "We really recommend that you add an illustration. Don't let your Facebook event look better than your Duk Op event!" %}
+    </p>
+
+    {{ images.management_form }}
+
+    {% if images.non_form_errors %}
+      {{ images.non_form_errors }}
+    {% endif %}
+
+    {% for image in images %}
+    {{ image.id }}
+    <div class="formset--element {% if not image.errors and not forloop.first %}hide{% endif %}">
+    <table>
+      <tr>
+        <th>{% trans "Image" %} {{ forloop.counter }}:</th>
+        <td>
+          {{ image.image }}
+              {% if image.image.errors %}
+                  {{ image.image.errors }}
+              {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <th>{{ image.is_cover.label_tag }}</th>
+        <td>
+          {{ image.is_cover }}
+              {% if image.is_cover.errors %}
+                  {{ image.is_cover.errors }}
+              {% endif %}
+        </td>
+      </tr>
+      {% if recurrence.instance.pk %}
+      <tr>
+          <th>{{ recurrence.DELETE.label_tag }}</th>
+          <td>{{ recurrence.DELETE}}</td>
+      </tr>
+      {% endif %}
+
+    </table>
+
+      <div class="formset-add-remove-buttons">
+      {% if not forloop.last %}
+      <button type="button" class="formset-add-link">
+          {% trans "Add one more..." %}
+      </button>
+      {% endif %}
+      {% if not forloop.first %}
+      <button type="button" class="formset-remove-link">
+          {% trans "Remove timeslot" %}
+      </button>
+      {% endif %}
+      </div>
+
+    </div>
+    {% endfor %}
+
+
+    <h2>{% trans "Links" %}</h2>
+    <p>
+      {% trans "We really recommend that you add an illustration. Don't let your Facebook event look better than your Duk Op event!" %}
+    </p>
+    {{ links.management_form }}
+    {% if links.non_form_errors %}
+      {{ links.non_form_errors }}
+    {% endif %}
+    <table>
+      {% for link in links %}
+      <tr class="formset--element {% if not link.errors and not forloop.first %}hide{% endif %}">
+        <th>{% trans "Link" %} {{ forloop.counter }}:</th>
+        <td>
+          {{ link.id }}
+          <div>
+              <div>{{ link.link }}</div>
+              {% if link.link.errors %}
+                  {{ link.link.errors }}
+              {% endif %}
+
+              {% if not forloop.last %}
+              <div class="formset-add-remove-buttons">
+              <button type="button" class="formset-add-link">
+                  {% trans "Add one more..." %}
+              </button>
+              {% endif %}
+              {% if not forloop.first %}
+              <button type="button" class="formset-remove-link">
+                  {% trans "Remove link" %}
+              </button>
+              </div>
+              {% endif %}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+
+    </table>
+
+    <hr>
+    <table>
+      <tr>
+        <th><br></th>
+        <td>
+            <button type="submit" class="button-big">{% trans "Save changes" %}</button>
+        </td>
+      </tr>
+    </table>
+
+
+</form>
