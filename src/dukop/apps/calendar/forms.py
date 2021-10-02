@@ -53,7 +53,12 @@ class EventTimeForm(forms.ModelForm):
 
     class Meta:
         model = models.EventTime
-        fields = ("start", "end")
+        fields = ["start", "end"]
+
+
+class EventTimeUpdateForm(EventTimeForm):
+    class Meta(EventTimeForm.Meta):
+        fields = EventTimeForm.Meta.fields + ["is_cancelled"]
 
 
 class EventImageForm(forms.ModelForm):
@@ -115,6 +120,17 @@ EventTimeFormSet = inlineformset_factory(
     min_num=1,
     validate_min=True,
 )
+
+EventTimeUpdateFormSet = inlineformset_factory(
+    models.Event,
+    models.EventTime,
+    EventTimeUpdateForm,
+    extra=5,
+    max_num=5,
+    min_num=1,
+    validate_min=True,
+)
+
 EventImageFormSet = inlineformset_factory(
     models.Event, models.EventImage, EventImageForm, extra=5, max_num=5
 )

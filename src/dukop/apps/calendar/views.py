@@ -70,7 +70,7 @@ class EventProcessFormMixin:
         self.images_form = forms.EventImageFormSet(
             prefix="images", instance=self.object
         )
-        self.times_form = forms.EventTimeFormSet(instance=self.object)
+        self.times_form = self.get_times_form_class()(instance=self.object)
         self.links_form = forms.EventLinkFormSet(instance=self.object)
         self.recurrences_form = forms.EventRecurrenceFormSet(instance=self.object)
         return self.render_to_response(self.get_context_data())
@@ -87,7 +87,7 @@ class EventProcessFormMixin:
             files=request.FILES,
             instance=self.object,
         )
-        self.times_form = forms.EventTimeFormSet(
+        self.times_form = self.get_times_form_class()(
             data=request.POST, instance=self.object
         )
         self.links_form = forms.EventLinkFormSet(
@@ -161,6 +161,9 @@ class EventProcessFormMixin:
         initial["spheres"] = models.Sphere.objects.filter(id=self.request.sphere.id)
         return initial
 
+    def get_times_form_class(self):
+        return forms.EventTimeFormSet
+
 
 class EventCreateView(EventProcessFormMixin, CreateView):
 
@@ -201,6 +204,9 @@ class EventUpdateView(EventProcessFormMixin, UpdateView):
             Q(owner_user=self.request.user) | Q(owner_group__members=self.request.user)
         ).distinct()
         return qs
+
+    def get_times_form_class(self):
+        return forms.EventTimeUpdateFormSet
 
 
 class EventListView(ListView):
