@@ -78,7 +78,9 @@ def event_timeline_properties(event_time, now=None):
     else:
         x_start = event_time.start.hour + (event_time.start.minute / 60.0)
 
-    if event_time.end.date() > now.date() or event_time.end.hour >= hours_x_max:
+    if not event_time.end:
+        x_end = x_start
+    elif event_time.end.date() > now.date() or event_time.end.hour >= hours_x_max:
         x_end = hours_x_max
     else:
         x_end = event_time.end.hour + (event_time.end.minute / 60.0)

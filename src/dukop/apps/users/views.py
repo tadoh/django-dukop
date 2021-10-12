@@ -52,7 +52,7 @@ class LoginView(FormView, SuccessURLAllowedHostsMixin):
         )
     )
     @method_decorator(
-        ratelimit(group="dukop_noauth", key="ip", rate="5/h", method="POST", block=True)
+        ratelimit(group="dukop_noauth", key="ip", rate="8/h", method="POST", block=True)
     )
     def dispatch(self, request, *args, **kwargs):
         if request.GET.get("next", "") and request.method == "GET":
@@ -93,11 +93,11 @@ class LoginPasswordView(FormView, SuccessURLAllowedHostsMixin):
 
     @method_decorator(
         ratelimit(
-            group="dukop_noauth", key="ip", rate="10/d", method="POST", block=True
+            group="dukop_noauth", key="ip", rate="30/d", method="POST", block=True
         )
     )
     @method_decorator(
-        ratelimit(group="dukop_noauth", key="ip", rate="5/h", method="POST", block=True)
+        ratelimit(group="dukop_noauth", key="ip", rate="8/h", method="POST", block=True)
     )
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -141,11 +141,11 @@ class LoginTokenView(FormView, SuccessURLAllowedHostsMixin):
 
     @method_decorator(
         ratelimit(
-            group="dukop_noauth", key="ip", rate="10/d", method="POST", block=True
+            group="dukop_noauth", key="ip", rate="30/d", method="POST", block=True
         )
     )
     @method_decorator(
-        ratelimit(group="dukop_noauth", key="ip", rate="5/h", method="POST", block=True)
+        ratelimit(group="dukop_noauth", key="ip", rate="8/h", method="POST", block=True)
     )
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)

@@ -16,7 +16,7 @@ def clear_cache(test_func):
     return inner
 
 
-def assert_fail_on_repeat(client, url, no_times=5):
+def assert_fail_on_repeat(client, url, no_times=8):
     for __ in range(no_times):
         response = client.post(url)
         assert response.status_code == 200
@@ -27,13 +27,17 @@ def assert_fail_on_repeat(client, url, no_times=5):
 @clear_cache
 @pytest.mark.django_db(transaction=True)
 def test_login_page_ratelimit(client):
-    assert_fail_on_repeat(client, reverse("users:login"), 5)
+    # Assert that we don't mix in GET requests, they are okay
+    for __ in range(10):
+        response = client.get(reverse("users:login"))
+        assert response.status_code == 200
+    assert_fail_on_repeat(client, reverse("users:login"), 8)
 
 
 @clear_cache
 @pytest.mark.django_db(transaction=True)
 def test_signup_page_ratelimit(client):
-    assert_fail_on_repeat(client, reverse("users:login"), 5)
+    assert_fail_on_repeat(client, reverse("users:signup"), 5)
 
 
 @clear_cache
@@ -43,5 +47,5 @@ def test_token_page_ratelimit(client, single_user):  # noqa
     assert_fail_on_repeat(
         client,
         reverse("users:login_token", kwargs={"token": single_user.token_uuid}),
-        5,
+        8,
     )
