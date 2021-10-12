@@ -2,15 +2,39 @@
 {% load calendar_tags sorl_thumbnail %}
 {% load l10n %}
 
-  <div class="card__layout">
+  <div class="card__layout {% if not event_truncate %} card__layout--full {% endif %}">
     <div class="card__media">
         {% with event.images.first as feature_image %}
             {% if feature_image.image %}
-                {% thumbnail feature_image.image "400x250" crop="center" as event_thumbnail %}
-                    <img src="{{ event_thumbnail.url }}" alt="{{ event.name }}">
-                {% endthumbnail %}
+                {% if event_truncate %}
+                    {% thumbnail feature_image.image "400x250" crop="center" as event_thumbnail %}
+                        <img src="{{ event_thumbnail.url }}" alt="{{ event.name }}">
+                    {% endthumbnail %}
+                {% else %}
+                    <a href="{{ feature_image.image.url }}">
+                    {% thumbnail feature_image.image "400" as event_thumbnail %}
+                        <img src="{{ event_thumbnail.url }}" alt="{{ event.name }}">
+                    {% endthumbnail %}
+                    </a>
+                {% endif %}
             {% endif %}
         {% endwith %}
+        {% if not event_hide_share %}
+        <div class="card__sharing">
+            <h5>{% trans "Sharing" %}</h5>
+            {% if not event_truncate %}
+            <a href="">Download til kalender (ICS)</a>
+          {% endif %}
+            <p>
+            <a href="{{ event.share_link }}">
+                {% trans "Share link" %}
+            </a><br>
+            <input type="text" value="{{ event.share_link }}" class="share-text-input">
+            <button class="js-copy">{% trans "Copy url to clipboard" %}</button>
+            </p>
+        </div>
+        
+        {% endif %}
     </div>
 
     <div class="card__text">
@@ -38,11 +62,6 @@
           <div class="card__place card__link">
             <a href="">{{ event.venue_name }}</a>
           </div>
-          {% if not event_truncate %}
-          <div class="card__util card__link">
-            <a href="">Download til kalender (ICS)</a>
-          </div>
-          {% endif %}
         </div>
 
         <h1 class="card__title">{{ event.name }}</h1>
@@ -79,15 +98,7 @@
         </div>
         {% endif %}
 
-        {% if not event_hide_share %}
-        <h5>{% trans "Sharing" %}</h5>
-        <p>
-            <a href="{{ event.share_link }}">
-                {% trans "Share link" %}
-            </a><br>
-            <input type="text" value="{{ event.share_link }}" class="share-text-input">
-        </p>
-        {% endif %}
+        
 
         {% if show_user_panel and event|event_can_edit:request.user %}
             <ul class="button-menu">

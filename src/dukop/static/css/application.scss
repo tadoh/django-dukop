@@ -199,6 +199,9 @@ a.sphere-link-chosen {
 
   .card__layout {
     display: flex;
+    &--full {
+      align-items: flex-start;
+    }
   }
 
   .card__text {
