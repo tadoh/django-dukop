@@ -34,45 +34,38 @@
       {{ times.non_form_errors }}
     {% endif %}
 
+    <div>
     {% for time in times %}
-
     <div class="formset--element {% if not time.errors and not forloop.first %}hide{% endif %}">
-
     {{ time.id }}
-    <table>
-      {% for field in time.visible_fields %}
-      <tr class="{{ field.name }}">
-        <th>
-          {{ field.label_tag}}
-        </th>
-        <td>
-          {{ field }}
-          {% if field.help_text %}{{ field.help_text }}{% endif %}
-          {% if field.errors %}
-              {{ field.errors }}
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
+        <table>
 
-    </table>
+            {% include "calendar/includes/event_form_render_field_tr.html" with field=time.start %}
+            {% include "calendar/includes/event_form_render_field_tr.html" with field=time.end %}
 
-    <div class="formset-add-remove-buttons">
-        {% if not forloop.last %}
-        <button type="button" class="formset-add-link">
-          {% trans "Add one more..." %}
-        </button>
-        {% endif %}
-        {% if not forloop.first %}
-        <button type="button" class="formset-remove-link">
-          {% trans "Remove timeslot" %}
-        </button>
-        {% endif %}
-    </div>
+            {% if time.instance.pk %}
+                {% include "calendar/includes/event_form_render_field_tr.html" with field=time.DELETE %}
+            {% endif %}
+
+        </table>
+
+        <div class="formset-add-remove-buttons">
+            {% if not forloop.last %}
+            <button type="button" class="formset-add-link">
+              {% trans "Add one more..." %}
+            </button>
+            {% endif %}
+            {% if not forloop.first %}
+            <button type="button" class="formset-remove-link">
+              {% trans "Have one less..." %}
+            </button>
+            {% endif %}
+        </div>
 
     </div>
 
     {% endfor %}
+    </div>
 
     <h2>{% trans "Repeat event" %}</h2>
     <p>
@@ -84,49 +77,34 @@
       {{ recurrences.non_form_errors }}
     {% endif %}
 
+    <div>
     {% for recurrence in recurrences %}
-    {{ recurrence.id }}
     <div class="formset--element {% if not recurrence.errors and not forloop.first %}hide{% endif %}">
+    {{ recurrence.id }}
     <table>
-      <tr>
-        <th>{{ recurrence.interval_type.label_tag }}</th>
-        <td>
-          {{ recurrence.interval_type }}
-          {% if recurrence.interval_type.errors %}
-              {{ recurrence.interval_type.errors }}
-          {% endif %}
-        </td>
-      </tr>
-      <tr>
-        <th>{{ recurrence.end.label_tag }}</th>
-        <td>
-          {{ recurrence.end }}
-          {% if recurrence.end.errors %}
-              {{ recurrence.end.errors }}
-          {% endif %}
-        </td>
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=recurrence.interval_type %}
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=recurrence.end %}
       {% if recurrence.instance.pk %}
-      <tr>
-          <th>{{ recurrence.DELETE.label_tag }}</th>
-          <td>{{ recurrence.DELETE}}</td>
-      </tr>
+        {% include "calendar/includes/event_form_render_field_tr.html" with field=recurrence.DELETE %}
       {% endif %}
     </table>
 
-      <div class="formset-add-remove-buttons">
-      {% if not forloop.last %}
-      <button type="button" class="formset-add-link">
+    <div class="formset-add-remove-buttons">
+        {% if not forloop.last %}
+        <button type="button" class="formset-add-link">
           {% trans "Add one more..." %}
-      </button>
-      {% endif %}
-      {% if not forloop.first %}
-      <button type="button" class="formset-remove-link">
-          {% trans "Remove timeslot" %}
-      </button>
-      {% endif %}
-      </div>
+        </button>
+        {% endif %}
+        {% if not forloop.first %}
+        <button type="button" class="formset-remove-link">
+          {% trans "Have one less..." %}
+        </button>
+        {% endif %}
+    </div>
+
     </div>
     {% endfor %}
+    </div>
 
 
 
@@ -141,52 +119,35 @@
       {{ images.non_form_errors }}
     {% endif %}
 
+    <div>
     {% for image in images %}
-    {{ image.id }}
     <div class="formset--element {% if not image.errors and not forloop.first %}hide{% endif %}">
+    {{ image.id }}
     <table>
-      <tr>
-        <th>{% trans "Image" %} {{ forloop.counter }}:</th>
-        <td>
-          {{ image.image }}
-              {% if image.image.errors %}
-                  {{ image.image.errors }}
-              {% endif %}
-        </td>
-      </tr>
-      <tr>
-        <th>{{ image.is_cover.label_tag }}</th>
-        <td>
-          {{ image.is_cover }}
-              {% if image.is_cover.errors %}
-                  {{ image.is_cover.errors }}
-              {% endif %}
-        </td>
-      </tr>
-      {% if recurrence.instance.pk %}
-      <tr>
-          <th>{{ recurrence.DELETE.label_tag }}</th>
-          <td>{{ recurrence.DELETE}}</td>
-      </tr>
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=image.image %}
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=image.is_cover %}
+      {% if image.instance.pk %}
+        {% include "calendar/includes/event_form_render_field_tr.html" with field=image.DELETE %}
       {% endif %}
 
     </table>
 
-      <div class="formset-add-remove-buttons">
-      {% if not forloop.last %}
-      <button type="button" class="formset-add-link">
+    <div class="formset-add-remove-buttons">
+        {% if not forloop.last %}
+        <button type="button" class="formset-add-link">
           {% trans "Add one more..." %}
-      </button>
-      {% endif %}
-      {% if not forloop.first %}
-      <button type="button" class="formset-remove-link">
-          {% trans "Remove timeslot" %}
-      </button>
-      {% endif %}
-      </div>
+        </button>
+        {% endif %}
+        {% if not forloop.first %}
+        <button type="button" class="formset-remove-link">
+          {% trans "Have one less..." %}
+        </button>
+        {% endif %}
+    </div>
 
     </div>
     {% endfor %}
+    </div>
 
 
     <h2>{% trans "Links" %}</h2>
@@ -197,36 +158,36 @@
     {% if links.non_form_errors %}
       {{ links.non_form_errors }}
     {% endif %}
-    <table>
-      {% for link in links %}
-      <tr class="formset--element {% if not link.errors and not forloop.first %}hide{% endif %}">
-        <th>{% trans "Link" %} {{ forloop.counter }}:</th>
-        <td>
-          {{ link.id }}
-          <div>
-              <div>{{ link.link }}</div>
-              {% if link.link.errors %}
-                  {{ link.link.errors }}
-              {% endif %}
 
-              {% if not forloop.last %}
-              <div class="formset-add-remove-buttons">
-              <button type="button" class="formset-add-link">
-                  {% trans "Add one more..." %}
-              </button>
-              {% endif %}
-              {% if not forloop.first %}
-              <button type="button" class="formset-remove-link">
-                  {% trans "Remove link" %}
-              </button>
-              </div>
-              {% endif %}
-          </div>
-        </td>
-      </tr>
-      {% endfor %}
+    <div>
+    {% for link in links %}
+    <div class="formset--element {% if not link.errors and not forloop.first %}hide{% endif %}">
+    {{ link.id }}
+    <table>
+
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=link.link %}
+      {% if link.instance.pk %}
+        {% include "calendar/includes/event_form_render_field_tr.html" with field=link.DELETE %}
+      {% endif %}
 
     </table>
+
+    <div class="formset-add-remove-buttons">
+        {% if not forloop.last %}
+        <button type="button" class="formset-add-link">
+          {% trans "Add one more..." %}
+        </button>
+        {% endif %}
+        {% if not forloop.first %}
+        <button type="button" class="formset-remove-link">
+          {% trans "Have one less..." %}
+        </button>
+        {% endif %}
+    </div>
+
+    </div>
+    {% endfor %}
+    </div>
 
     <hr>
     <table>

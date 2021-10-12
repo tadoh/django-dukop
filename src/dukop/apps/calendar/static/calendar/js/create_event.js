@@ -1,15 +1,12 @@
 $(document).ready(function() {
     $('.formset-add-link').click(function() {
-        $(this).parents(".formset--element").first().next().show('fast');
+        $(this).parents(".formset--element").next().show('fast');
     });
     $('.formset-remove-link').click(function() {
-        $(this).parents(".formset--element").first().hide('fast');
+        $(this).parents(".formset--element").hide('fast');
         $(this).parents(".formset--element").find("input[name=*DELETE]").prop('checked', true);
     });
-});
 
-
-$(document).ready(function () {
 
     // Re-enable buttons, since on history.back() and such, the buttons will
     // appear already disabled, which is undesirable in case of a failure

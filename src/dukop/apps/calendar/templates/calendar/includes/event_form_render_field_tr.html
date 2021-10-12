@@ -1,0 +1,12 @@
+      <tr class="{{ field.name }}">
+        <th>
+          {{ field.label_tag}}
+        </th>
+        <td>
+          {{ field }}
+          {% if field.help_text %}{{ field.help_text }}{% endif %}
+          {% if field.errors %}
+              {{ field.errors }}
+          {% endif %}
+        </td>
+      </tr>

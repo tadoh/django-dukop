@@ -30,12 +30,12 @@ def random_event_name():
     """
     adverbs = [
         "Great",
-        "Pretty okay",
+        "Pretty okay inspiring",
         "Unique",
-        "Boring",
+        "Nihilistic",
         "Intellectual",
         "Pretentious",
-        "Blocking",
+        "Queer",
         "Delicious",
     ]
     things = [
