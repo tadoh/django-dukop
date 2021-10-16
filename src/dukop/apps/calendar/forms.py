@@ -77,6 +77,7 @@ class EventImageForm(forms.ModelForm):
             image.priority = 0
         else:
             image.priority = 1
+        image.save()
         return image
 
     class Meta:

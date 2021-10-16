@@ -32,7 +32,7 @@
     <tbody>
       {% for event in events %}
       <tr>
-        <td><a href="">{{ event.name }}</a></td>
+        <td><a href="{% url 'calendar:event_detail' pk=event.id %}">{{ event.name }}</a></td>
         <td>
         {% with event.images.first as feature_image %}
             {% if feature_image.image %}

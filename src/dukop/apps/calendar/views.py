@@ -125,7 +125,9 @@ class EventProcessFormMixin:
 
         for form in self.images_form:
             if form.is_valid() and form.cleaned_data.get("image"):
-                form.save()
+                print("me saving image")
+                image = form.save()
+                print(image)
                 for obj in getattr(form, "deleted_objects", []):
                     obj.delete()
 
