@@ -543,6 +543,12 @@ class EventRecurrence(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
+    @property
+    def recurrence_type(self):
+        for type_id, __ in self.RECURRENCE_TYPES:
+            if getattr(self, type_id, False):
+                return type_id
+
     @method_decorator(transaction.atomic)
     def sync(self, maximum=365, create_old_times=False):
         """

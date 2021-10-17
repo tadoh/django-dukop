@@ -106,6 +106,29 @@
     {% endfor %}
     </div>
 
+    <h2>{% trans "Repetitions" %}</h2>
+    <p>
+      {% trans "You can change individual repetitions. This will remove them from the automatically-handled series." %}
+    </p>
+    {{ recurrences_times.management_form }}
+
+    {% if recurrences_times.non_form_errors %}
+      {{ recurrences_times.non_form_errors }}
+    {% endif %}
+
+    <div>
+    {% for event_time in recurrences_times %}
+    <div class="formset--element">
+    {{ event_time.id }}
+    <table>
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=event_time.start %}
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=event_time.end %}
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=event_time.is_cancelled %}
+    </table>
+
+    </div>
+    {% endfor %}
+    </div>
 
 
     <h2>{% trans "Images" %}</h2>

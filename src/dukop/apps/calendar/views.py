@@ -73,6 +73,9 @@ class EventProcessFormMixin:
         self.times_form = self.get_times_form_class()(instance=self.object)
         self.links_form = forms.EventLinkFormSet(instance=self.object)
         self.recurrences_form = forms.EventRecurrenceFormSet(instance=self.object)
+        self.recurrences_times_form = forms.EventRecurrenceTimesFormSet(
+            instance=self.object
+        )
         return self.render_to_response(self.get_context_data())
 
     def _create_formset_instances(self, request):
@@ -88,6 +91,9 @@ class EventProcessFormMixin:
             data=request.POST, instance=self.object
         )
         self.recurrences_form = forms.EventRecurrenceFormSet(
+            data=request.POST, instance=self.object
+        )
+        self.recurrences_times_form = forms.EventRecurrenceTimesFormSet(
             data=request.POST, instance=self.object
         )
 
@@ -106,6 +112,7 @@ class EventProcessFormMixin:
             and self.times_form.is_valid()
             and self.links_form.is_valid()
             and self.recurrences_form.is_valid()
+            and self.recurrences_times_form.is_valid()
         ):
             return self.form_valid(form)
         else:
@@ -163,6 +170,7 @@ class EventProcessFormMixin:
         c["images"] = self.images_form
         c["links"] = self.links_form
         c["recurrences"] = self.recurrences_form
+        c["recurrences_times"] = self.recurrences_times_form
         c["forms_had_errors"] = getattr(self, "forms_had_errors", False)
         return c
 

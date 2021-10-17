@@ -92,6 +92,10 @@ class EventLinkForm(forms.ModelForm):
 
 
 class EventRecurrenceForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance:
+            self.fields["interval_type"].initial = self.instance.recurrence_type
 
     interval_type = forms.ChoiceField(
         choices=[("", "----")] + models.EventRecurrence.RECURRENCE_TYPES,
@@ -110,6 +114,17 @@ class EventRecurrenceForm(forms.ModelForm):
     class Meta:
         model = models.EventRecurrence
         fields = ("end",)
+
+
+class EventRecurrenceTimesForm(forms.ModelForm):
+
+    start = forms.SplitDateTimeField(widget=SplitDateTimeWidget())
+    end = forms.SplitDateTimeField(widget=SplitDateTimeWidget(), required=False)
+    is_cancelled = forms.BooleanField(initial=False)
+
+    class Meta:
+        model = models.EventTime
+        fields = ["start", "end", "is_cancelled"]
 
 
 EventTimeFormSet = inlineformset_factory(
@@ -140,4 +155,11 @@ EventLinkFormSet = inlineformset_factory(
 )
 EventRecurrenceFormSet = inlineformset_factory(
     models.Event, models.EventRecurrence, EventRecurrenceForm, extra=2, max_num=2
+)
+EventRecurrenceTimesFormSet = inlineformset_factory(
+    models.Event,
+    models.EventTime,
+    EventRecurrenceTimesForm,
+    extra=0,
+    can_delete=False,
 )
