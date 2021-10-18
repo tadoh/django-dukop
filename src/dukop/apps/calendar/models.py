@@ -507,6 +507,7 @@ class EventRecurrence(models.Model):
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
+        related_name="recurrence_anchors",
     )
 
     #: List of types of recurrences that users can choose.

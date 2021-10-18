@@ -1,6 +1,7 @@
 from django import forms
 from django.forms.models import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
+from dukop.apps.calendar.utils import get_now
 from dukop.apps.users.models import Group
 
 from . import models
@@ -50,6 +51,12 @@ class EventTimeForm(forms.ModelForm):
 
     start = forms.SplitDateTimeField(widget=SplitDateTimeWidget())
     end = forms.SplitDateTimeField(widget=SplitDateTimeWidget(), required=False)
+
+    def clean_start(self):
+        start = self.cleaned_data["start"]
+        if self.has_changed() and start < get_now():
+            raise forms.ValidationError("Start cannot be in the past.")
+        return start
 
     class Meta:
         model = models.EventTime

@@ -67,7 +67,7 @@
     {% endfor %}
     </div>
 
-    <h2>{% trans "Repeat event" %} <span class="badge-counter">{{ recurrences|length }}</span></h2>
+    <h2>{% trans "Repeat event" %} {% with recurrences.get_queryset.count as repetitions %}{% if repetitions > 0 %}<span class="badge-counter">{{ repetitions }} {{ repetitions|pluralize:_("rule,rules") }}</span>{% endif %}{% endwith %}</h2>
     <p>
       {% trans "If you want your event to recur automatically with an interval, you can set it here instead of adding individual timeslots manually." %}
     </p>

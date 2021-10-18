@@ -72,13 +72,16 @@ class EventProcessFormMixin:
         )
         self.times_form = self.get_times_form_class()(
             instance=self.object,
-            queryset=models.EventTime.objects.future().filter(recurrence_auto=False),
+            queryset=models.EventTime.objects.filter(
+                Q(recurrence=None) | Q(recurrence_anchors__id__gt=0)
+            ),
         )
         self.links_form = forms.EventLinkFormSet(instance=self.object)
         self.recurrences_form = forms.EventRecurrenceFormSet(instance=self.object)
         self.recurrences_times_form = forms.EventRecurrenceTimesFormSet(
             instance=self.object,
-            queryset=models.EventTime.objects.future(),
+            queryset=models.EventTime.objects.future().filter(recurrence_anchors=None),
+            prefix="recurrence_times",
         )
         return self.render_to_response(self.get_context_data())
 
@@ -98,7 +101,10 @@ class EventProcessFormMixin:
             data=request.POST, instance=self.object
         )
         self.recurrences_times_form = forms.EventRecurrenceTimesFormSet(
-            data=request.POST, instance=self.object
+            data=request.POST,
+            instance=self.object,
+            prefix="recurrence_times",
+            queryset=models.EventTime.objects.future().filter(recurrence_anchors=None),
         )
 
     @method_decorator(ratelimit(key="ip", rate="10/d", method="POST"))
@@ -135,25 +141,27 @@ class EventProcessFormMixin:
         self._create_formset_instances(self.request)
 
         for form in self.images_form:
-            if form.is_valid() and form.cleaned_data.get("image"):
-                print("me saving image")
-                image = form.save()
-                print(image)
+            if (
+                form.has_changed()
+                and form.is_valid()
+                and form.cleaned_data.get("image")
+            ):
+                form.save()
                 for obj in getattr(form, "deleted_objects", []):
                     obj.delete()
 
         for form in self.times_form:
-            if form.is_valid() and form.has_changed():
+            if form.has_changed() and form.is_valid():
                 form.save()
 
         for form in self.links_form:
-            if form.is_valid() and form.has_changed():
+            if form.has_changed() and form.is_valid():
                 form.save()
                 for obj in getattr(form, "deleted_objects", []):
                     obj.delete()
 
         for form in self.recurrences_form:
-            if form.is_valid() and form.has_changed():
+            if form.has_changed() and form.is_valid():
                 recurrence = form.save(commit=False)
                 recurrence.event = event
                 recurrence.event_time_anchor = event.times.all().first()
@@ -161,6 +169,12 @@ class EventProcessFormMixin:
                 recurrence.sync()
                 for obj in getattr(form, "deleted_objects", []):
                     obj.delete()
+
+        for form in self.recurrences_times_form:
+            if form.has_changed() and form.is_valid():
+                times = form.save(commit=False)
+                times.recurrence_auto = False
+                times.save()
 
         return self.get_success_url()
 
