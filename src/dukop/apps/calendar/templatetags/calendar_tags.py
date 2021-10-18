@@ -143,7 +143,7 @@ def url_alias(url):
         if domain == "facebook.com":
             domain = "facebook.com (which tracks you)"
         return domain
-    except IndexError:
+    except (IndexError, ValueError):
         return "Invalid URL"
 
 

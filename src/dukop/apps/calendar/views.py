@@ -80,7 +80,9 @@ class EventProcessFormMixin:
         self.recurrences_form = forms.EventRecurrenceFormSet(instance=self.object)
         self.recurrences_times_form = forms.EventRecurrenceTimesFormSet(
             instance=self.object,
-            queryset=models.EventTime.objects.future().filter(recurrence_anchors=None),
+            queryset=models.EventTime.objects.exclude(recurrence=None)
+            .future()
+            .filter(recurrence_anchors=None),
             prefix="recurrence_times",
         )
         return self.render_to_response(self.get_context_data())
@@ -104,7 +106,9 @@ class EventProcessFormMixin:
             data=request.POST,
             instance=self.object,
             prefix="recurrence_times",
-            queryset=models.EventTime.objects.future().filter(recurrence_anchors=None),
+            queryset=models.EventTime.objects.exclude(recurrence=None)
+            .future()
+            .filter(recurrence_anchors=None),
         )
 
     @method_decorator(ratelimit(key="ip", rate="10/d", method="POST"))
