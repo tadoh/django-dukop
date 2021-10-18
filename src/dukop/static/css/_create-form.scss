@@ -39,20 +39,16 @@
   input#id_name {
     max-width: none;
   }
-    .formset--element
-    {
-        input {
-            width: auto;
-            max-width: none;
-            display: inline-block;
-        }
-        select {
-            width: auto;
-            max-width: none;
-            display: inline-block;
-        }
-
-    }
+  input {
+      width: auto;
+      max-width: none;
+      display: inline-block;
+  }
+  select {
+      width: auto;
+      max-width: none;
+      display: inline-block;
+  }
 }
 
 .spheres {

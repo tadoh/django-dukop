@@ -1,6 +1,7 @@
 from django import forms
 from django.forms.models import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
+from dukop.apps.calendar.utils import get_now
 from dukop.apps.users.models import Group
 
 from . import models
@@ -51,6 +52,12 @@ class EventTimeForm(forms.ModelForm):
     start = forms.SplitDateTimeField(widget=SplitDateTimeWidget())
     end = forms.SplitDateTimeField(widget=SplitDateTimeWidget(), required=False)
 
+    def clean_start(self):
+        start = self.cleaned_data["start"]
+        if self.has_changed() and start < get_now():
+            raise forms.ValidationError("Start cannot be in the past.")
+        return start
+
     class Meta:
         model = models.EventTime
         fields = ["start", "end"]
@@ -77,6 +84,7 @@ class EventImageForm(forms.ModelForm):
             image.priority = 0
         else:
             image.priority = 1
+        image.save()
         return image
 
     class Meta:
@@ -91,6 +99,10 @@ class EventLinkForm(forms.ModelForm):
 
 
 class EventRecurrenceForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance:
+            self.fields["interval_type"].initial = self.instance.recurrence_type
 
     interval_type = forms.ChoiceField(
         choices=[("", "----")] + models.EventRecurrence.RECURRENCE_TYPES,
@@ -109,6 +121,16 @@ class EventRecurrenceForm(forms.ModelForm):
     class Meta:
         model = models.EventRecurrence
         fields = ("end",)
+
+
+class EventRecurrenceTimesForm(forms.ModelForm):
+
+    start = forms.SplitDateTimeField(widget=SplitDateTimeWidget())
+    end = forms.SplitDateTimeField(widget=SplitDateTimeWidget(), required=False)
+
+    class Meta:
+        model = models.EventTime
+        fields = ["start", "end", "is_cancelled"]
 
 
 EventTimeFormSet = inlineformset_factory(
@@ -139,4 +161,11 @@ EventLinkFormSet = inlineformset_factory(
 )
 EventRecurrenceFormSet = inlineformset_factory(
     models.Event, models.EventRecurrence, EventRecurrenceForm, extra=2, max_num=2
+)
+EventRecurrenceTimesFormSet = inlineformset_factory(
+    models.Event,
+    models.EventTime,
+    EventRecurrenceTimesForm,
+    extra=0,
+    can_delete=False,
 )

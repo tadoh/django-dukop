@@ -1,0 +1,23 @@
+.collapsible-bar {
+    border: 2px solid #3C8E8C;
+    border-radius: 5px;
+    margin: 10px 0;
+    .collapsible-title
+    {
+        font-weight: bold;
+        display: block;
+        color: #fff;
+        background-color: #3C8E8C;
+        padding: 10px;
+    }
+    .collapsible-content {
+        display: none;
+        padding: 10px;
+    }
+    > input[type=checkbox] {
+        display: none;
+    }
+    > input[type=checkbox]:checked ~ .collapsible-content {
+        display: block;
+    }
+}
