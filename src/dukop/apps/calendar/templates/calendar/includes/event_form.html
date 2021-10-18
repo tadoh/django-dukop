@@ -1,4 +1,4 @@
-{% load i18n thumbnail %}
+{% load i18n thumbnail calendar_tags %}
 
 <form action="" method="POST" class="event__form" enctype="multipart/form-data">
     {% csrf_token %}
@@ -67,7 +67,7 @@
     {% endfor %}
     </div>
 
-    <h2>{% trans "Repeat event" %}</h2>
+    <h2>{% trans "Repeat event" %} <span class="badge-counter">{{ recurrences|length }}</span></h2>
     <p>
       {% trans "If you want your event to recur automatically with an interval, you can set it here instead of adding individual timeslots manually." %}
     </p>
@@ -106,7 +106,8 @@
     {% endfor %}
     </div>
 
-    <h2>{% trans "Repetitions" %}</h2>
+    {% if recurrences_times|length > 0 %}
+    <h2>{% trans "Repetitions" %} <span class="badge-counter">{{ recurrences_times|length }}</span></h2>
     <p>
       {% trans "You can change individual repetitions. This will remove them from the automatically-handled series." %}
     </p>
@@ -116,20 +117,29 @@
       {{ recurrences_times.non_form_errors }}
     {% endif %}
 
-    <div>
     {% for event_time in recurrences_times %}
-    <div class="formset--element">
     {{ event_time.id }}
+    <div class="collapsible-bar">
+    <input type="checkbox" id="blah{{ event_time.instance.pk }}">
+    <label class="collapsible-title" for="blah{{ event_time.instance.pk }}">
+        {{ event_time.instance.start|dukop_interval:event_time.instance.end }}
+        {% if event_time.instance.recurrence_auto %}
+            <em class="muted">auto-created</em>
+        {% else %}
+            <em class="success">manually modified</em>
+        {% endif %}
+    </label>
+    <div class="collapsible-content">
     <table>
       {% include "calendar/includes/event_form_render_field_tr.html" with field=event_time.start %}
       {% include "calendar/includes/event_form_render_field_tr.html" with field=event_time.end %}
       {% include "calendar/includes/event_form_render_field_tr.html" with field=event_time.is_cancelled %}
     </table>
-
     </div>
+    </div>
+
     {% endfor %}
-    </div>
-
+    {% endif %}
 
     <h2>{% trans "Images" %}</h2>
     <p>

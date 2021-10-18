@@ -220,3 +220,6 @@ CSP_IMG_SRC = ["'self'", "data:"]
 # This sucks
 # https://code.djangoproject.com/ticket/15727
 CSP_EXCLUDE_URL_PREFIXES = ("/en/admin",)
+
+# We can have quite long forms when people submit event recurrences
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 2000  # higher than the count of fields

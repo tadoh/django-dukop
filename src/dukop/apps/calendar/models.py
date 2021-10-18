@@ -550,7 +550,7 @@ class EventRecurrence(models.Model):
                 return type_id
 
     @method_decorator(transaction.atomic)
-    def sync(self, maximum=365, create_old_times=False):
+    def sync(self, maximum=180, create_old_times=False):
         """
         This is in a transaction.
 
@@ -575,13 +575,17 @@ class EventRecurrence(models.Model):
             )
         }
         updated_times = []
+        print("Updated times")
         for event_time in self.event_time_generator(start, maximum, existing_times):
             event_time.save()
+            print(event_time)
             updated_times.append(event_time)
 
+        print("Existing times")
         # Delete everything that existed before but is not part of this generated series
         for et in existing_times.values():
             if et not in updated_times:
+                print(et)
                 et.delete()
 
     def event_time_generator(  # noqa: max-complexity: 16

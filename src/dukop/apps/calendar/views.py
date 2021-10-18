@@ -70,11 +70,15 @@ class EventProcessFormMixin:
         self.images_form = forms.EventImageFormSet(
             prefix="images", instance=self.object
         )
-        self.times_form = self.get_times_form_class()(instance=self.object)
+        self.times_form = self.get_times_form_class()(
+            instance=self.object,
+            queryset=models.EventTime.objects.future().filter(recurrence_auto=False),
+        )
         self.links_form = forms.EventLinkFormSet(instance=self.object)
         self.recurrences_form = forms.EventRecurrenceFormSet(instance=self.object)
         self.recurrences_times_form = forms.EventRecurrenceTimesFormSet(
-            instance=self.object
+            instance=self.object,
+            queryset=models.EventTime.objects.future(),
         )
         return self.render_to_response(self.get_context_data())
 

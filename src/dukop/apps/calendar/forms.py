@@ -120,7 +120,6 @@ class EventRecurrenceTimesForm(forms.ModelForm):
 
     start = forms.SplitDateTimeField(widget=SplitDateTimeWidget())
     end = forms.SplitDateTimeField(widget=SplitDateTimeWidget(), required=False)
-    is_cancelled = forms.BooleanField(initial=False)
 
     class Meta:
         model = models.EventTime
