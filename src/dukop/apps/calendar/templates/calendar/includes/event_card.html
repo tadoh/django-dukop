@@ -43,7 +43,7 @@
     <div class="card__text">
         <div class="card__header">
           <div class="card__date">
-            {% with event.times.future.first as next_occurrence %}
+            {% with event_time|default:event.times.future.first as next_occurrence %}
                 {% if next_occurrence.start %}
                     {{ next_occurrence.start|dukop_interval:next_occurrence.end }}
                 {% else %}
