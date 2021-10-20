@@ -550,6 +550,12 @@ class EventRecurrence(models.Model):
             if getattr(self, type_id, False):
                 return type_id
 
+    @property
+    def recurrence_name(self):
+        for type_id, name in self.RECURRENCE_TYPES:
+            if getattr(self, type_id, False):
+                return name
+
     @method_decorator(transaction.atomic)
     def sync(self, maximum=180, create_old_times=False):
         """
