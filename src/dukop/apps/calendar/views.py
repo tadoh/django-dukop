@@ -136,6 +136,8 @@ class EventProcessFormMixin:
     def form_valid(self, form):  # noqa: max-complexity=13
         self.object = form.save()
         event = self.object
+        if not event.short_description:
+            event.short_description = event.get_short_description()
         if not event.owner_user:
             event.owner_user = self.request.user
         event.save()

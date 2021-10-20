@@ -9,4 +9,4 @@
 {% endif %}
 </p>
 
-{{ obj.event.short_description|linebreaks }}
+{{ obj.event.short_description|default:obj.event.description|linebreaks }}

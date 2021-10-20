@@ -12,6 +12,7 @@ from django.core.cache import cache
 from django.db import models
 from django.db import transaction
 from django.db.models import Q
+from django.template.defaultfilters import truncatewords
 from django.urls.base import reverse
 from django.utils.decorators import method_decorator
 from django.utils.text import slugify
@@ -198,15 +199,13 @@ class Event(models.Model):
         blank=True,
         verbose_name=_("short description"),
         help_text=_(
-            "A special short version of the event description, leave blank to auto-generate. Text-only, no Markdown."
+            "A special short version of the event description, leave blank to auto-generate."
         ),
     )
     description = models.TextField(
         blank=True,
         verbose_name=_("description"),
-        help_text=_(
-            "Enter details, which will be displayed on the event's own page. You can use Markdown."
-        ),
+        help_text=_("Enter details, which will be displayed on the event's own page."),
     )
 
     slug = models.SlugField(
@@ -325,6 +324,14 @@ class Event(models.Model):
         if self.owner_user:
             return self.owner_user.get_display_name()
         return _("Unspecified host")
+
+    def get_short_description(self):
+        """
+        Fetches a short description of the event.
+        """
+        if not self.short_description:
+            return truncatewords(self.description, 100)
+        return self.short_description
 
     @property
     def venue(self):
