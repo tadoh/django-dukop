@@ -73,9 +73,9 @@
 
         {% if not event_truncate %}
             {% if event.description %}
-            {{ event.description|linebreaks }}
+                {{ event.description|linebreaks }}
             {% else %}
-            {{ event.short_description|linebreaks }}
+                {{ event.short_description|linebreaks }}
             {% endif %}
 
             <h2>{% trans "Upcoming dates" %}</h2>

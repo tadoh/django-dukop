@@ -150,7 +150,7 @@ def create_event(old_event, group, from_event_series=False):
 
     event.name = old_event.title
     event.short_description = old_event.short_description or ""
-    event.description = old_event.long_description or ""
+    event.description = old_event.long_description or old_event.short_description or ""
     event.is_cancelled = bool(old_event.cancelled)
     event.created = df(old_event.created_at)
     event.published = bool(old_event.published)
