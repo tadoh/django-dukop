@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-20 09:17+0200\n"
+"POT-Creation-Date: 2021-10-20 21:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -313,7 +313,7 @@ msgstr "Slutningen af serien"
 
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:4
 #: src/dukop/apps/calendar/templates/calendar/event/create.html:14
-#: src/dukop/templates/base.html:43 src/dukop/templates/base.html:48
+#: src/dukop/templates/base.html:60 src/dukop/templates/base.html:65
 msgid "Create event"
 msgstr "Opret begivenhed"
 
@@ -1130,7 +1130,7 @@ msgstr "Log ind igen"
 #: src/dukop/apps/users/templates/users/login.html:39
 #: src/dukop/apps/users/templates/users/login.html:57
 #: src/dukop/apps/users/templates/users/password_reset_complete.html:11
-#: src/dukop/templates/base.html:49
+#: src/dukop/templates/base.html:66
 msgid "Log in"
 msgstr "Log ind"
 
@@ -1451,11 +1451,11 @@ msgstr ""
 msgid "Please log in before proceeding"
 msgstr "Vær venlig at logge ind før du fortsætter"
 
-#: src/dukop/settings/base.py:106
+#: src/dukop/settings/base.py:107
 msgid "English"
 msgstr "Engelsk"
 
-#: src/dukop/settings/base.py:106
+#: src/dukop/settings/base.py:107
 msgid "Danish"
 msgstr "Dansk"
 
@@ -1489,23 +1489,44 @@ msgstr ""
 "Du har oplevet noget som ikke skulle kunne ske. Vi vil undersøge det. "
 "Kontakt os meget gerne, hvis du oplever dette. "
 
-#: src/dukop/templates/base.html:44
+#: src/dukop/templates/base.html:13
+msgid "Duk dig ikke"
+msgstr ""
+
+#: src/dukop/templates/base.html:13
+#, fuzzy
+#| msgid "About Duk Op"
+msgid "Duk Op!"
+msgstr "Om Duk Op"
+
+#: src/dukop/templates/base.html:14 src/dukop/templates/base.html:23
+#: src/dukop/templates/base.html:31
+msgid ""
+"DukOp is our shared guide to whatever is happening in your sphere, whether "
+"you are looking for demos, concerts, parties, meetings, community kitchens, "
+"garden days workshops, art, movie screenings and what not."
+msgstr ""
+"Duk Op er din guide til hvad der sker, uanse om du leder efter "
+"demonstrationer, koncerter, fester, møder, folkekøkken, havedage, workshops, "
+"kunst udstillinger, filmvisinger, debatter og meget mere."
+
+#: src/dukop/templates/base.html:61
 msgid "My events"
 msgstr ""
 
-#: src/dukop/templates/base.html:45
+#: src/dukop/templates/base.html:62
 msgid "Profile"
 msgstr ""
 
-#: src/dukop/templates/base.html:46
+#: src/dukop/templates/base.html:63
 msgid "Log out"
 msgstr "Log ud"
 
-#: src/dukop/templates/base.html:96
+#: src/dukop/templates/base.html:113
 msgid "About us"
 msgstr "Om os"
 
-#: src/dukop/templates/base.html:97
+#: src/dukop/templates/base.html:114
 msgid ""
 "Duk Op is your guide to what happens in and around Copenhagen, whether you "
 "are looking for demonstrations, concerts, parties, meetings, soup kitchens, "
@@ -1515,19 +1536,19 @@ msgstr ""
 "demonstrationer, koncerter, fester, møder, folkekøkken, havedage, workshops, "
 "kunst udstillinger, filmvisinger, debatter og meget mere."
 
-#: src/dukop/templates/base.html:99
+#: src/dukop/templates/base.html:116
 msgid "Read more"
 msgstr "Læs mere"
 
-#: src/dukop/templates/base.html:100
+#: src/dukop/templates/base.html:117
 msgid "Contact us"
 msgstr "Kontakt os"
 
-#: src/dukop/templates/base.html:102
+#: src/dukop/templates/base.html:119
 msgid "Activate sphere"
 msgstr "Aktivér sfærer"
 
-#: src/dukop/templates/base.html:103
+#: src/dukop/templates/base.html:120
 msgid ""
 "Duk Op is available in the followin mixes or spheres. By changing the active "
 "sphere, you'll get a different view of the site:"
@@ -1535,11 +1556,11 @@ msgstr ""
 "Duk Op er tilgængeligt i følgende udgaver eller 'sfærer'. Ved at skifte og "
 "aktivere en anden sfærer, får du en anden udgave af sitet:"
 
-#: src/dukop/templates/base.html:112
+#: src/dukop/templates/base.html:129
 msgid "Calendar subscription"
 msgstr "Kalender abonnement"
 
-#: src/dukop/templates/base.html:114
+#: src/dukop/templates/base.html:131
 msgid ""
 "You can subscribe to Duk Op in for instance Google, iCal, Thunderbird and "
 "more. Copy this URL into your calendar's Import function (iCAL/ICS format)"
@@ -1547,11 +1568,11 @@ msgstr ""
 "Duk kan abonnere på Duk Op i f.eks. Google, iCal, Thunderbird or mere. "
 "Kopiér følgende URL ind i din kalenders import-funktion (iCAL/ICS format)"
 
-#: src/dukop/templates/base.html:120
+#: src/dukop/templates/base.html:137
 msgid "Latest news"
 msgstr "Seneste nyt"
 
-#: src/dukop/templates/base.html:135
+#: src/dukop/templates/base.html:152
 msgid "No news is good news?"
 msgstr "Ingen nyheder"
 

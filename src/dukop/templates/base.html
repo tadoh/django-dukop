@@ -7,12 +7,29 @@
     <link rel="shortcut icon" href="{% static 'img/favicon.png' %}">
     <link rel="apple-touch-icon" href="{% static 'img/favicon.png' %}">
 
-    <meta property="og:url" content="https://www.dukop.dk/">
-    <meta property="og:title" content="Duk dig ikke - Duk Op!">
-    <meta property="og:description" content="Duk Op er vores fælles guide til, hvad der sker i København og omegn, hvad enten du leder efter demonstrationer, koncerter, fester, møder, folkekøkkener, havedage, workshops, kunst- og filmfremvisninger, mv..">
-    <meta property="og:image" content="{% static 'img/social_media.jpg' %}">
+    {# fb #}
+    <meta property="og:url"         content="https://{{ request.site.domain }}{% block og_url %}{{ request.path }}{% endblock %}" />
+    <meta property="og:type"        content="article" />
+    <meta property="og:title"       content="{% block og_title %}{% trans "Duk dig ikke" %}{% endblock %} - {% trans "Duk Op!" %}" />
+    <meta property="og:description" content="{% block og_description %}{% trans "DukOp is our shared guide to whatever is happening in your sphere, whether you are looking for demos, concerts, parties, meetings, community kitchens, garden days workshops, art, movie screenings and what not." %}{% endblock %}" />
+    <meta property="og:image"       content="https://{{ request.site.domain }}{% block og_image %}{% static "img/social_media.jpg" %}{% endblock %}" />
+    <meta property="og:image:width"       content="{% block og_image_width %}1200{% endblock %}" />
+    <meta property="og:image:height"       content="{% block og_image_height %}630{% endblock %}" />
     <meta property="og:site_name" content="Duk Op">
-    <meta property="og:locale" content="da_DK">
+    <meta property="og:locale" content="{{ request.LANGUAGE_CODE }}">
+
+    {# google #}
+    <meta itemprop="url" content="https://{{ request.site.domain }}{{ request.path }}" />
+    <meta itemprop="description" content="{% block google_description %}{% trans "DukOp is our shared guide to whatever is happening in your sphere, whether you are looking for demos, concerts, parties, meetings, community kitchens, garden days workshops, art, movie screenings and what not." %}{% endblock %}">
+    <meta itemprop="image" content="{% block google_image %}{% static "img/social_media.jpg" %}{% endblock %}">
+
+    {# twitter #}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@DukOpKBH">
+    <meta name="twitter:creator" content="@DukOpKBH">
+    <meta name="twitter:title" content="{% block twitter_title %}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}{% trans "DukOp is our shared guide to whatever is happening in your sphere, whether you are looking for demos, concerts, parties, meetings, community kitchens, garden days workshops, art, movie screenings and what not." %}{% endblock %}">
+    <meta name="twitter:image" content="https://{{ request.site.domain }}{% block twitter_image %}{% static "img/social_media.jpg" %}{% endblock %}">
 
     {% compress css %}
         <link rel="stylesheet" type="text/x-scss" href="{% static 'css/application.scss' %}">

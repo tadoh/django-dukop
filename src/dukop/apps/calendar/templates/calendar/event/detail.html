@@ -1,7 +1,24 @@
 {% extends "base.html" %}
+
 {% load i18n sekizai_tags static %}
 {% load calendar_tags sorl_thumbnail %}
 {% load l10n %}
+
+{% block title %}{{ event.name }} - {{ event.venue_name }}{% endblock %}
+{% block og_title %}{{ event.name }} - {{ event.venue_name }}{% endblock %}
+{% block twitter_title %}{{ event.name }} - {{ event.venue_name }}{% endblock %}
+
+{% block description %}{{ event|event_description:100|striptags }}{% endblock %}
+{% block twitter_description %}{{ event|event_description:100|striptags }}{% endblock %}
+{% block og_description %}{{ event|event_description:100|striptags }}{% endblock %}
+
+{% block google_image %}{% with event.images.first as feature_image %}{% if feature_image %}{% thumbnail feature_image.image "1200x627" crop="center" as event_thumbnail %}{{ event_thumbnail.url }}{% endthumbnail %}{% else %}{{ block.super }}{% endif %}{% endwith %}{% endblock %}
+{% block twitter_image %}{% with event.images.first as feature_image %}{% if feature_image %}{% thumbnail feature_image.image "1200x628" crop="center" as event_thumbnail %}{{ event_thumbnail.url }}{% endthumbnail %}{% else %}{{ block.super }}{% endif %}{% endwith %}{% endblock %}
+{% block og_image %}{% with event.images.first as feature_image %}{% if feature_image %}{% thumbnail feature_image.image "1200x630" crop="center" as event_thumbnail %}{{ event_thumbnail.url }}{% endthumbnail %}{% else %}{{ block.super }}{% endif %}{% endwith %}{% endblock %}
+
+{% block og_image_width %}{% with event.images.first as feature_image %}{% if feature_image %}1200{% else %}{{ block.super }}{% endif %}{% endwith %}{% endblock %}
+{% block og_image_height %}{% with event.images.first as feature_image %}{% if feature_image %}630{% else %}{{ block.super }}{% endif %}{% endwith %}{% endblock %}
+
 
 {% block dukop_title %}{{ event.name }} - {{ event.venue_name }}{% endblock %}
 

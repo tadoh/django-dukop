@@ -43,6 +43,7 @@ MIDDLEWARE = [
     "django.middleware.locale.LocaleMiddleware",
     "csp.middleware.CSPMiddleware",  # Modifies/sets CSP headers
     "dukop.apps.calendar.middleware.sphere_middleware",
+    "django.contrib.sites.middleware.CurrentSiteMiddleware",
 ]
 
 ROOT_URLCONF = "dukop.urls"
