@@ -29,6 +29,7 @@
 
 .table__time {
   flex-basis: 120px;
+  flex-shrink: 0;
   width: 120px;
   padding: 10px;
   border-right: 1px solid #ddd;
