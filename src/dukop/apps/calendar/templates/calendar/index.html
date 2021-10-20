@@ -25,7 +25,7 @@
 
 {% for event_time in event_times %}
 <div class="card" data-hash="event-{{ event_time.event.pk }}" id="event-{{ event_time.event.pk }}">
-  {% include "calendar/includes/event_card.html" with event=event_time.event event_hide_share=True event_truncate=100 %}
+  {% include "calendar/includes/event_card.html" with event_time=event_time event=event_time.event event_hide_share=True event_truncate=100 %}
   <a class="card__toggle js-toggle-card" href="{% url "calendar:event_detail" pk=event_time.event.pk slug=event_time.event.slug %}"></a>
 </div>
 
