@@ -3,7 +3,10 @@ from datetime import timedelta
 from django import template
 from django.contrib.sites.models import Site
 from django.db.models import Q
+from django.template.defaultfilters import truncatechars
 from django.urls.base import reverse
+from django.utils.html import linebreaks
+from django.utils.safestring import mark_safe
 
 from .. import models
 from .. import utils
@@ -150,3 +153,15 @@ def url_alias(url):
 @register.filter
 def event_can_edit(event, user):
     return event.can_edit(user)
+
+
+@register.filter
+@mark_safe
+def event_description(event, truncate=100):
+    truncated_description = ""
+    if event.description:
+        truncated_description = truncatechars(event.description, truncate)
+    else:
+        truncated_description = truncatechars(event.short_description, truncate)
+
+    return linebreaks(truncated_description)
