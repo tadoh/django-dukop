@@ -127,7 +127,7 @@ class EventProcessFormMixin:
             and self.times_form.is_valid()
             and self.links_form.is_valid()
             and self.recurrences_form.is_valid()
-            and (not self.object or self.recurrences_times_form.is_valid())
+            # and (not self.object or self.recurrences_times_form.is_valid())
         ):
             return self.form_valid(form)
         else:
