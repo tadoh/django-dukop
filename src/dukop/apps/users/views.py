@@ -217,7 +217,10 @@ class SignupView(FormView):
             user.set_token()
             mail = email.UserToken(self.request, user=user, next=next_url)
             mail.send_with_feedback(success_msg=_("Check your inbox"))
-            print("Sent a token to existing user")
+            messages.success(
+                self.request,
+                _("If the email isn't there in 2 minutes, check your spam folder."),
+            )
         except models.User.DoesNotExist:
             user = models.User.objects.create_user(email=form.cleaned_data["email"])
             user.is_active = True  # The user is active by default
