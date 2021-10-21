@@ -236,28 +236,28 @@ class Event(models.Model):
         verbose_name=_("venue name"),
         blank=True,
         null=True,
-        help_text=_("If left blank, will be copied from host group"),
+        help_text=_("Leave blank to use details from existing venue"),
     )
     street = models.CharField(
         max_length=255,
         verbose_name=_("street"),
         blank=True,
         null=True,
-        help_text=_("If left blank, will be copied from host group"),
+        help_text=_("Leave blank to use details from existing venue"),
     )
     city = models.CharField(
         max_length=255,
         verbose_name=_("city"),
         blank=True,
         null=True,
-        help_text=_("If left blank, will be copied from host group"),
+        help_text=_("Leave blank to use details from existing venue"),
     )
     zip_code = models.CharField(
         verbose_name=_("zip code"),
         blank=True,
         null=True,
         max_length=16,
-        help_text=_("If left blank, will be copied from host group"),
+        help_text=_("Leave blank to use details from existing venue"),
     )
 
     created = models.DateTimeField(auto_now_add=True)
