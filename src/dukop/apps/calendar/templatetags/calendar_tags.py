@@ -15,7 +15,7 @@ register = template.Library()
 
 
 @register.simple_tag
-def get_event_times(
+def get_event_times(  # noqa: max-complexity=12
     from_date=None,
     to_date=None,
     days=None,
@@ -24,6 +24,7 @@ def get_event_times(
     published=True,
     has_image=None,
     sphere=None,
+    host=None,
 ):
 
     lookups = [Q(event__published=published)]
@@ -49,6 +50,9 @@ def get_event_times(
 
     if featured is not None:
         lookups.append(Q(event__featured=bool(featured)))
+
+    if host is not None:
+        lookups.append(Q(event__host=host))
 
     if has_image is not None:
         if has_image:

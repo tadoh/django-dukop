@@ -65,7 +65,11 @@
             {% endif %}
           </div>
           <div class="card__place card__link">
-            <a href="">{{ event.venue_name }}</a>
+            {% if event.host %}
+                <a href="{% url "calendar:host_detail" pk=event.host.pk %}">{{ event.host }}</a>
+            {% else %}
+                {{ event.venue_name|default:"No location" }}
+            {% endif %}
           </div>
         </div>
 
@@ -88,8 +92,14 @@
             {% empty %}
                 <li><em>{% trans "No upcoming times" %}</em>
             {% endfor %}
-
             </ul>
+
+            <h2>{% trans "Location" %}</h2>
+
+            <strong>{{ event.venue_name }}</strong><br>
+            {{ event.street }}<br>
+            {{ event.zip_code }} {{ event.city }}
+
             {% if event.links.all %}
                 <h2>{% trans "Event links" %}</h2>
                 {% for link in event.links.all %}
