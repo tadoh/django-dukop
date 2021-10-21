@@ -16,6 +16,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
+from dukop.apps.users.models import Group
 from ratelimit.decorators import ratelimit
 
 from . import forms
@@ -345,3 +346,11 @@ def set_sphere_session(request, pk):
     if not next_url:
         next_url = reverse("calendar:index")
     return redirect(next_url)
+
+
+class HostDetailView(DetailView):
+
+    template_name = "calendar/host/detail.html"
+
+    def get_queryset(self):
+        return Group.objects.filter(deactivated=False)
