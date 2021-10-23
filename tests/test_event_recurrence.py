@@ -1,8 +1,12 @@
 import calendar
-from _datetime import timedelta
+from datetime import datetime
+from datetime import timedelta
 
 import pytest
+from django.utils.timezone import localtime
+from django.utils.timezone import make_aware
 from dukop.apps.calendar import models
+from dukop.apps.calendar.utils import get_now
 
 from .fixtures_calendar import single_event  # noqa
 
@@ -245,3 +249,38 @@ def test_shorten_weekly_recurrence(single_event):  # noqa
     recurrence.sync()
     assert recurrence.times.filter(start__gte=recurrence.end).count() == 0
     assert recurrence.times.all().count() == original_count - 1
+
+
+@pytest.mark.django_db()
+def test_recurrence_dst_backwards(single_event):  # noqa
+    now = get_now()
+    if now.month > 10 or (now.month == 10 and now.day >= 10):
+        year = now.year + 1
+
+    # Put the beginning of the event just before DST change backwards
+    first_time = single_event.times.first()
+    first_time.start = first_time.start.replace(day=10, month=10, year=year)
+    first_time.end = first_time.end.replace(day=10, month=10, year=year)
+    first_time.save()
+
+    recurrence = models.EventRecurrence.objects.create(
+        event=single_event,
+        event_time_anchor=first_time,
+        every_week=True,
+    )
+
+    recurrence.sync(create_old_times=True)
+
+    for time in recurrence.times.all():
+        print(time.start.time())
+        print(first_time.start.time())
+        assert (
+            make_aware(
+                datetime.combine(first_time.start.date(), time.start.time()),
+                timezone=first_time.start.tzinfo,
+            )
+            - first_time.start
+        ).total_seconds() == 0
+        assert localtime(time.end).hour == localtime(first_time.end).hour
+
+    assert False

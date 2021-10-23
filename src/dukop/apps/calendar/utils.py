@@ -1,8 +1,10 @@
+from datetime import datetime
 from datetime import timedelta
 
 from django.conf import settings
 from django.utils import timezone
 from django.utils.formats import date_format
+from django.utils.timezone import make_aware
 from django.utils.translation import gettext as _
 
 
@@ -58,5 +60,5 @@ def display_interval(start, end=None):
         )
 
 
-def populate_interval():
-    pass
+def timedelta_naive(dtm1, **kwargs):
+    return make_aware(datetime.combine(dtm1.date() + timedelta(**kwargs), dtm1.time()))
