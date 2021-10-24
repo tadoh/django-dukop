@@ -1,3 +1,4 @@
+from datetime import datetime
 from datetime import timedelta
 
 from django.conf import settings
@@ -58,5 +59,21 @@ def display_interval(start, end=None):
         )
 
 
-def populate_interval():
-    pass
+def timedelta_fixed_time(dtm1, **kwargs):
+    """
+    Fixates the time - meaning that if you add 7 days to any timestamp, it will
+    firstly apply the current timezone according to your Django settings
+    """
+    tz = timezone.get_current_timezone()
+    # Firstly, force dtm1 to be in the local timezone (tzinfo), because otherwise
+    # it might be for instance represented as UTC. What we want to achieve is
+    # to keep the time() of the original timestamp, regardless of the DST changes
+    # that can occur in the interval that the date is pushed.
+    localized_dtm1 = timezone.localtime(dtm1, tz)
+    return tz.localize(
+        (
+            datetime.combine(
+                localized_dtm1.date() + timedelta(**kwargs), localized_dtm1.time()
+            )
+        )
+    )

@@ -230,7 +230,6 @@ class SignupView(FormView):
             # Give the same feedback regardless so this isn't used to lookup
             # email addresses
             mail.send_with_feedback(success_msg=_("Check your inbox"))
-            print("Created a new user")
 
         self.request.session["user_confirm_pending_id"] = user.id
 
