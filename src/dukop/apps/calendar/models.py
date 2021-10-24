@@ -18,7 +18,7 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from dukop.apps.calendar.utils import display_datetime
 from dukop.apps.calendar.utils import display_time
-from dukop.apps.calendar.utils import timedelta_naive
+from dukop.apps.calendar.utils import timedelta_fixed_time
 from sorl.thumbnail import get_thumbnail
 
 from . import utils
@@ -591,13 +591,11 @@ class EventRecurrence(models.Model):
         updated_times = []
         for event_time in self.event_time_generator(start, maximum, existing_times):
             event_time.save()
-            print(event_time)
             updated_times.append(event_time)
 
         # Delete everything that existed before but is not part of this generated series
         for et in existing_times.values():
             if et not in updated_times:
-                print(et)
                 et.delete()
 
     def event_time_generator(  # noqa: max-complexity: 16
@@ -616,7 +614,7 @@ class EventRecurrence(models.Model):
         # The end of the recurrence, either as given by an explicit user-defined
         # end datetime or as a number of days relative to the start of the
         # recurrence.
-        system_wide_maximum = timedelta_naive(start, days=maximum)
+        system_wide_maximum = timedelta_fixed_time(start, days=maximum)
         end = self.end or system_wide_maximum
         end = min(end, system_wide_maximum)
 
@@ -698,11 +696,11 @@ class EventRecurrence(models.Model):
         return event_time
 
     def _every_week_generator(self, start, end, duration):
-        current_start = timedelta_naive(start, days=7)
+        current_start = timedelta_fixed_time(start, days=7)
         while current_start < end:
             current_end = current_start + duration if duration else None
             yield current_start, current_end
-            current_start = timedelta_naive(current_start, days=7)
+            current_start = timedelta_fixed_time(current_start, days=7)
 
     def _biweekly_generator(self, start, end, duration, even_not_odd=True):
         current_start = start
@@ -711,13 +709,13 @@ class EventRecurrence(models.Model):
         # We account for a case where the anchor date is in fact NOT the same
         # even/odd week number of the series.
         if week % 2 != (0 if even_not_odd else 1):
-            current_start = timedelta_naive(current_start, days=7)
+            current_start = timedelta_fixed_time(current_start, days=7)
         else:
-            current_start = timedelta_naive(current_start, days=14)
+            current_start = timedelta_fixed_time(current_start, days=14)
         while current_start < end:
             current_end = current_start + duration if duration else None
             yield current_start, current_end
-            current_start = timedelta_naive(current_start, days=14)
+            current_start = timedelta_fixed_time(current_start, days=14)
 
     def _monthly_generator(self, start, end, duration, offset_weeks=0):
         """
