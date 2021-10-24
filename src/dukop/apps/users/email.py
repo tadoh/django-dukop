@@ -41,7 +41,8 @@ class BaseEmail(EmailMessage):
             success_msg = _("Email successfully sent to {}".format(", ".join(self.to)))
         try:
             self.send(fail_silently=False)
-            messages.success(self.request, success_msg)
+            if not no_message:
+                messages.success(self.request, success_msg)
         except RuntimeError:
             messages.error(
                 self.request, _("Not sent, something wrong with the mail server.")
