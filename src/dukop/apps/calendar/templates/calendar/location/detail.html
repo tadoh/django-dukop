@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% load i18n sekizai_tags static %}
+{% load calendar_tags sorl_thumbnail %}
+{% load l10n %}
+
+{% block dukop_title %}{{ location.name }}{% endblock %}
+
+{% block content %}
+
+    <h1>{{ location.name }}</h1>
+
+    {{ location.description|default:"No description written" }}
+
+    <h2>{% trans "Links" %}</h2>
+
+    {% if location.link1 %}
+    <p><a href="{{ location.link1 }}" target="_blank">{{ location.link1|url_alias }}</a></p>
+    {% endif %}
+    {% if location.link2 %}
+    <p><a href="{{ location.link2 }}" target="_blank">{{ location.link2|url_alias }}</a></p>
+    {% endif %}
+    {% if location.link3 %}
+    <p><a href="{{ location.link3 }}" target="_blank">{{ location.link3|url_alias }}</a></p>
+    {% endif %}
+
+    {% if not location.link1 and not location.link2 and not location.link3 %}
+        <em>{% trans "No links" %}</em>
+    {% endif %}
+
+    <h2>{% trans "Location" %}</h2>
+
+    <strong>{{ location.venue_name }}</strong><br>
+    {{ location.street }}<br>
+    {{ location.zip_code }} {{ location.city }}
+
+
+<h2>{% trans "Upcoming events" %}</h2>
+
+<div class="table">
+
+{% get_event_times from_date=future location=location as future_events %}
+
+{% for event_time in future_events %}
+
+    <div class="table__day">
+      {% ifchanged event_time.start.date %}
+      <div class="table__header">
+        {{ event_time.start.date|dukop_date }}
+      </div>
+      {% endifchanged %}
+
+      <a href="{% url "calendar:event_detail" pk=event_time.event.pk slug=event_time.event.slug %}" class="table__event">
+        <div class="table__time">
+          {{ event_time.start|time:"H:i" }}
+        </div>
+        <div class="table__title">
+          {{ event_time.event.name }}
+        </div>
+        <div class="table__place">
+          {{ event_time.event.venue_name }}
+        </div>
+      </a>
+    </div>
+
+  {% empty %}
+
+  <p><em>{% trans "Nothing to see in this period." %}</em></p>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

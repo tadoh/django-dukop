@@ -226,6 +226,15 @@ class Event(models.Model):
         ),
     )
 
+    location = models.ForeignKey(
+        "users.Location",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="events_here",
+        help_text=_("The location (venue) of the event."),
+    )
+
     featured = models.BooleanField(default=False)
     published = models.BooleanField(default=True)
 

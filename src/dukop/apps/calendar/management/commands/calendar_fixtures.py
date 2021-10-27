@@ -17,6 +17,8 @@ from django.db import transaction
 from django.utils import timezone
 from dukop.apps.calendar import models
 from dukop.apps.news.models import NewsStory
+from dukop.apps.users.models import Group
+from dukop.apps.users.models import Location
 
 
 LOREM_IPSUM = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
@@ -77,13 +79,24 @@ def random_event_name():
     )
 
 
-def random_venue():
+def random_location():
     return random.choice(
         [
             "Vakmærket",
             "Unghomsduset",
             "Holkets Fus",
             "Hådruspladsen",
+        ]
+    )
+
+
+def random_group():
+    return random.choice(
+        [
+            "Marxist book club",
+            "Punkaholics",
+            "Queer nights",
+            "Stop the System",
         ]
     )
 
@@ -187,6 +200,9 @@ class Command(BaseCommand):
                     end += timedelta(hours=random.choice(range(0, 24)))
                     end += timedelta(minutes=random.choice([0, 0, 15, 30, 30, 45]))
 
+                    location = Location.objects.get_or_create(name=random_location())[0]
+                    group = Group.objects.get_or_create(name=random_group())[0]
+
                     event = models.Event.objects.create(
                         published=True,
                         featured=random.choice(
@@ -195,7 +211,9 @@ class Command(BaseCommand):
                         name=random_event_name(),
                         description=LOREM_IPSUM,
                         short_description=LOREM_IPSUM[:100],
-                        venue_name=random_venue(),
+                        venue_name=location.name,
+                        host=group,
+                        location=location,
                     )
                     models.EventTime.objects.create(
                         event=event,

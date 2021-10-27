@@ -17,6 +17,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from dukop.apps.users.models import Group
+from dukop.apps.users.models import Location
 from ratelimit.decorators import ratelimit
 
 from . import forms
@@ -348,9 +349,18 @@ def set_sphere_session(request, pk):
     return redirect(next_url)
 
 
-class HostDetailView(DetailView):
+class GroupDetailView(DetailView):
 
-    template_name = "calendar/host/detail.html"
+    template_name = "calendar/group/detail.html"
 
     def get_queryset(self):
         return Group.objects.filter(deactivated=False)
+
+
+class LocationDetailView(DetailView):
+
+    template_name = "calendar/location/detail.html"
+    context_object_name = "location"
+
+    def get_queryset(self):
+        return Location.objects.filter(deactivated=False)

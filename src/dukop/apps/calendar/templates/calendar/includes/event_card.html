@@ -66,7 +66,7 @@
           </div>
           <div class="card__place card__link">
             {% if event.host %}
-                <a href="{% url "calendar:host_detail" pk=event.host.pk %}">{{ event.host }}</a>
+                <a href="{% url "calendar:group_detail" pk=event.host.pk %}">{{ event.host }}</a>
             {% else %}
                 {{ event.venue_name|default:"No location" }}
             {% endif %}
@@ -96,7 +96,13 @@
 
             <h2>{% trans "Location" %}</h2>
 
+            {% if event.location %}
+            <a href="{% url "calendar:location_detail" pk=event.location.pk %}">
+            <strong>{{ event.location.name }}</strong><br>
+            </a>
+            {% else %}
             <strong>{{ event.venue_name }}</strong><br>
+            {% endif %}
             {{ event.street }}<br>
             {{ event.zip_code }} {{ event.city }}
 
