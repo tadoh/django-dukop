@@ -76,13 +76,14 @@ def test_create_biweekly_even_recurrence(single_event):  # noqa
     recurrence.sync()
     assert recurrence.times.first() == single_event.times.first()
 
-    expected_count = default_length_days // 14 + 1
-    # if single_event.times.first().start.date().isocalendar()[1] % 2 == 0:
-    #    expected_count += 1
+    expected_counts = (
+        default_length_days // 14 + 1,
+        default_length_days // 14 + 2,
+    )
 
-    assert recurrence.times.all().count() == expected_count
+    assert recurrence.times.all().count() in expected_counts
     recurrence.sync()
-    assert recurrence.times.all().count() == expected_count
+    assert recurrence.times.all().count() in expected_counts
 
 
 @pytest.mark.django_db()
