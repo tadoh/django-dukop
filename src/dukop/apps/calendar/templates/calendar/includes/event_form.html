@@ -5,22 +5,78 @@
 
     <table>
 
-      {% for field in form %}
-      <tr class="{{ field.name }}">
-        <th>
-          {{ field.label_tag}}
-        </th>
-        <td>
-          {{ field }}
-          {% if field.help_text %}{{ field.help_text }}{% endif %}
-          {% if field.errors %}
-              {{ field.errors }}
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.name %}
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.description %}
+
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.spheres %}
 
     </table>
+
+    <h2>{% trans "Host" %}</h2>
+
+    <div>
+
+    <div class="collapsible-bar collapsible-bar-show-input">
+      <input type="radio" name="host_choice" id="existing_host">
+    <label class="collapsible-title" for="existing_host">
+        {% trans "Existing host" %}
+    </label>
+    <div class="collapsible-content">
+    <table>
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.host %}
+    </table>
+    </div>
+    </div>
+
+    <div class="collapsible-bar collapsible-bar-show-input">
+    <input type="radio" name="host_choice" id="new_host">
+    <label class="collapsible-title" for="new_host">
+        {% trans "New host" %}
+    </label>
+    <div class="collapsible-content">
+    <table>
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.new_host %}
+    </table>
+    </div>
+    </div>
+
+
+    </div>
+
+    <h2>{% trans "Location" %}</h2>
+
+    <div>
+
+    <div class="collapsible-bar collapsible-bar-show-input">
+      <input type="radio" name="location_choice" id="existing_location">
+    <label class="collapsible-title" for="existing_location">
+        {% trans "Existing location" %}
+    </label>
+    <div class="collapsible-content">
+    <table>
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.location %}
+    </table>
+    </div>
+    </div>
+
+    <div class="collapsible-bar collapsible-bar-show-input">
+    <input type="radio" name="location_choice" id="new_location">
+    <label class="collapsible-title" for="new_location">
+        {% trans "New location" %}
+    </label>
+    <div class="collapsible-content">
+    <table>
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.venue_name %}
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.street %}
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.zip_code %}
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.city %}
+    </table>
+    </div>
+    </div>
+
+
+    </div>
+
 
     <h2>{% trans "Date and times" %}</h2>
     <p>

@@ -17,10 +17,30 @@
         display: none;
         padding: 10px;
     }
-    > input[type=checkbox] {
+    > input[type=checkbox],
+    > input[type=radio]
+    {
         display: none;
     }
-    > input[type=checkbox]:checked ~ .collapsible-content {
+    > input[type=checkbox]:checked ~ .collapsible-content,
+    > input[type=radio]:checked ~ .collapsible-content
+    {
+        display: block;
+    }
+}
+
+.collapsible-bar-show-input
+{
+    > input[type=checkbox],
+    > input[type=radio]
+    {
+        display: inline-block;
+        float: left;
+        margin: 14px 10px;
+    }
+    > input[type=checkbox]:checked ~ .collapsible-content,
+    > input[type=radio]:checked ~ .collapsible-content
+    {
         display: block;
     }
 }
