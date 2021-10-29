@@ -17,15 +17,13 @@ class EventForm(forms.ModelForm):
         help_text=_("Select which versions of the calendar this is relevant for."),
     )
 
-    host = forms.ModelChoiceField(
+    location = forms.ModelChoiceField(
         queryset=Group.objects.filter(deactivated=False, is_restricted=False)
         .filter(events__published=True)
         .distinct(),
         required=False,
-        label=_("Existing venue"),
-        help_text=_(
-            "Choose venues from an existing list, otherwise create a new one below"
-        ),
+        label=_("Location"),
+        help_text=_("Choose an existing location or create a new one"),
     )
 
     class Meta:
@@ -33,7 +31,38 @@ class EventForm(forms.ModelForm):
         fields = (
             "name",
             "description",
+            "location",
+            "venue_name",
+            "street",
+            "zip_code",
+            "city",
+            "spheres",
+        )
+
+
+class CreateEventForm(EventForm):
+
+    host = forms.ModelChoiceField(
+        queryset=Group.objects.none(),
+        required=False,
+        label=_("Host group"),
+        help_text=_("Choose one of your existing groups or create a new one"),
+    )
+
+    new_host = forms.CharField(
+        label=_("New group"),
+        help_text=_(
+            "Name of the new group, for instance 'Marxist Book Reading Circle'"
+        ),
+    )
+
+    class Meta(EventForm.Meta):
+        fields = (
+            "name",
+            "description",
             "host",
+            "new_host",
+            "location",
             "venue_name",
             "street",
             "zip_code",
@@ -42,7 +71,7 @@ class EventForm(forms.ModelForm):
         )
         help_texts = {
             "host": _(
-                "A group may host an event and be displayed as the author of the event text. You can only choose a host if you have been allowed membership of a group."
+                "A group may host an event and be displayed as the author of the event text. You can only choose an existing group if you have been allowed membership of that group."
             )
         }
 

@@ -55,8 +55,6 @@ def test_create_biweekly_odd_recurrence(single_event):  # noqa
     assert recurrence.times.first() == single_event.times.first()
 
     expected_counts = [default_length_days // 14 + 1, default_length_days // 14 + 2]
-    # if single_event.times.first().start.date().isocalendar()[1] % 2 == 0:
-    #    expected_count += 1
 
     assert recurrence.times.all().count() in expected_counts
     recurrence.sync()

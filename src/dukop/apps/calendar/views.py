@@ -213,7 +213,7 @@ class EventCreateView(EventProcessFormMixin, CreateView):
 
     template_name = "calendar/event/create.html"
     model = models.Event
-    form_class = forms.EventForm
+    form_class = forms.CreateEventForm
 
     def get_success_url(self):
         return redirect("calendar:event_create_success", pk=self.object.pk)
