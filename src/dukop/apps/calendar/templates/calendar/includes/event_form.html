@@ -10,70 +10,95 @@
 
       {% include "calendar/includes/event_form_render_field_tr.html" with field=form.spheres %}
 
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.online %}
+
     </table>
+
+    {% if form.host_choice %}
 
     <h2>{% trans "Host" %}</h2>
 
     <div>
 
     <div class="collapsible-bar collapsible-bar-show-input">
-      <input type="radio" name="host_choice" id="existing_host">
-    <label class="collapsible-title" for="existing_host">
-        {% trans "Existing host" %}
-    </label>
-    <div class="collapsible-content">
-    <table>
-      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.host %}
-    </table>
-    </div>
+      <input type="radio" value="{{ form.host_choice.field.choices.0.0 }}" name="{{ form.host_choice.html_name }}" id="id_{{ form.host_choice.html_name }}_0"{% if form.fields.host_choice.value == form.host_choice.field.choices.0.0 %} selected="true"{% endif %}>
+      <label class="collapsible-title" for="id_{{ form.host_choice.html_name }}_0">
+          {% trans "Existing group" %}
+      </label>
+      <div class="collapsible-content">
+      <table>
+        {% include "calendar/includes/event_form_render_field_tr.html" with field=form.host %}
+      </table>
+      </div>
     </div>
 
     <div class="collapsible-bar collapsible-bar-show-input">
-    <input type="radio" name="host_choice" id="new_host">
-    <label class="collapsible-title" for="new_host">
-        {% trans "New host" %}
-    </label>
-    <div class="collapsible-content">
-    <table>
-      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.new_host %}
-    </table>
-    </div>
+      <input type="radio" value="{{ form.host_choice.field.choices.1.0 }}" name="{{ form.host_choice.html_name }}" id="id_{{ form.host_choice.html_name }}_1"{% if form.fields.host_choice.value == form.host_choice.field.choices.1.0 %} selected="true"{% endif %}>
+      <label class="collapsible-title" for="id_{{ form.host_choice.html_name }}_1">
+          {% trans "New group" %}
+      </label>
+      <div class="collapsible-content">
+      <table>
+        {% include "calendar/includes/event_form_render_field_tr.html" with field=form.new_host %}
+      </table>
+      </div>
     </div>
 
-
     </div>
+
+    {% endif %}
 
     <h2>{% trans "Location" %}</h2>
 
     <div>
 
     <div class="collapsible-bar collapsible-bar-show-input">
-      <input type="radio" name="location_choice" id="existing_location">
-    <label class="collapsible-title" for="existing_location">
-        {% trans "Existing location" %}
-    </label>
-    <div class="collapsible-content">
-    <table>
-      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.location %}
-    </table>
-    </div>
+      <input type="radio" value="{{ form.location_choice.field.choices.0.0 }}" name="{{ form.location_choice.html_name }}" id="id_{{ form.location_choice.html_name }}_0"{% if form.location_choice.data == form.location_choice.field.choices.0.0 %} selected="true"{% endif %}>
+      <label class="collapsible-title" for="id_{{ form.location_choice.html_name }}_0">
+          {% trans "Existing location" %}
+      </label>
+      <div class="collapsible-content">
+      <table>
+        {% include "calendar/includes/event_form_render_field_tr.html" with field=form.location %}
+      </table>
+      </div>
     </div>
 
     <div class="collapsible-bar collapsible-bar-show-input">
-    <input type="radio" name="location_choice" id="new_location">
-    <label class="collapsible-title" for="new_location">
-        {% trans "New location" %}
-    </label>
-    <div class="collapsible-content">
-    <table>
-      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.venue_name %}
-      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.street %}
-      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.zip_code %}
-      {% include "calendar/includes/event_form_render_field_tr.html" with field=form.city %}
-    </table>
-    </div>
+      <input type="radio" value="{{ form.location_choice.field.choices.1.0 }}" name="{{ form.location_choice.html_name }}" id="id_{{ form.location_choice.html_name }}_1"{% if form.location_choice.data == form.location_choice.field.choices.1.0 %} selected="true"{% endif %}>
+      <label class="collapsible-title" for="id_{{ form.location_choice.html_name }}_1">
+          {% trans "New location" %}
+      </label>
+      <div class="collapsible-content">
+      <table>
+        {% include "calendar/includes/event_form_render_field_tr.html" with field=form.venue_name %}
+        {% include "calendar/includes/event_form_render_field_tr.html" with field=form.street %}
+        {% include "calendar/includes/event_form_render_field_tr.html" with field=form.zip_code %}
+        {% include "calendar/includes/event_form_render_field_tr.html" with field=form.city %}
+        {% include "calendar/includes/event_form_render_field_tr.html" with field=form.location_new %}
+      </table>
+      </div>
     </div>
 
+    <div class="collapsible-bar collapsible-bar-show-input">
+      <input type="radio" value="{{ form.location_choice.field.choices.2.0 }}" name="{{ form.location_choice.html_name }}" id="id_{{ form.location_choice.html_name }}_2"{% if form.location_choice.data == form.location_choice.field.choices.2.0 %} selected="true"{% endif %}>
+      <label class="collapsible-title" for="id_{{ form.location_choice.html_name }}_2">
+        {% trans "TBA (To Be Announced)" %}
+      </label>
+      <div class="collapsible-content">
+        <p>{% trans "Your event will appear as TBA - you can edit the event later and add a location." %}</p>
+      </div>
+    </div>
+
+    <div class="collapsible-bar collapsible-bar-show-input">
+      <input type="radio" value="{{ form.location_choice.field.choices.3.0 }}" name="{{ form.location_choice.html_name }}" id="id_{{ form.location_choice.html_name }}_3"{% if form.location_choice.data == form.location_choice.field.choices.3.0 %} selected="true"{% endif %}>
+      <label class="collapsible-title" for="id_{{ form.location_choice.html_name }}_3">
+          {% trans "Online only / no location" %}
+      </label>
+      <div class="collapsible-content">
+        <p>{% trans "You can write details about joining in the description and add links further down in the Links section." %}</p>
+      </div>
+    </div>
 
     </div>
 
@@ -241,7 +266,7 @@
 
     <h2>{% trans "Links" %}</h2>
     <p>
-      {% trans "You can add links to other pages, if for instance you have a website or a signup page." %}
+      {% trans "You can add links (URLs) to other pages, if for instance you have a website or a signup page." %}
     </p>
     {{ links.management_form }}
     {% if links.non_form_errors %}

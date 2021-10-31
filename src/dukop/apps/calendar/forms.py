@@ -3,12 +3,35 @@ from django.forms.models import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
 from dukop.apps.calendar.utils import get_now
 from dukop.apps.users.models import Group
+from dukop.apps.users.models import Location
 
 from . import models
 from .widgets import SplitDateTimeWidget
 
 
 class EventForm(forms.ModelForm):
+
+    (LOCATION_EXISTING, LOCATION_NEW, LOCATION_TBA, LOCATION_ONLINE_ONLY) = range(4)
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user", None)
+        initial = kwargs.get("initial", {})
+        instance = kwargs.get("instance", None)
+        if instance:
+            if instance.location:
+                initial["location_choice"] = self.LOCATION_EXISTING
+            elif instance.location_tba:
+                initial["location_choice"] = self.LOCATION_TBA
+            elif instance.venue_name:
+                initial["location_choice"] = self.LOCATION_NEW
+            elif instance.online:
+                initial["location_choice"] = self.LOCATION_ONLINE_ONLY
+            else:
+                initial["location_choice"] = self.LOCATION_EXISTING
+            print(initial["location_choice"])
+
+        kwargs["initial"] = initial
+        super().__init__(*args, **kwargs)
 
     spheres = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple,
@@ -26,11 +49,30 @@ class EventForm(forms.ModelForm):
         help_text=_("Choose an existing location or create a new one"),
     )
 
+    location_choice = forms.TypedChoiceField(
+        choices=[
+            (LOCATION_EXISTING, "existing"),
+            (LOCATION_NEW, "new"),
+            (LOCATION_TBA, "tba"),
+            (LOCATION_ONLINE_ONLY, "online"),
+        ],
+        coerce=lambda val: int(val),
+        widget=forms.RadioSelect(),
+        required=True,
+    )
+
+    location_new = forms.BooleanField(
+        label=_("Save location"),
+        help_text=_("Make the location available for other events later"),
+        required=False,
+    )
+
     class Meta:
         model = models.Event
         fields = (
             "name",
             "description",
+            "online",
             "location",
             "venue_name",
             "street",
@@ -39,8 +81,80 @@ class EventForm(forms.ModelForm):
             "spheres",
         )
 
+    def save(self, commit=True):
+        """
+        The implementation of commit is a bit false: We know that this can be
+        called with commit=False from inheriting classes, but we will still
+        create new locations. To change this behavior, wrap calls in
+        transaction.atomic
+        """
+
+        instance = super().save(commit=False)
+        location_choice = self.cleaned_data["location_choice"]
+
+        # This should be overwritten explicitly
+        instance.location_tba = False
+
+        if location_choice == self.LOCATION_EXISTING:
+            instance.venue_name = instance.location.name
+            instance.street = instance.location.street
+            instance.zip_code = instance.location.zip_code
+            instance.city = instance.location.city
+
+        elif location_choice == self.LOCATION_NEW:
+            if self.cleaned_data["location_new"]:
+                location = Location.objects.create(
+                    name=instance.venue_name,
+                    street=instance.street,
+                    zip_code=instance.zip_code,
+                    city=instance.city,
+                )
+                location.members.add(self.user)
+                instance.location = location
+
+        elif location_choice == self.LOCATION_TBA:
+            instance.location = None
+            instance.venue_name = None
+            instance.street = None
+            instance.zip_code = None
+            instance.city = None
+            instance.location_tba = True
+
+        elif location_choice == self.LOCATION_ONLINE_ONLY:
+            instance.location = None
+            instance.venue_name = None
+            instance.street = None
+            instance.zip_code = None
+            instance.city = None
+            instance.online = True
+
+        if commit:
+            instance.save()
+        return instance
+
 
 class CreateEventForm(EventForm):
+
+    HOST_EXISTING, HOST_NEW = range(2)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.user:
+            if self.user.is_superuser:
+                self.fields["host"].queryset = Group.objects.filter(
+                    deactivated=False, location=None
+                )
+            else:
+                self.fields["host"].queryset = Group.objects.filter(
+                    members=self.user, deactivated=False
+                )
+
+    host_choice = forms.TypedChoiceField(
+        choices=[(HOST_EXISTING, "existing"), (HOST_NEW, "new")],
+        coerce=lambda val: int(val),
+        widget=forms.RadioSelect(),
+        required=True,
+    )
 
     host = forms.ModelChoiceField(
         queryset=Group.objects.none(),
@@ -60,6 +174,7 @@ class CreateEventForm(EventForm):
         fields = (
             "name",
             "description",
+            "online",
             "host",
             "new_host",
             "location",
@@ -74,6 +189,21 @@ class CreateEventForm(EventForm):
                 "A group may host an event and be displayed as the author of the event text. You can only choose an existing group if you have been allowed membership of that group."
             )
         }
+
+    def save(self, commit=True):
+
+        instance = super().save(commit=False)
+        host_choice = self.cleaned_data["host_choice"]
+
+        if host_choice == self.HOST_NEW:
+            host = Group.objects.create(name=self.cleaned_data["new_host"])
+            host.members.add(self.user)
+            self.host = host
+
+        if commit:
+            instance.save()
+
+        return instance
 
 
 class EventTimeForm(forms.ModelForm):

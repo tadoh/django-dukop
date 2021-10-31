@@ -16,6 +16,9 @@
     .collapsible-content {
         display: none;
         padding: 10px;
+        p:last-child {
+            margin-bottom: 0;
+        }
     }
     > input[type=checkbox],
     > input[type=radio]

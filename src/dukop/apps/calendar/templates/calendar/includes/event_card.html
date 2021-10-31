@@ -79,7 +79,7 @@
             {% if event.description %}
                 {{ event.description|linebreaks }}
             {% else %}
-                {{ event.short_description|linebreaks }}
+                {{ event.short_description|default:_("The event has no description")|linebreaks }}
             {% endif %}
 
             <h2>{% trans "Upcoming dates" %}</h2>
@@ -98,13 +98,19 @@
 
             {% if event.location %}
             <a href="{% url "calendar:location_detail" pk=event.location.pk %}">
-            <strong>{{ event.location.name }}</strong><br>
+              <strong>{{ event.location.name }}</strong><br>
             </a>
-            {% else %}
-            <strong>{{ event.venue_name }}</strong><br>
-            {% endif %}
             {{ event.street }}<br>
             {{ event.zip_code }} {{ event.city }}
+            {% elif event.location_tba %}
+              <p>{% trans "To Be Announced: The location's location will be announced later." %}</p>
+            {% elif event.online %}
+              <p>{% trans "This is an online event." %}</p>
+            {% else %}
+            <strong>{{ event.venue_name }}</strong><br>
+            {{ event.street }}<br>
+            {{ event.zip_code }} {{ event.city }}
+            {% endif %}
 
             {% if event.links.all %}
                 <h2>{% trans "Event links" %}</h2>
