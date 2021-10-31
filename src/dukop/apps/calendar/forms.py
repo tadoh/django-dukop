@@ -17,7 +17,7 @@ class EventForm(forms.ModelForm):
         self.user = kwargs.pop("user", None)
         initial = kwargs.get("initial", {})
         instance = kwargs.get("instance", None)
-        if instance:
+        if instance and instance.pk:
             if instance.location:
                 initial["location_choice"] = self.LOCATION_EXISTING
             elif instance.location_tba:
@@ -28,7 +28,6 @@ class EventForm(forms.ModelForm):
                 initial["location_choice"] = self.LOCATION_ONLINE_ONLY
             else:
                 initial["location_choice"] = self.LOCATION_EXISTING
-            print(initial["location_choice"])
 
         kwargs["initial"] = initial
         super().__init__(*args, **kwargs)
@@ -79,6 +78,7 @@ class EventForm(forms.ModelForm):
             "zip_code",
             "city",
             "spheres",
+            "location_choice",
         )
 
     def save(self, commit=True):
@@ -183,6 +183,8 @@ class CreateEventForm(EventForm):
             "zip_code",
             "city",
             "spheres",
+            "location_choice",
+            "host_choice",
         )
         help_texts = {
             "host": _(
