@@ -129,9 +129,7 @@ class Group(models.Model):
     description = models.TextField(
         blank=True,
         verbose_name=_("description"),
-        help_text=_(
-            "Enter details, which will be displayed on the group's own page. You can use Markdown."
-        ),
+        help_text=_("Enter details, which will be displayed on the group's own page."),
     )
 
     owner_email = models.EmailField(blank=True, null=True)

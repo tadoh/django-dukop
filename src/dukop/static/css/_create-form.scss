@@ -49,6 +49,15 @@
       max-width: none;
       display: inline-block;
   }
+  input[type=date] {
+      width: auto;
+  }
+  tr.event_form_datetime {
+      white-space: nowrap;
+      input, select {
+          margin-right: 10px;
+      }
+  }
 }
 
 .spheres {

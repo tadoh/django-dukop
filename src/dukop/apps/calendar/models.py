@@ -551,10 +551,10 @@ class EventRecurrence(models.Model):
     third_week_of_month = models.BooleanField(default=False)
     last_week_of_month = models.BooleanField(default=False)
 
-    #: The end time of an recurrence gives us an upper bound so occurences arent't
+    #: The end time of an recurrence gives us an upper bound so occurences aren't
     #: created for eternity. If none is supplied, we use a system-default
-    #: relative to ``now()``.
-    end = models.DateTimeField(
+    #: relative to ``now()``. It should mean ``<``
+    end = models.DateField(
         null=True,
         blank=True,
         verbose_name=_("End of series"),

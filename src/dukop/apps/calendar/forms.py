@@ -29,6 +29,9 @@ class EventForm(forms.ModelForm):
             else:
                 initial["location_choice"] = self.LOCATION_EXISTING
 
+            if instance.recurrences.exists():
+                initial["recurrence_choice"] = True
+
         kwargs["initial"] = initial
         super().__init__(*args, **kwargs)
 
@@ -66,6 +69,12 @@ class EventForm(forms.ModelForm):
         required=False,
     )
 
+    recurrence_choice = forms.BooleanField(
+        widget=forms.RadioSelect(),
+        required=False,
+        initial=False,
+    )
+
     class Meta:
         model = models.Event
         fields = (
@@ -95,7 +104,7 @@ class EventForm(forms.ModelForm):
         # This should be overwritten explicitly
         instance.location_tba = False
 
-        if location_choice == self.LOCATION_EXISTING:
+        if location_choice == self.LOCATION_EXISTING and instance.location:
             instance.venue_name = instance.location.name
             instance.street = instance.location.street
             instance.zip_code = instance.location.zip_code

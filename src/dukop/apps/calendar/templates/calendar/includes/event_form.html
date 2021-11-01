@@ -18,6 +18,8 @@
 
     <h2>{% trans "Host" %}</h2>
 
+    <p>{% trans "Tell people about the group that hosts an event - the group may also host other events. You can add details about the group later. They can have their own listing of events. You can even invite other people to the group." %}</p>
+
     <div>
 
     <div class="collapsible-bar collapsible-bar-show-input">
@@ -121,8 +123,8 @@
     {{ time.id }}
         <table>
 
-            {% include "calendar/includes/event_form_render_field_tr.html" with field=time.start %}
-            {% include "calendar/includes/event_form_render_field_tr.html" with field=time.end %}
+            {% include "calendar/includes/event_form_render_field_tr.html" with field=time.start special_tr_field_class="event_form_datetime" %}
+            {% include "calendar/includes/event_form_render_field_tr.html" with field=time.end special_tr_field_class="event_form_datetime" %}
 
             {% if time.instance.pk %}
                 {% include "calendar/includes/event_form_render_field_tr.html" with field=time.DELETE %}
@@ -152,39 +154,64 @@
     <p>
       {% trans "If you want your event to recur automatically with an interval, you can set it here instead of adding individual timeslots manually." %}
     </p>
-    {{ recurrences.management_form }}
-
-    {% if recurrences.non_form_errors %}
-      {{ recurrences.non_form_errors }}
-    {% endif %}
 
     <div>
-    {% for recurrence in recurrences %}
-    <div class="formset--element {% if not recurrence.errors and not forloop.first %}hide{% endif %}">
-    {{ recurrence.id }}
-    <table>
-      {% include "calendar/includes/event_form_render_field_tr.html" with field=recurrence.interval_type %}
-      {% include "calendar/includes/event_form_render_field_tr.html" with field=recurrence.end %}
-      {% if recurrence.instance.pk %}
-        {% include "calendar/includes/event_form_render_field_tr.html" with field=recurrence.DELETE %}
+    <div class="collapsible-bar collapsible-bar-show-input">
+      <input type="radio" value="false" name="{{ form.recurrence_choice.html_name }}" id="id_{{ form.recurrence_choice.html_name }}_0"{% if not form.recurrence_choice.value %} checked="true"{% endif %}>
+      <label class="collapsible-title" for="id_{{ form.recurrence_choice.html_name }}_0">
+        {% trans "No" %}
+      </label>
+      {% if recurrences_times|length > 0 %}
+      <div class="collapsible-content">
+        <p>{% trans "Existing recurrences will be deleted permanently." %}</p>
+      </div>
       {% endif %}
-    </table>
-
-    <div class="formset-add-remove-buttons">
-        {% if not forloop.last %}
-        <button type="button" class="formset-add-link">
-          {% trans "Add one more..." %}
-        </button>
-        {% endif %}
-        {% if not forloop.first %}
-        <button type="button" class="formset-remove-link">
-          {% trans "Have one less..." %}
-        </button>
-        {% endif %}
     </div>
 
+    <div class="collapsible-bar collapsible-bar-show-input">
+      <input type="radio" value="true" name="{{ form.recurrence_choice.html_name }}" id="id_{{ form.recurrence_choice.html_name }}_1"{% if form.recurrence_choice.value %} checked="true"{% endif %}>
+      <label class="collapsible-title" for="id_{{ form.recurrence_choice.html_name }}_1">
+        {% trans "Yes" %}
+      </label>
+      <div class="collapsible-content">
+
+        {{ recurrences.management_form }}
+
+        {% if recurrences.non_form_errors %}
+          {{ recurrences.non_form_errors }}
+        {% endif %}
+
+        <div>
+        {% for recurrence in recurrences %}
+        <div class="formset--element {% if not recurrence.errors and not forloop.first %}hide{% endif %}">
+        {{ recurrence.id }}
+        <table>
+          {% include "calendar/includes/event_form_render_field_tr.html" with field=recurrence.interval_type %}
+          {% include "calendar/includes/event_form_render_field_tr.html" with field=recurrence.end special_tr_field_class="event_form_datetime" %}
+          {% if recurrence.instance.pk %}
+            {% include "calendar/includes/event_form_render_field_tr.html" with field=recurrence.DELETE %}
+          {% endif %}
+        </table>
+
+        <div class="formset-add-remove-buttons">
+            {% if not forloop.last %}
+            <button type="button" class="formset-add-link">
+              {% trans "Add one more..." %}
+            </button>
+            {% endif %}
+            {% if not forloop.first %}
+            <button type="button" class="formset-remove-link">
+              {% trans "Have one less..." %}
+            </button>
+            {% endif %}
+        </div>
+
+        </div>
+        {% endfor %}
+        </div>
+      </div>
     </div>
-    {% endfor %}
+
     </div>
 
     {% if recurrences_times|length > 0 %}
@@ -212,8 +239,8 @@
     </label>
     <div class="collapsible-content">
     <table>
-      {% include "calendar/includes/event_form_render_field_tr.html" with field=event_time.start %}
-      {% include "calendar/includes/event_form_render_field_tr.html" with field=event_time.end %}
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=event_time.start special_tr_field_class="event_form_datetime" %}
+      {% include "calendar/includes/event_form_render_field_tr.html" with field=event_time.end special_tr_field_class="event_form_datetime" %}
       {% include "calendar/includes/event_form_render_field_tr.html" with field=event_time.is_cancelled %}
     </table>
     </div>

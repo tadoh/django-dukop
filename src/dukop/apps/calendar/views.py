@@ -148,38 +148,45 @@ class EventProcessFormMixin:
         # with the generated event object.
         self._create_formset_instances(self.request)
 
-        for form in self.images_form:
+        for image_form in self.images_form:
             if (
-                form.has_changed()
-                and form.is_valid()
-                and form.cleaned_data.get("image")
+                image_form.has_changed()
+                and image_form.is_valid()
+                and image_form.cleaned_data.get("image")
             ):
-                form.save()
-                for obj in getattr(form, "deleted_objects", []):
+                image_form.save()
+                for obj in getattr(image_form, "deleted_objects", []):
                     obj.delete()
 
-        for form in self.times_form:
-            if form.has_changed() and form.is_valid():
-                form.save()
+        for time_form in self.times_form:
+            if time_form.has_changed() and time_form.is_valid():
+                time_form.save()
 
-        for form in self.links_form:
-            if form.has_changed() and form.is_valid():
-                form.save()
-                for obj in getattr(form, "deleted_objects", []):
+        for link_form in self.links_form:
+            if link_form.has_changed() and link_form.is_valid():
+                link_form.save()
+                for obj in getattr(link_form, "deleted_objects", []):
                     obj.delete()
 
-        for form in self.recurrences_form:
-            if form.has_changed() and form.is_valid():
-                recurrence = form.save(commit=False)
-                recurrence.event = event
-                recurrence.event_time_anchor = event.times.all().first()
-                recurrence.save()
-                recurrence.sync()
-                for obj in getattr(form, "deleted_objects", []):
-                    obj.delete()
+        if form.cleaned_data["recurrence_choice"]:
+            for recurrence_form in self.recurrences_form:
+                if recurrence_form.has_changed() and recurrence_form.is_valid():
+                    recurrence = recurrence_form.save(commit=False)
+                    recurrence.event = event
+                    recurrence.event_time_anchor = event.times.all().first()
+                    recurrence.save()
+                    recurrence.sync()
+                    for obj in getattr(recurrence_form, "deleted_objects", []):
+                        obj.delete()
+        else:
+            if self.object.pk:
+                for recurrence in self.object.recurrences.all():
+                    recurrence.event_time_anchor.recurrence = None
+                    recurrence.event_time_anchor.save()
+                self.object.recurrences.all().delete()
 
-        for form in self.recurrences_times_form:
-            if form.has_changed() and form.is_valid():
+        for recurrence_time_form in self.recurrences_times_form:
+            if recurrence_time_form.has_changed() and recurrence_time_form.is_valid():
                 times = form.save(commit=False)
                 times.recurrence_auto = False
                 times.save()
