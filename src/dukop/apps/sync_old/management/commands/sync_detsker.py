@@ -31,7 +31,7 @@ from dukop.apps.calendar.models import Sphere
 from dukop.apps.calendar.models import Weekday
 from dukop.apps.news.models import NewsStory
 from dukop.apps.sync_old import models
-from dukop.apps.users.models import Group
+from dukop.apps.users.models import Location
 
 
 bad_fks = 0
@@ -112,10 +112,10 @@ def ensure_location_exists(old_event):
         old_event.location = None
 
 
-def create_group(old_event):
+def create_location(old_event):
     if not old_event.location or not old_event.location.name:
         return None
-    return Group.objects.get_or_create(
+    return Location.objects.get_or_create(
         name=old_event.location.name,
         street=old_event.location.street_address,
         zip_code=old_event.location.postcode[:16],
@@ -132,7 +132,7 @@ def create_event_link(old_event, attach_to_event):
     )
 
 
-def create_event(old_event, group, from_event_series=False):
+def create_event(old_event, location, from_event_series=False):
 
     created = False
 
@@ -158,7 +158,8 @@ def create_event(old_event, group, from_event_series=False):
     if not from_event_series:
         event.featured = bool(old_event.featured)
 
-    event.host = group
+    event.host = location.location
+    event.location = location
 
     if old_event.location:
         event.venue_name = old_event.location.name
@@ -277,11 +278,11 @@ def import_event(  # noqa: max-complexity=12
     ensure_location_exists(event)
 
     # Create a Group from the old Location
-    group = create_group(event)
+    location = create_location(event)
 
     # Patch up some earlier bad sync'ing by setting this to False here.
-    if group:
-        group.is_restricted = False
+    if location:
+        location.is_restricted = False
 
     created = False
 
@@ -292,7 +293,7 @@ def import_event(  # noqa: max-complexity=12
         or event.event_series_id not in event_series_map
     ):
         created, new_event = create_event(
-            event, group, from_event_series=from_event_series
+            event, location, from_event_series=from_event_series
         )
         attach_to_event = new_event
         if created and event.picture_file_name:

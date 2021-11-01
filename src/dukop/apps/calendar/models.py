@@ -4,6 +4,7 @@ import random
 import string
 import uuid
 from builtins import staticmethod
+from datetime import datetime
 from functools import lru_cache
 
 from django.contrib.sites.models import Site
@@ -13,6 +14,7 @@ from django.db import transaction
 from django.db.models import Q
 from django.template.defaultfilters import truncatewords
 from django.urls.base import reverse
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
@@ -226,8 +228,24 @@ class Event(models.Model):
         ),
     )
 
+    location = models.ForeignKey(
+        "users.Location",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="events_here",
+        help_text=_("The location (venue) of the event."),
+    )
+
     featured = models.BooleanField(default=False)
     published = models.BooleanField(default=True)
+
+    online = models.BooleanField(
+        default=False,
+        verbose_name=_("Online event"),
+        help_text=_("Use the Description field to tell users how to join or sign up."),
+    )
+    location_tba = models.BooleanField(default=False, verbose_name=_("TBA"))
 
     is_cancelled = models.BooleanField(default=False)
 
@@ -236,28 +254,24 @@ class Event(models.Model):
         verbose_name=_("venue name"),
         blank=True,
         null=True,
-        help_text=_("Leave blank to use details from existing venue"),
     )
     street = models.CharField(
         max_length=255,
         verbose_name=_("street"),
         blank=True,
         null=True,
-        help_text=_("Leave blank to use details from existing venue"),
     )
     city = models.CharField(
         max_length=255,
         verbose_name=_("city"),
         blank=True,
         null=True,
-        help_text=_("Leave blank to use details from existing venue"),
     )
     zip_code = models.CharField(
         verbose_name=_("zip code"),
         blank=True,
         null=True,
         max_length=16,
-        help_text=_("Leave blank to use details from existing venue"),
     )
 
     created = models.DateTimeField(auto_now_add=True)
@@ -539,10 +553,10 @@ class EventRecurrence(models.Model):
     third_week_of_month = models.BooleanField(default=False)
     last_week_of_month = models.BooleanField(default=False)
 
-    #: The end time of an recurrence gives us an upper bound so occurences arent't
+    #: The end time of an recurrence gives us an upper bound so occurences aren't
     #: created for eternity. If none is supplied, we use a system-default
-    #: relative to ``now()``.
-    end = models.DateTimeField(
+    #: relative to ``now()``. It should mean ``<``
+    end = models.DateField(
         null=True,
         blank=True,
         verbose_name=_("End of series"),
@@ -614,9 +628,11 @@ class EventRecurrence(models.Model):
         # The end of the recurrence, either as given by an explicit user-defined
         # end datetime or as a number of days relative to the start of the
         # recurrence.
-        system_wide_maximum = timedelta_fixed_time(start, days=maximum)
+        system_wide_maximum = timedelta_fixed_time(start, days=maximum).date()
         end = self.end or system_wide_maximum
-        end = min(end, system_wide_maximum)
+        end = timezone.make_aware(
+            datetime.combine(min(end, system_wide_maximum), datetime.min.time())
+        )
 
         # We store the duration of the anchor event in order to create dynamic
         # end times of each EventTime in the recurrence.

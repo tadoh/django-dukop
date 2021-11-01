@@ -66,9 +66,7 @@
           </div>
           <div class="card__place card__link">
             {% if event.host %}
-                <a href="{% url "calendar:host_detail" pk=event.host.pk %}">{{ event.host }}</a>
-            {% else %}
-                {{ event.venue_name|default:"No location" }}
+                <a href="{% url "calendar:group_detail" pk=event.host.pk %}">{{ event.host }}</a>
             {% endif %}
           </div>
         </div>
@@ -79,7 +77,7 @@
             {% if event.description %}
                 {{ event.description|linebreaks }}
             {% else %}
-                {{ event.short_description|linebreaks }}
+                {{ event.short_description|default:_("The event has no description")|linebreaks }}
             {% endif %}
 
             <h2>{% trans "Upcoming dates" %}</h2>
@@ -96,9 +94,29 @@
 
             <h2>{% trans "Location" %}</h2>
 
-            <strong>{{ event.venue_name }}</strong><br>
-            {{ event.street }}<br>
-            {{ event.zip_code }} {{ event.city }}
+            {% if event.location %}
+              <a href="{% url "calendar:location_detail" pk=event.location.pk %}">
+                <strong>{{ event.location.name }}</strong><br>
+              </a>
+              {% if event.street or event.zip_code or event.city %}
+              {{ event.street|default:_("Unknown address") }}<br>
+              {{ event.zip_code }} {{ event.city|default:_("City not specified") }}
+              {% endif %}
+
+            {% elif event.location_tba %}
+              <p>{% trans "To Be Announced: The location's location will be announced later." %}</p>
+
+            {% elif event.venue_name %}
+              <strong>{{ event.venue_name }}</strong><br>
+              {{ event.street }}<br>
+              {{ event.zip_code }} {{ event.city }}
+            {% else %}
+              <p>{% trans "Location not specified." %}</p>
+            {% endif %}
+
+            {% if event.online %}
+              <p>{% trans "This is an online event." %}</p>
+            {% endif %}
 
             {% if event.links.all %}
                 <h2>{% trans "Event links" %}</h2>

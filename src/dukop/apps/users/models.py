@@ -129,9 +129,7 @@ class Group(models.Model):
     description = models.TextField(
         blank=True,
         verbose_name=_("description"),
-        help_text=_(
-            "Enter details, which will be displayed on the group's own page. You can use Markdown."
-        ),
+        help_text=_("Enter details, which will be displayed on the group's own page."),
     )
 
     owner_email = models.EmailField(blank=True, null=True)
@@ -169,3 +167,17 @@ class Group(models.Model):
     def __str__(self) -> str:
         """Use a useful string representation."""
         return self.name
+
+
+class Location(Group):
+    """
+    A location is a group that also has a physical location. Other groups may
+    create events here.
+
+    We don't know yet if the location will have direct moderation rights to
+    events hosted in its space.
+    """
+
+    class Meta:
+        verbose_name = _("Location")
+        ordering = ("name",)

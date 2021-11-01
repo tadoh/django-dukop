@@ -55,8 +55,6 @@ def test_create_biweekly_odd_recurrence(single_event):  # noqa
     assert recurrence.times.first() == single_event.times.first()
 
     expected_counts = [default_length_days // 14 + 1, default_length_days // 14 + 2]
-    # if single_event.times.first().start.date().isocalendar()[1] % 2 == 0:
-    #    expected_count += 1
 
     assert recurrence.times.all().count() in expected_counts
     recurrence.sync()
@@ -76,13 +74,14 @@ def test_create_biweekly_even_recurrence(single_event):  # noqa
     recurrence.sync()
     assert recurrence.times.first() == single_event.times.first()
 
-    expected_count = default_length_days // 14 + 1
-    # if single_event.times.first().start.date().isocalendar()[1] % 2 == 0:
-    #    expected_count += 1
+    expected_counts = (
+        default_length_days // 14 + 1,
+        default_length_days // 14 + 2,
+    )
 
-    assert recurrence.times.all().count() == expected_count
+    assert recurrence.times.all().count() in expected_counts
     recurrence.sync()
-    assert recurrence.times.all().count() == expected_count
+    assert recurrence.times.all().count() in expected_counts
 
 
 @pytest.mark.django_db()
@@ -242,7 +241,7 @@ def test_shorten_weekly_recurrence(single_event):  # noqa
     original_count = recurrence.times.all().count()
     recurrence.end = timedelta_fixed_time(
         recurrence.event_time_anchor.start, days=default_length_days - 7
-    )
+    ).date()
     recurrence.sync()
     assert recurrence.times.filter(start__gte=recurrence.end).count() == 0
     assert recurrence.times.all().count() == original_count - 1
