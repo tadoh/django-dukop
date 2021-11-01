@@ -241,7 +241,7 @@ def test_shorten_weekly_recurrence(single_event):  # noqa
     original_count = recurrence.times.all().count()
     recurrence.end = timedelta_fixed_time(
         recurrence.event_time_anchor.start, days=default_length_days - 7
-    )
+    ).date()
     recurrence.sync()
     assert recurrence.times.filter(start__gte=recurrence.end).count() == 0
     assert recurrence.times.all().count() == original_count - 1

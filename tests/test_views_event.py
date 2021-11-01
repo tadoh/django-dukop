@@ -109,6 +109,7 @@ def test_create_recurring_event(client, single_user):  # noqa
     data["name"] = event_name
     data["host_choice"] = forms.CreateEventForm.HOST_NEW
     data["location_choice"] = forms.EventForm.LOCATION_NEW
+    data["recurrence_choice"] = True
 
     data["new_host"] = "Test group {random.randint(10000, 99999)}"
 

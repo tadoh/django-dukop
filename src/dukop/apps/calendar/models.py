@@ -4,6 +4,7 @@ import random
 import string
 import uuid
 from builtins import staticmethod
+from datetime import datetime
 from functools import lru_cache
 
 from django.contrib.sites.models import Site
@@ -13,6 +14,7 @@ from django.db import transaction
 from django.db.models import Q
 from django.template.defaultfilters import truncatewords
 from django.urls.base import reverse
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
@@ -626,9 +628,11 @@ class EventRecurrence(models.Model):
         # The end of the recurrence, either as given by an explicit user-defined
         # end datetime or as a number of days relative to the start of the
         # recurrence.
-        system_wide_maximum = timedelta_fixed_time(start, days=maximum)
+        system_wide_maximum = timedelta_fixed_time(start, days=maximum).date()
         end = self.end or system_wide_maximum
-        end = min(end, system_wide_maximum)
+        end = timezone.make_aware(
+            datetime.combine(min(end, system_wide_maximum), datetime.min.time())
+        )
 
         # We store the duration of the anchor event in order to create dynamic
         # end times of each EventTime in the recurrence.
