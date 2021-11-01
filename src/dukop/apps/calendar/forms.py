@@ -168,6 +168,7 @@ class CreateEventForm(EventForm):
         help_text=_(
             "Name of the new group, for instance 'Marxist Book Reading Circle'"
         ),
+        required=False,
     )
 
     class Meta(EventForm.Meta):
