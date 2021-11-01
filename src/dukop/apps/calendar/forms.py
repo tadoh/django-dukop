@@ -1,12 +1,12 @@
 from django import forms
 from django.forms.models import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
+from dukop.apps.calendar import widgets
 from dukop.apps.calendar.utils import get_now
 from dukop.apps.users.models import Group
 from dukop.apps.users.models import Location
 
 from . import models
-from .widgets import SplitDateTimeWidget
 
 
 class EventForm(forms.ModelForm):
@@ -220,8 +220,8 @@ class CreateEventForm(EventForm):
 
 class EventTimeForm(forms.ModelForm):
 
-    start = forms.SplitDateTimeField(widget=SplitDateTimeWidget())
-    end = forms.SplitDateTimeField(widget=SplitDateTimeWidget(), required=False)
+    start = forms.SplitDateTimeField(widget=widgets.SplitDateTimeWidget())
+    end = forms.SplitDateTimeField(widget=widgets.SplitDateTimeWidget(), required=False)
 
     def clean_start(self):
         start = self.cleaned_data["start"]
@@ -280,7 +280,7 @@ class EventRecurrenceForm(forms.ModelForm):
         required=True,
     )
 
-    end = forms.SplitDateTimeField(widget=SplitDateTimeWidget(), required=False)
+    end = forms.DateField(required=False, widget=widgets.DateWidget())
 
     def save(self, commit=True):
         recurrence = super().save(commit=commit)
@@ -296,8 +296,8 @@ class EventRecurrenceForm(forms.ModelForm):
 
 class EventRecurrenceTimesForm(forms.ModelForm):
 
-    start = forms.SplitDateTimeField(widget=SplitDateTimeWidget())
-    end = forms.SplitDateTimeField(widget=SplitDateTimeWidget(), required=False)
+    start = forms.SplitDateTimeField(widget=widgets.SplitDateTimeWidget())
+    end = forms.SplitDateTimeField(widget=widgets.SplitDateTimeWidget(), required=False)
 
     class Meta:
         model = models.EventTime
