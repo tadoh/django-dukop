@@ -1294,7 +1294,7 @@ msgstr ""
 msgid ""
 "If you already registered an email (below), enter it here and we will send "
 "you a 1-time pass via email."
-msgstr ""
+msgstr "Hvis du allerede har registreret en e-mail, indtast den her og du vil modtage en engangs kode via e-mail"
 
 #: src/dukop/apps/users/templates/users/login.html:21
 msgid "Send a 1-time login"
