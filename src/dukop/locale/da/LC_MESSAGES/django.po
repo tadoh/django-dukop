@@ -963,9 +963,9 @@ msgid ""
 "Key fingerprint = 5832 0CBF 30E8 8572 F8A4 1943 E74B 09BA 26CE 1DD7\n"
 "</pre>\n"
 msgstr "\n"
-"<p>Københavns nye kooperative webkalender
+"<p>Københavns nye kooperative webkalender</p>"
 
-DukOp er vores fælles guide til, hvad der sker i København og omegn, hvad enten du leder efter demonstrationer, "
+"<p>DukOp er vores fælles guide til, hvad der sker i København og omegn, hvad enten du leder efter demonstrationer, "
 "koncerter, fester, møder, folkekøkkener, havedage, workshops, kunst- og filmfremvisninger, mv..</p>\n"
 "\n"
 "<p>Hop over til:</p>\n"
